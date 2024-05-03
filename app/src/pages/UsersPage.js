@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // Dodajemy useCallback
 import api from '../api/api';
 import UserTable from '../components/UsersTable';
 import ConfirmDelete from '../components/ConfirmDelete';
-import { formatDate } from '../utils/dateUtil';
 import Pagination from '../components/Pagination';
 import SearchBar from '../components/SearchBar';
 import AddUserButton from '../components/AddUserButton';
+import { formatDate } from '../utils/dateUtil';
 
 function UsersPage() {
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
 
-    useEffect(() => {
-        fetchData();
-    }, [currentPage, itemsPerPage]);
-
-    const fetchData = () => {
-        setLoading(true);
-
+    const fetchData = useCallback(() => {
         const startIndex = (currentPage - 1) * itemsPerPage;
 
         api.getAllUsers(startIndex, itemsPerPage)
@@ -31,10 +24,13 @@ function UsersPage() {
                     lastUpdated: formatDate(user.lastUpdated)
                 }));
                 setUsers(formattedUsers);
-                setLoading(false);
             })
             .catch(err => console.log(err));
-    }
+    }, [currentPage, itemsPerPage]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const handleDelete = (id) => {
         setConfirmDeleteId(id);
@@ -101,11 +97,6 @@ function UsersPage() {
             {confirmDeleteId && <ConfirmDelete onCancel={cancelDelete} onConfirm={() => confirmDeleteUser(confirmDeleteId)} />}
         </div>
     );
-    
-    
-    
-
-      
 }
 
 export default UsersPage;
