@@ -7,13 +7,18 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
     },
     age: {
         type: Number,
-        required: true
+    },
+    lastUpdated: {
+        type: Date,
+        default: Date.now
+    },
+    notes: {
+        type: String
     }
-}, { versionKey: false });;
+}, { versionKey: false });
 
 const UserModel = mongoose.model('User', userSchema);
 

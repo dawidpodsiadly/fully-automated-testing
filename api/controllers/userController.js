@@ -22,7 +22,11 @@ userController.getUserById = async (req, res) => {
 
 userController.createUser = async (req, res) => {
     try {
-        const user = await UserModel.create(req.body);
+        const userData = { ...req.body };
+        if (!userData.lastUpdated) {
+            userData.lastUpdated = Date.now();
+        }
+        const user = await UserModel.create(userData);
         res.json(user);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -31,12 +35,17 @@ userController.createUser = async (req, res) => {
 
 userController.updateUser = async (req, res) => {
     try {
-        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const userData = { ...req.body };
+        if (!userData.lastUpdated) {
+            userData.lastUpdated = Date.now();
+        }
+        const user = await UserModel.findByIdAndUpdate(req.params.id, userData, { new: true });
         res.json(user);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 userController.deleteUser = async (req, res) => {
     try {
