@@ -1,0 +1,94 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { formatDate } from "../utils/dateUtil";
+
+const UserForm = ({ onSubmit, defaultValues }) => {
+  const [name, setName] = useState(defaultValues?.name || "");
+  const [email, setEmail] = useState(defaultValues?.email || "");
+  const [age, setAge] = useState(defaultValues?.age || "");
+  const [notes, setNotes] = useState(defaultValues?.notes || "");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (defaultValues) {
+      setName(defaultValues.name || "");
+      setEmail(defaultValues.email || "");
+      setAge(defaultValues.age || "");
+      setNotes(defaultValues.notes || "");
+    }
+  }, [defaultValues]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const ageValue = age ? parseInt(age) : null;
+    if (age && (isNaN(ageValue) || ageValue <= 0)) {
+      setError("Enter correct age");
+      return;
+    }
+    setError("");
+    const currentDate = formatDate(new Date());
+    const userData = { name, email, age: ageValue, lastUpdated: currentDate, notes };
+    onSubmit(userData);
+  };
+
+  return (
+    <div className="w-50 bg-white rounded p-3">
+      <form onSubmit={handleSubmit}>
+        <h2>{defaultValues ? 'Update User' : 'Add User'}</h2>
+        <div className="mb-2">
+          <label htmlFor="">Name</label>
+          <input
+            type="text"
+            placeholder="Enter Name"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="mb-2">
+          <label htmlFor="">Email</label>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="mb-2">
+          <label htmlFor="">Age</label>
+          <input
+            type="text"
+            placeholder="Enter Age"
+            className="form-control"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+          />
+          {error && <p className="text-danger">{error}</p>}
+        </div>
+        <div className="mb-2">
+          <label htmlFor="">Last Updated</label>
+          <input
+            type="text"
+            className="form-control"
+            value={formatDate(new Date())}
+            readOnly
+          />
+        </div>
+        <div className="mb-2">
+          <label htmlFor="">Notes</label>
+          <textarea
+            placeholder="Enter Notes"
+            className="form-control"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
+        </div>
+        <button className="btn btn-success me-2">Submit</button>
+        <Link to="/" className="btn btn-secondary">Cancel</Link>
+      </form>
+    </div>
+  );
+};
+
+export default UserForm;

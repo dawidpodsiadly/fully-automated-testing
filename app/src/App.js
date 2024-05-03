@@ -1,19 +1,19 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Users from './components/Users'
-import CreateUser from './components/CreateUser'
-import UpdateUser from './components/UpdateUser'
- 
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import CreateUser from './components/CreateUser';
+import UpdateUser from './components/UpdateUser';
+import UsersPage from './pages/UsersPage'; // Importuj UsersPage
+
 function App() {
- 
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path='/' element={<Users />}></Route>
-        <Route path='/create' element={<CreateUser />}></Route>
-        <Route path='/edit/:id' element={<UpdateUser />}></Route>
+        <Route path="/" element={<UsersPage />} /> {/* Trasa dla UsersPage */}
+        <Route path="/create" element={<CreateUser />} />
+        <Route path="/edit/:id" element={<UpdateUser />} />
       </Routes>
-    </BrowserRouter>
-  )
+    </Router>
+  );
 }
- 
-export default App
+
+export default App;

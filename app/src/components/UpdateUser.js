@@ -1,81 +1,35 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
- 
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import UserForm from "./UserForm";
+import apis from "../api/api";
+
 function UpdateUser() {
-    const {id} = useParams()
-    
-    const [name, setName] = useState()
-    const [email, setEmail] = useState()
-    const [age, setAge] = useState()
-     
-    useEffect(()=> {
-        const fetchData = async() => {
-            try {
-                const response = await axios.get("http://localhost:3023/get/"+id);
-                console.log(response);
-                setName(response.data.name)
-                setEmail(response.data.email)
-                setAge(response.data.age)
-            } catch(err) {
-                console.log(err)
-            }
-        }
-        fetchData();
-    }, [])
-     
-    const navigate = useNavigate()
- 
-    const handleUpdate = (e) => {
-        e.preventDefault()
-        axios.put('http://localhost:3023/update/'+id, {name, email, age})
-        .then(res => {
-            console.log(res);
-            navigate('/')
-        })
-        .catch(err => console.log(err))
-    }
- 
-    return ( 
-        <div className="d-flex vh-100 bg-primary justify-content-center align-items-center">
-      <div className="w-50 bg-white rounded p-3">
-        <form onSubmit={handleUpdate}>
-          <h2>Update User</h2>
-          <div className="mb-2">
-            <label htmlFor="">Name</label>
-            <input
-              type="text"
-              placeholder="Enter Name"
-              className="form-control"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="mb-2">
-            <label htmlFor="">Email</label>
-            <input
-              type="email"
-              placeholder="Enter Email"
-              className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="mb-2">
-            <label htmlFor="">Age</label>
-            <input
-              type="text"
-              placeholder="Enter Age"
-              className="form-control"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
-          </div>
-          <button className="btn btn-success">Update</button>
-        </form>
-      </div>
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    apis.getUserById(id)
+      .then(res => {
+        setUserData(res.data);
+      })
+      .catch(err => console.log(err));
+  }, [id]);
+
+  const handleSubmit = (userData) => {
+    apis.updateUserById(id, userData)
+      .then(res => {
+        console.log(res);
+        navigate('/');
+      })
+      .catch(err => console.log(err));
+  };
+
+  return (
+    <div className="d-flex vh-100 bg-white justify-content-center align-items-center border rounded">
+      {userData && <UserForm onSubmit={handleSubmit} defaultValues={userData} />}
     </div>
-     );
+  );
 }
- 
+
 export default UpdateUser;
