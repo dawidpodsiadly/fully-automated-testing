@@ -1,0 +1,26 @@
+{"type":"before","callId":"hook@1","wallTime":1715188709145,"startTime":645.453,"class":"Test","method":"step","apiName":"Before Hooks","params":{},"stack":[]}
+{"type":"before","callId":"fixture@2","parentId":"hook@1","wallTime":1715188709175,"startTime":673.282,"class":"Test","method":"step","apiName":"fixture: browser","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@3","parentId":"fixture@2","wallTime":1715188709177,"startTime":676.561,"class":"Test","method":"step","apiName":"browserType.launch","params":{"handleSIGINT":"false","headless":"true","tracesDir":"/Users/dawid/testing-app/tests/test-results/.playwright-artifacts-0/traces","ignoreDefaultArgs":"undefined","ignoreAllDefaultArgs":"false","env":"undefined"},"stack":[]}
+{"type":"after","callId":"pw:api@3","endTime":972.395,"attachments":[]}
+{"type":"after","callId":"fixture@2","endTime":974.642,"attachments":[]}
+{"type":"before","callId":"fixture@4","parentId":"hook@1","wallTime":1715188709478,"startTime":976.523,"class":"Test","method":"step","apiName":"fixture: context","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@5","parentId":"fixture@4","wallTime":1715188709499,"startTime":997.56,"class":"Test","method":"step","apiName":"browser.newContext","params":{"acceptDownloads":"accept","bypassCSP":"false","colorScheme":"light","deviceScaleFactor":"1","hasTouch":"false","ignoreHTTPSErrors":"false","isMobile":"false","javaScriptEnabled":"true","locale":"en-US","offline":"false","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.26 Safari/537.36","viewport":"Object","serviceWorkers":"allow","noDefaultViewport":"false","extraHTTPHeaders":"undefined","storageState":"undefined","recordHar":"undefined","reducedMotion":"undefined","forcedColors":"undefined"},"stack":[]}
+{"type":"after","callId":"pw:api@5","endTime":1021.919,"attachments":[]}
+{"type":"after","callId":"fixture@4","endTime":1041.571,"attachments":[]}
+{"type":"before","callId":"fixture@6","parentId":"hook@1","wallTime":1715188709557,"startTime":1055.068,"class":"Test","method":"step","apiName":"fixture: page","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@7","parentId":"fixture@6","wallTime":1715188709558,"startTime":1057.099,"class":"Test","method":"step","apiName":"browserContext.newPage","params":{},"stack":[]}
+{"type":"after","callId":"pw:api@7","endTime":1180.9859999999999,"attachments":[]}
+{"type":"after","callId":"fixture@6","endTime":1181.403,"attachments":[]}
+{"type":"after","callId":"hook@1","endTime":1200.99,"attachments":[]}
+{"type":"before","callId":"pw:api@8","wallTime":1715188709723,"startTime":1222.219,"class":"Test","method":"step","apiName":"page.goto","params":{"url":"http://localhost:3001/","waitUntil":"load"},"stack":[{"file":"/Users/dawid/testing-app/tests/tests/example.spec.ts","line":4,"column":14}]}
+{"type":"after","callId":"pw:api@8","endTime":1786.627,"attachments":[]}
+{"type":"before","callId":"pw:api@9","wallTime":1715188710289,"startTime":1788.009,"class":"Test","method":"step","apiName":"page.waitForSelector","params":{"selector":"text=User Management"},"stack":[{"file":"/Users/dawid/testing-app/tests/tests/example.spec.ts","line":7,"column":33}]}
+{"type":"after","callId":"pw:api@9","endTime":1880.036,"attachments":[]}
+{"type":"before","callId":"expect@10","wallTime":1715188710383,"startTime":1882.738,"class":"Test","method":"step","apiName":"expect.toBeTruthy","params":{},"stack":[{"file":"/Users/dawid/testing-app/tests/tests/example.spec.ts","line":10,"column":22}]}
+{"type":"after","callId":"expect@10","endTime":1883.576,"attachments":[]}
+{"type":"before","callId":"hook@11","wallTime":1715188710386,"startTime":1884.3890000000001,"class":"Test","method":"step","apiName":"After Hooks","params":{},"stack":[]}
+{"type":"before","callId":"fixture@12","parentId":"hook@11","wallTime":1715188710387,"startTime":1885.7930000000001,"class":"Test","method":"step","apiName":"fixture: page","params":{},"stack":[]}
+{"type":"after","callId":"fixture@12","endTime":1886.233,"attachments":[]}
+{"type":"before","callId":"fixture@13","parentId":"hook@11","wallTime":1715188710389,"startTime":1887.164,"class":"Test","method":"step","apiName":"fixture: context","params":{},"stack":[]}
+{"type":"after","callId":"fixture@13","endTime":1887.5259999999998,"attachments":[]}
+{"type":"after","callId":"hook@11","endTime":2026.802,"attachments":[]}
