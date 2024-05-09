@@ -1,10 +1,10 @@
 import React from 'react';
-import CreateUpdateUser from '../components/CreateUserForm';
+import CreateUser from '../components/CreateUserForm';
 
 function CreateUserPage() {
     return (
         <div>
-            <CreateUpdateUser />
+            <CreateUser />
         </div>
     );
 }

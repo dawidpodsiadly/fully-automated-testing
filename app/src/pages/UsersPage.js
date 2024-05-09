@@ -73,17 +73,19 @@ function UsersPage() {
                 <div style={{ paddingRight: '10px' }}>
                     <h2>User Management</h2>
                     <SearchBar 
+                        id="search-input"
                         searchTerm={searchTerm} 
                         setSearchTerm={setSearchTerm} 
                         style={{ width: '40rem' }}
                     />
                 </div>
                 <div>
-                    <AddUserButton />
+                    <AddUserButton id="add-user-button"/>
                 </div>
             </div>
             <div className="d-flex justify-content-end">
                 <Pagination
+                    id="pagination"
                     currentPage={currentPage}
                     totalPages={totalPages}
                     onNextPage={handleNextPage}
@@ -94,7 +96,7 @@ function UsersPage() {
                 />
             </div>
             <UserTable users={paginatedUsers} handleDelete={handleDelete} />
-            {confirmDeleteId && <ConfirmDelete onCancel={cancelDelete} onConfirm={() => confirmDeleteUser(confirmDeleteId)} />}
+            {confirmDeleteId && <ConfirmDelete id="delete-modal" onCancel={cancelDelete} onConfirm={() => confirmDeleteUser(confirmDeleteId)} />}
         </div>
     );
 }
