@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function AddUserButton() {
+function AddUserButton({ id }) {
     return (
-        <Link to="/create" className="btn btn-success btn-lg">
+        <Link id={id} to="/create" className="btn btn-success btn-lg">
             Add User
         </Link>
     );

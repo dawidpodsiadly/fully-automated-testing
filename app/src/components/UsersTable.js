@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function UserTableRow({ user, handleDelete, index }) {
+function UserTableRow({ user, handleDelete, index, id }) {
     return (
-        <tr style={{ backgroundColor: index % 2 === 0 ? "#ffffff" : "#f2f2f2" }}>
+        <tr id={`${id}`} style={{ backgroundColor: index % 2 === 0 ? "#ffffff" : "#f2f2f2" }}>
             <td style={{ wordWrap: 'break-word', maxWidth: '150px' }}>{user.name}</td>
             <td>{user.email}</td>
             <td>{user.age}</td>
             <td>{user.notes}</td>
             <td>{user.lastUpdated}</td>
             <td>
-                <Link to={`/edit/${user._id}`} className="btn btn-sm btn-success me-2">Update</Link>
-                <button onClick={() => handleDelete(user._id)} className="btn btn-sm btn-danger">Delete</button>
+                <Link id={`${id}-update-button`} to={`/edit/${user._id}`} className="btn btn-sm btn-success me-2">Update</Link>
+                <button id={`${id}-delete-button`} onClick={() => handleDelete(user._id)} className="btn btn-sm btn-danger">Delete</button>
             </td>
         </tr>
     );
@@ -32,7 +32,7 @@ function UserTable({ users, handleDelete }) {
             </thead>
             <tbody>
                 {users.map((user, index) => (
-                    <UserTableRow key={index} user={user} handleDelete={handleDelete} index={index} />
+                    <UserTableRow id="table-user-row" key={index} user={user} handleDelete={handleDelete} index={index} />
                 ))}
             </tbody>
         </table>

@@ -27,7 +27,7 @@ function UpdateUser() {
 
   return (
     <div className="d-flex vh-100 bg-white justify-content-center align-items-center border rounded">
-      {userData && <UserForm onSubmit={handleSubmit} defaultValues={userData} />}
+      {userData && <UserForm id="update-user-form" onSubmit={handleSubmit} defaultValues={userData} />}
     </div>
   );
 }

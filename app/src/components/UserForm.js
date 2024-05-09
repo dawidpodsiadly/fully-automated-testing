@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/dateUtil";
 
-const UserForm = ({ onSubmit, defaultValues }) => {
+const UserForm = ({ id, onSubmit, defaultValues }) => {
   const [name, setName] = useState(defaultValues?.name || "");
   const [email, setEmail] = useState(defaultValues?.email || "");
   const [age, setAge] = useState(defaultValues?.age || "");
@@ -32,12 +32,13 @@ const UserForm = ({ onSubmit, defaultValues }) => {
   };
 
   return (
-    <div className="w-50 bg-white rounded p-3">
+    <div id={id} className="w-50 bg-white rounded p-3">
       <form onSubmit={handleSubmit}>
         <h2>{defaultValues ? 'Update User' : 'Add User'}</h2>
         <div className="mb-2">
           <label htmlFor="">Name</label>
           <input
+            id={`${id}-name`}
             type="text"
             placeholder="Enter Name"
             className="form-control"
@@ -48,6 +49,7 @@ const UserForm = ({ onSubmit, defaultValues }) => {
         <div className="mb-2">
           <label htmlFor="">Email</label>
           <input
+            id={`${id}-email`}
             type="email"
             placeholder="Enter Email"
             className="form-control"
@@ -58,6 +60,7 @@ const UserForm = ({ onSubmit, defaultValues }) => {
         <div className="mb-2">
           <label htmlFor="">Age</label>
           <input
+            id={`${id}-age`}
             type="text"
             placeholder="Enter Age"
             className="form-control"
@@ -69,6 +72,7 @@ const UserForm = ({ onSubmit, defaultValues }) => {
         <div className="mb-2">
           <label htmlFor="">Last Updated</label>
           <input
+            id={`${id}-last-updated`}
             type="text"
             className="form-control"
             value={formatDate(new Date())}
@@ -78,14 +82,15 @@ const UserForm = ({ onSubmit, defaultValues }) => {
         <div className="mb-2">
           <label htmlFor="">Notes</label>
           <textarea
+            id={`${id}-notes`}
             placeholder="Enter Notes"
             className="form-control"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
         </div>
-        <button className="btn btn-success me-2">Submit</button>
-        <Link to="/" className="btn btn-secondary">Cancel</Link>
+        <button id={`${id}-submit-button`} className="btn btn-success me-2">Submit</button>
+        <Link id={`${id}-cancel-cutton`} to="/" className="btn btn-secondary">Cancel</Link>
       </form>
     </div>
   );

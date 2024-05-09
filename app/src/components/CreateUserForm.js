@@ -17,7 +17,7 @@ function CreateUser() {
 
   return (
     <div className="d-flex vh-100 bg-white justify-content-center align-items-center border rounded">
-      <UserForm onSubmit={handleSubmit} />
+      <UserForm id="create-user-form" onSubmit={handleSubmit} />
     </div>
   );
 }
