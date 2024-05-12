@@ -19,7 +19,7 @@ function UserTableRow({ user, handleDelete, index, id }) {
 
 function UserTable({ users, handleDelete }) {
     return (
-        <table className="table flex-grow-1">
+        <table id="users-table" className="table flex-grow-1">
             <thead>
                 <tr>
                     <th>Name</th>
