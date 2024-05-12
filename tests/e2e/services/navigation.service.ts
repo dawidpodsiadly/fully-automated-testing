@@ -1,13 +1,13 @@
 import { test, expect, Page } from '@playwright/test';
 
-export const basicUrl = 'http://localhost:3001'
+export const basicUrl = 'http://localhost:3005'
 
 const pathParams = {
     id: ':id',
   };
 
 export const navigationPaths = {
-    USER_TABLE: basicUrl,
+    USER_TABLE: '',
     USER_CREATE: '/create',
     USER_EDIT: `/edit/${pathParams.id}`
 };
