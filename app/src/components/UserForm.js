@@ -8,7 +8,8 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
   const [age, setAge] = useState(defaultValues?.age || "");
   const [notes, setNotes] = useState(defaultValues?.notes || "");
   const [error, setError] = useState("");
-  const [lastUpdated, setLastUpdated] = useState(new Date()); // Tu przechowujemy obiekt daty
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [isActivated, setIsActivated] = useState(defaultValues?.isActivated || false);
 
   useEffect(() => {
     if (defaultValues) {
@@ -16,7 +17,8 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
       setEmail(defaultValues.email || "");
       setAge(defaultValues.age || "");
       setNotes(defaultValues.notes || "");
-      setLastUpdated(new Date(defaultValues.lastUpdated)); // Konwertujemy datę na obiekt daty
+      setLastUpdated(new Date(defaultValues.lastUpdated));
+      setIsActivated(defaultValues.isActivated || false);
     }
   }, [defaultValues]);
 
@@ -28,7 +30,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
       return;
     }
     setError("");
-    const userData = { name, email, age: ageValue, lastUpdated, notes }; // Przekazujemy obiekt daty
+    const userData = { name, email, age: ageValue, lastUpdated, notes, isActivated };
     onSubmit(userData);
   };
 
@@ -36,8 +38,8 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
     <div id={id} className="w-50 bg-white rounded p-3">
       <form onSubmit={handleSubmit}>
         <h2>{defaultValues ? 'Update User' : 'Add User'}</h2>
-        <div className="mb-2">
-          <label htmlFor="">Name</label>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Name</label>
           <input
             id={`${id}-name`}
             type="text"
@@ -47,8 +49,8 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="mb-2">
-          <label htmlFor="">Email</label>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Email</label>
           <input
             id={`${id}-email`}
             type="email"
@@ -58,8 +60,8 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-2">
-          <label htmlFor="">Age</label>
+        <div className="mb-3">
+          <label htmlFor="age" className="form-label">Age</label>
           <input
             id={`${id}-age`}
             type="text"
@@ -70,18 +72,18 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
           />
           {error && <p className="text-danger">{error}</p>}
         </div>
-        <div className="mb-2">
-          <label htmlFor="">Last Updated</label>
+        <div className="mb-3">
+          <label htmlFor="last-updated" className="form-label">Last Updated</label>
           <input
             id={`${id}-last-updated`}
             type="text"
             className="form-control"
-            value={formatDate(lastUpdated)} // Wyświetlamy datę w formacie tekstowym
+            value={formatDate(lastUpdated)}
             readOnly
           />
         </div>
-        <div className="mb-2">
-          <label htmlFor="">Notes</label>
+        <div className="mb-3">
+          <label htmlFor="notes" className="form-label">Notes</label>
           <textarea
             id={`${id}-notes`}
             placeholder="Enter Notes"
@@ -89,6 +91,16 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
+        </div>
+        <div className="mb-3 form-check">
+          <input
+            id={`${id}-is-activated`}
+            type="checkbox"
+            className="form-check-input"
+            checked={isActivated}
+            onChange={(e) => setIsActivated(e.target.checked)}
+          />
+          <label htmlFor={`${id}-is-activated`} className="form-check-label">Is Activated</label>
         </div>
         <button id={`${id}-submit-button`} className="btn btn-success me-2">Submit</button>
         <Link id={`${id}-cancel-cutton`} to="/" className="btn btn-secondary">Cancel</Link>
