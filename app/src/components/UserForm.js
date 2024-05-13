@@ -8,6 +8,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
   const [age, setAge] = useState(defaultValues?.age || "");
   const [notes, setNotes] = useState(defaultValues?.notes || "");
   const [error, setError] = useState("");
+  const [lastUpdated, setLastUpdated] = useState(new Date()); // Tu przechowujemy obiekt daty
 
   useEffect(() => {
     if (defaultValues) {
@@ -15,6 +16,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
       setEmail(defaultValues.email || "");
       setAge(defaultValues.age || "");
       setNotes(defaultValues.notes || "");
+      setLastUpdated(new Date(defaultValues.lastUpdated)); // Konwertujemy datę na obiekt daty
     }
   }, [defaultValues]);
 
@@ -26,8 +28,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
       return;
     }
     setError("");
-    const currentDate = formatDate(new Date());
-    const userData = { name, email, age: ageValue, lastUpdated: currentDate, notes };
+    const userData = { name, email, age: ageValue, lastUpdated, notes }; // Przekazujemy obiekt daty
     onSubmit(userData);
   };
 
@@ -75,7 +76,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
             id={`${id}-last-updated`}
             type="text"
             className="form-control"
-            value={formatDate(new Date())}
+            value={formatDate(lastUpdated)} // Wyświetlamy datę w formacie tekstowym
             readOnly
           />
         </div>
