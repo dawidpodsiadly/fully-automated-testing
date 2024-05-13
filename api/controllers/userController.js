@@ -46,7 +46,6 @@ userController.updateUser = async (req, res) => {
     }
 };
 
-
 userController.deleteUser = async (req, res) => {
     try {
         const deletedUser = await UserModel.findByIdAndDelete(req.params.id);

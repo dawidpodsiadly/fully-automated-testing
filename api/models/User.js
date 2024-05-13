@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
     },
     notes: {
         type: String
+    },
+    isActivated: {
+        type: Boolean,
+        default: false
     }
 }, { versionKey: false });
 
