@@ -7,7 +7,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
   const [email, setEmail] = useState(defaultValues?.email || "");
   const [age, setAge] = useState(defaultValues?.age || "");
   const [notes, setNotes] = useState(defaultValues?.notes || "");
-  const [error, setError] = useState("");
+  const [error, setError] = useState({ name: "", email: "", age: "" });
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [isActivated, setIsActivated] = useState(defaultValues?.isActivated || false);
 
@@ -24,12 +24,28 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const errors = {};
+
+    if (!name.trim()) {
+      errors.name = "Name is required";
+    }
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    }
+
     const ageValue = age ? parseInt(age) : null;
     if (age && (isNaN(ageValue) || ageValue <= 0)) {
-      setError("Enter correct age");
+      errors.age = "Enter correct age";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setError(errors);
       return;
     }
-    setError("");
+
+    setError({});
     const userData = { name, email, age: ageValue, lastUpdated, notes, isActivated };
     onSubmit(userData);
   };
@@ -48,6 +64,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          {error.name && <p className="text-danger">{error.name}</p>}
         </div>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">Email</label>
@@ -59,6 +76,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          {error.email && <p className="text-danger">{error.email}</p>}
         </div>
         <div className="mb-3">
           <label htmlFor="age" className="form-label">Age</label>
@@ -70,7 +88,7 @@ const UserForm = ({ id, onSubmit, defaultValues }) => {
             value={age}
             onChange={(e) => setAge(e.target.value)}
           />
-          {error && <p className="text-danger">{error}</p>}
+          {error.age && <p className="text-danger">{error.age}</p>}
         </div>
         <div className="mb-3">
           <label htmlFor="last-updated" className="form-label">Last Updated</label>
