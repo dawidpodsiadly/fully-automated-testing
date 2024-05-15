@@ -1,4 +1,5 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
+import { baseUrl } from '../config';
 
 export class UsersHeader {
   readonly page: Page;
@@ -32,15 +33,21 @@ export class UsersHeader {
 
 export class UsersTable {
   readonly page: Page;
-  readonly tablePage: Locator
+  readonly tableLocator: Locator
 
   constructor(page: Page) {
     this.page = page;
-    this.tablePage = this.page.locator('#users-table');
+    this.tableLocator = this.page.locator('#users-table');
+  }
+
+  async isTableVisible(page: Page) {
+    await page.waitForURL(baseUrl);
+    await expect(this.tableLocator).toBeVisible;
+    await this.tableLocator.click();
   }
 
   async getRowByEmail(userEmail: string): Promise<UsersTableRow> {
-    return new UsersTableRow(this.tablePage.locator('#table-user-row').filter({ hasText: userEmail}));
+    return new UsersTableRow(this.tableLocator.locator('#table-user-row').filter({ hasText: userEmail}));
   }  
 }
 
