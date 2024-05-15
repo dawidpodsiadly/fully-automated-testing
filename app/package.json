@@ -43,5 +43,6 @@
     "@testing-library/jest-dom": "^6.4.4",
     "babel-jest": "^24.9.0",
     "jest": "^24.9.0"
-  }
+  },
+  "proxy": "http://localhost:3002"
 }
