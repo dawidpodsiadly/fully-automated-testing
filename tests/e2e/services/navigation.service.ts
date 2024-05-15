@@ -1,6 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
-
-export const basicUrl = 'http://localhost:3005'
+import { Page } from '@playwright/test';
+import { baseUrl } from '../config';
 
 const pathParams = {
     id: ':id',
@@ -23,7 +22,7 @@ export const NavigationPaths: Record<NavigationPath, NavigationPath> = computeNa
 
 class NavigationService {
     async navigateTo(page: Page, path: NavigationPath, id?: string) {
-        await page.goto(basicUrl + await this.resolvePath(path, id));
+        await page.goto(baseUrl + await this.resolvePath(path, id));
     }
 
     async resolvePath(path: NavigationPath, id?: string): Promise<string> {
