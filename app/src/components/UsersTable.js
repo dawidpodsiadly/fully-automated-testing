@@ -25,8 +25,9 @@ function UserTableRow({ user, handleDelete, onCheckboxChange, isChecked, id, han
             <td className="text-center">{user.notes}</td>
             <td className="text-center">{user.lastUpdated}</td>
             <td className="text-left">
-                <Link to={`/edit/${user._id}`} className="btn btn-sm btn-success me-2">Update</Link>
+                <Link to={`/edit/${user._id}`} id={`${id}-update-button`} className="btn btn-sm btn-success me-2">Update</Link>
                 <button
+                    id={`${id}-delete-button`}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     onClick={() => handleDelete(user._id)}
@@ -35,6 +36,7 @@ function UserTableRow({ user, handleDelete, onCheckboxChange, isChecked, id, han
                     Delete
                 </button>
                 <button
+                    id={`${id}-deactivate-button`}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     onClick={() => handleToggleActivation(user._id, !user.isActivated)}
@@ -66,7 +68,7 @@ function UserTable({ users, handleDelete, onCheckboxChange, selectedUsers, handl
                 {users.map((user, index) => (
                     <UserTableRow
                         key={index}
-                        id={`table-user-row-${index}`}
+                        id={`table-user-row`}
                         user={user}
                         handleDelete={handleDelete}
                         onCheckboxChange={onCheckboxChange}
