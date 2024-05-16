@@ -1,13 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const passport = require('passport');
 const userRoutes = require('./routes/userRoutes');
+const auth = require('./auth');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
-mongoose.connect('test', {
+mongoose.connect('localhost:2137', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -16,7 +19,7 @@ mongoose.connect('test', {
 
 app.use(userRoutes);
 
-const PORT = process.env.PORT || 3033;
+const PORT = process.env.PORT || 3012;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
