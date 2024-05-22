@@ -25,14 +25,14 @@ const userSchema = new mongoose.Schema({
     birthDate: {
         type: Date
     },
-    department: {
-        type: String
-    },
-    position: {
-        type: String
-    },
     contract: {
         type: {
+            type: String,
+        },
+        salary: {
+            type: String
+        },
+        position: {
             type: String
         },
         startTime: {
@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    isActivated: {
         type: Boolean,
         default: false
     },
