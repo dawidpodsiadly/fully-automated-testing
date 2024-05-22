@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { formatDate } from "../utils/dateUtil";
+import { formatDate } from "../utils/date.util";
 
 const UserForm = ({ id, onSubmit, defaultValues }) => {
   const [name, setName] = useState(defaultValues?.name || "");

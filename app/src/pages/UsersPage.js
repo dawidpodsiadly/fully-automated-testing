@@ -5,7 +5,7 @@ import ConfirmDelete from '../components/ConfirmDelete';
 import Pagination from '../components/Pagination';
 import SearchBar from '../components/SearchBar';
 import AddUserButton from '../components/AddUserButton';
-import { formatDate } from '../utils/dateUtil';
+import { formatDate } from '../utils/date.util';
 
 function UsersPage() {
     const [users, setUsers] = useState([]);
@@ -17,19 +17,20 @@ function UsersPage() {
         return cachedPage ? parseInt(cachedPage) : 1;
     });
     const [itemsPerPage, setItemsPerPage] = useState(5);
-
-    const fetchData = useCallback(() => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-
-        api.getAllUsers(startIndex, itemsPerPage)
-            .then(res => {
-                const formattedUsers = res.data.map(user => ({
-                    ...user,
-                    lastUpdated: formatDate(user.lastUpdated)
-                }));
-                setUsers(formattedUsers);
-            })
-            .catch(err => console.log(err));
+    const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(true);
+    const [confirmMassDelete, setConfirmMassDelete] = useState(false);
+    const fetchData = useCallback(async () => {
+        try {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const response = await api.getAllUsers(startIndex, itemsPerPage);
+            const formattedUsers = response.data.map(user => ({
+                ...user,
+                lastUpdated: formatDate(user.lastUpdated)
+            }));
+            setUsers(formattedUsers);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
     }, [currentPage, itemsPerPage]);
 
     useEffect(() => {
@@ -39,6 +40,10 @@ function UsersPage() {
     useEffect(() => {
         sessionStorage.setItem('currentPage', currentPage);
     }, [currentPage]);
+
+    useEffect(() => {
+        setIsDeleteButtonDisabled(selectedUsers.length === 0);
+    }, [selectedUsers]);
 
     const handleToggleActivation = async (userId, isActivated) => {
         try {
@@ -69,9 +74,18 @@ function UsersPage() {
 
     const handleMassDelete = async () => {
         try {
+            setConfirmMassDelete(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleConfirmMassDelete = async () => {
+        try {
             await Promise.all(selectedUsers.map(async id => await api.deleteUserById(id)));
             await fetchData();
             setSelectedUsers([]);
+            setConfirmMassDelete(false);
         } catch (error) {
             console.log(error);
         }
@@ -91,6 +105,12 @@ function UsersPage() {
         } else {
             setSelectedUsers(prevSelectedUsers => [...prevSelectedUsers, id]);
         }
+        setIsDeleteButtonDisabled(selectedUsers.length === 0);
+    };
+
+    const handleSearchTermChange = (term) => {
+        setSearchTerm(term);
+        setCurrentPage(1);
     };
 
     const filteredUsers = users.filter(user =>
@@ -110,7 +130,7 @@ function UsersPage() {
                     <SearchBar 
                         id="search-input"
                         searchTerm={searchTerm} 
-                        setSearchTerm={setSearchTerm} 
+                        setSearchTerm={handleSearchTermChange} 
                         style={{ width: '40rem' }}
                     />
                 </div>
@@ -121,14 +141,14 @@ function UsersPage() {
             <div className="d-flex justify-content-end" style={{ padding: '0rem 0rem 2rem 0rem' }}>
                 <button
                     onClick={handleMassDelete}
-                    className={`btn btn-danger me-2 ${selectedUsers.length === 0 ? 'disabled' : ''}`}
-                    disabled={selectedUsers.length === 0}
+                    className={`btn btn-danger me-2 ${isDeleteButtonDisabled ? 'disabled' : ''}`}
+                    disabled={isDeleteButtonDisabled}
                     style={{
                         fontSize: '14px',
                         marginTop: '20px',
-                        backgroundColor: selectedUsers.length === 0 ? '#ccc' : undefined,
-                        cursor: selectedUsers.length === 0 ? 'not-allowed' : undefined,
-                        border: selectedUsers.length === 0 ? 'none' : undefined
+                        backgroundColor: isDeleteButtonDisabled ? '#ccc' : undefined,
+                        cursor: isDeleteButtonDisabled ? 'not-allowed' : undefined,
+                        border: isDeleteButtonDisabled ? 'none' : undefined
                     }}
                 >
                     Delete selected Users
@@ -151,7 +171,8 @@ function UsersPage() {
                 selectedUsers={selectedUsers} 
                 handleToggleActivation={handleToggleActivation} 
             />
-            {confirmDeleteId && <ConfirmDelete id="delete-modal" onCancel={cancelDelete} onConfirm={() => confirmDeleteUser(confirmDeleteId)} />}
+            {confirmDeleteId && <ConfirmDelete id="delete-modal" onCancel={cancelDelete} onConfirm={() => confirmDeleteUser(confirmDeleteId)} onDelete={handleDelete} />}
+            {confirmMassDelete && <ConfirmDelete id="mass-delete-modal" onCancel={() => setConfirmMassDelete(false)} onConfirm={handleConfirmMassDelete} onDelete={handleDelete} isMassDelete={true} />}
         </div>
     );
 }

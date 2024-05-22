@@ -19,6 +19,9 @@ const Pagination = ({ id, currentPage, totalPages, onNextPage, onPrevPage, setIt
         setItemsPerPage(value);
     };
 
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
     return (
         <div id={id} className="pagination">
             <button id={`${id}-prev-button`} onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
@@ -32,7 +35,7 @@ const Pagination = ({ id, currentPage, totalPages, onNextPage, onPrevPage, setIt
                 </select>
             </div>
             <div>
-                Displaying items {((currentPage - 1) * itemsPerPage) + 1} - {Math.min((currentPage * itemsPerPage), totalItems)} of {totalItems}
+                Displaying items {startIndex + 1} - {endIndex} of {totalItems || 0}
             </div>
         </div>
     );
