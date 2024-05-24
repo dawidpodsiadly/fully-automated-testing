@@ -1,5 +1,6 @@
 const UserModel = require('../models/User');
 const userController = {};
+const bcrypt = require('bcrypt');
 
 userController.getAllUsers = async (req, res) => {
     try {
@@ -54,12 +55,19 @@ userController.updateUser = async (req, res) => {
         const userData = { ...req.body };
         userData.lastUpdated = Date.now();
 
+        if (userData.password) {
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(userData.password, salt);
+            userData.password = hash;
+        }
+
         const user = await UserModel.findByIdAndUpdate(req.params.id, userData, { new: true });
         res.json(user);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 userController.deleteUser = async (req, res) => {
     try {
