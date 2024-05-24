@@ -25,7 +25,7 @@ function UserTableRow({ user, handleDelete, onCheckboxChange, isChecked, id, han
             <td className="text-center">
                 <span className={statusColor}>{statusDot}</span>
             </td>
-            <td className="text-center" style={{ maxWidth: '150px' }}>{user.name} {user.surname}</td>
+            <td className="text-center" style={{ maxWidth: '150px' }}>{user.name} {user.username}</td>
             <td className="text-center">{user.email}</td>
             <td className="text-center">{user.phoneNumber}</td>
             <td className="text-center">{user.contract?.type}</td>
