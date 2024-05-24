@@ -5,7 +5,8 @@ import ConfirmDelete from '../components/ConfirmDelete';
 import Pagination from '../components/Pagination';
 import SearchBar from '../components/SearchBar';
 import AddUserButton from '../components/AddUserButton';
-import { formatDate } from '../utils/date.util';
+import LogoutButton from '../components/LogoutButton';
+import { dateTimeFormat } from '../utils/date.util';
 
 function UsersPage() {
     const [users, setUsers] = useState([]);
@@ -19,13 +20,14 @@ function UsersPage() {
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(true);
     const [confirmMassDelete, setConfirmMassDelete] = useState(false);
+
     const fetchData = useCallback(async () => {
         try {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const response = await api.getAllUsers(startIndex, itemsPerPage);
             const formattedUsers = response.data.map(user => ({
                 ...user,
-                lastUpdated: formatDate(user.lastUpdated)
+                lastUpdated: dateTimeFormat(user.lastUpdated)
             }));
             setUsers(formattedUsers);
         } catch (error) {
@@ -134,8 +136,13 @@ function UsersPage() {
                         style={{ width: '40rem' }}
                     />
                 </div>
-                <div>
-                    <AddUserButton id="add-user-button"/>
+                <div className="d-flex align-items-center">
+                    <div style={{ marginRight: '10px' }}>
+                        <AddUserButton id="add-user-button"/>
+                    </div>
+                    <div>
+                        <LogoutButton />
+                    </div>
                 </div>
             </div>
             <div className="d-flex justify-content-end" style={{ padding: '0rem 0rem 2rem 0rem' }}>
