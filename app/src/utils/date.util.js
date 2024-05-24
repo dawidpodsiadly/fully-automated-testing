@@ -1,4 +1,4 @@
-export function formatDate(dateString) {
+export function dateTimeFormat(dateString) {
     const parsedDate = new Date(dateString);
     if (isNaN(parsedDate)) {
         return 'No data';
@@ -13,3 +13,19 @@ export function formatDate(dateString) {
     }).replace(',', '');
     return formattedDateString;
 }
+
+export const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+  
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    if (day < 10) {
+      day = `0${day}`;
+    }
+  
+    return `${year}-${month}-${day}`;
+  };
