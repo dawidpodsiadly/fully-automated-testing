@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate, Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import apis from "../api/api";
-
 
 const contractTypes = {
   employment_contract: "Employment",
@@ -31,8 +30,44 @@ function CreateUserPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState({});
 
+  const validateInputs = () => {
+    const newErrors = {};
+    if (!name) newErrors.name = "Name is required";
+    if (!surname) newErrors.surname = "Surname is required";
+    if (!email) newErrors.email = "Email is required";
+    if (!password) newErrors.password = "Password is required";
+    if (password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
+    const phoneRegex = /^\d{14}$/;
+    const salaryRegex = /^\d+$/;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (phoneNumber && !phoneRegex.test(phoneNumber)) {
+      newErrors.phoneNumber = "Your phone number does not exist";
+    }
+    if (salary && !salaryRegex.test(salary)) {
+      newErrors.salary = "Salary must be a number";
+    }
+    if (startTime && !dateRegex.test(startTime)) {
+      newErrors.startTime = "Start date must be a valid date (DD-MM-YYYY)";
+    }
+    if (endTime && !dateRegex.test(endTime)) {
+      newErrors.endTime = "End date must be a valid date (DD-MM-YYYY)";
+    }
+    if (birthDate && !dateRegex.test(birthDate)) {
+      newErrors.birthDate = "Birth date must be a valid date (DD-MM-YYYY)";
+    }
+
+    return newErrors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const newErrors = validateInputs();
+    if (Object.keys(newErrors).length > 0) {
+      setError(newErrors);
+      return;
+    }
 
     const userData = {
       name,
@@ -52,7 +87,7 @@ function CreateUserPage() {
         endTime
       }
     };
-    
+
     apis.insertUser(userData)
       .then(res => {
         console.log(res);
@@ -65,7 +100,7 @@ function CreateUserPage() {
     <div className="d-flex vh-100 bg-white justify-content-center align-items-center border rounded">
       <div id="create-user-form" className="w-50 bg-white rounded p-3">
         <form onSubmit={handleSubmit}>
-          <h2>Add User</h2>
+          <h1 className="mb-4">Add User</h1>
           <div className="mb-3 row">
             <div className="col">
               <label htmlFor="name" className="form-label">Name</label>
@@ -141,6 +176,7 @@ function CreateUserPage() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
+              {error.phoneNumber && <p className="text-danger">{error.phoneNumber}</p>}
             </div>
             <div className="col">
               <label htmlFor="birthDate" className="form-label">Birth Date</label>
@@ -151,34 +187,10 @@ function CreateUserPage() {
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
               />
+              {error.birthDate && <p className="text-danger">{error.birthDate}</p>}
             </div>
           </div>
           <div className="mb-3 row">
-            <div className="col">
-              <label htmlFor="contractType" className="form-label">Contract Type</label>
-              <select
-                id="contractType"
-                className="form-select"
-                value={contractType}
-                onChange={(e) => setContractType(e.target.value)}
-              >
-                <option value="">Select Contract Type</option>
-                {Object.entries(contractTypes).map(([key, value]) => (
-                  <option key={key} value={value}>{value}</option>
-                ))}
-              </select>
-            </div>
-            <div className="col">
-              <label htmlFor="salary" className="form-label">Salary</label>
-              <input
-                id="salary"
-                type="text"
-                placeholder="Enter Salary"
-                className="form-control"
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
-              />
-            </div>
             <div className="col">
               <label htmlFor="position" className="form-label">Position</label>
               <select
@@ -186,78 +198,105 @@ function CreateUserPage() {
                 className="form-select"
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
-              >
-                <option value="">Select Position</option>
-                {positionOptions.map((pos) => (
-                  <option key={pos} value={pos}>{pos}</option>
-                ))}
-              </select>
+                >
+                  <option value="">Select Position</option>
+                  {positionOptions.map((pos) => (
+                    <option key={pos} value={pos}>{pos}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="col">
+              <label htmlFor="salary" className="form-label">Salary</label>
+                <input
+                  id="salary"
+                  type="text"
+                  placeholder="Enter Salary"
+                  className="form-control"
+                  value={salary}
+                  onChange={(e) => setSalary(e.target.value)}
+                />
+              </div>
+              <div className="col">
+              <label htmlFor="contractType" className="form-label">Contract Type</label>
+                <select
+                  id="contractType"
+                  className="form-select"
+                  value={contractType}
+                  onChange={(e) => setContractType(e.target.value)}
+                >
+                  <option value="">Select Contract Type</option>
+                  {Object.entries(contractTypes).map(([key, value]) => (
+                    <option key={key} value={value}>{value}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="mb-3 row">
-            <div className="col">
-              <label htmlFor="startTime" className="form-label">Start Time</label>
-              <input
-                id="startTime"
-                type="date"
+            <div className="mb-3 row">
+              <div className="col">
+                <label htmlFor="startTime" className="form-label">Start Time</label>
+                <input
+                  id="startTime"
+                  type="date"
+                  className="form-control"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                />
+                {error.startTime && <p className="text-danger">{error.startTime}</p>}
+              </div>
+              <div className="col">
+                <label htmlFor="endTime" className="form-label">End Time</label>
+                <input
+                  id="endTime"
+                  type="date"
+                  className="form-control"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                />
+                {error.endTime && <p className="text-danger">{error.endTime}</p>}
+              </div>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="notes" className="form-label">Notes</label>
+              <textarea
+                id="notes"
+                placeholder="Enter Notes"
                 className="form-control"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
               />
             </div>
-            <div className="col">
-              <label htmlFor="endTime" className="form-label">End Time</label>
-              <input
-                id="endTime"
-                type="date"
-                className="form-control"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="notes" className="form-label">Notes</label>
-            <textarea
-              id="notes"
-              placeholder="Enter Notes"
-              className="form-control"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
+            <div className="mb-3">
               <div className="form-check form-check-inline">
                 <input
-                  id={`isActivated`}
+                  id="isActivated"
                   type="checkbox"
                   className="form-check-input"
                   checked={isActivated}
                   onChange={(e) => setIsActivated(e.target.checked)}
                 />
-                <label htmlFor={`isActivated`} className="form-check-label">Is Activated</label>
+                <label htmlFor="isActivated" className="form-check-label">Is Activated</label>
               </div>
               <div style={{ width: "10px", display: "inline-block" }}></div>
               <div className="form-check form-check-inline">
                 <input
-                  id={`isAdmin`}
+                  id="isAdmin"
                   type="checkbox"
                   className="form-check-input"
                   checked={isAdmin}
                   onChange={(e) => setIsAdmin(e.target.checked)}
                 />
-                <label htmlFor={`isAdmin`} className="form-check-label">Is Admin</label>
+                <label htmlFor="isAdmin" className="form-check-label">Is Admin</label>
               </div>
             </div>
-          <div className="mb-3">
-            <button type="submit" className="btn btn-primary">Submit</button>
-            <Link to="/" className="btn btn-secondary ms-2">Cancel</Link>
-          </div>
-        </form>
+            <div className="mb-3">
+              <button type="submit" className="btn btn-primary">Submit</button>
+              <Link to="/" className="btn btn-secondary ms-2">Cancel</Link>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  );
-}
-
-export default CreateUserPage;
-
+    );
+  }
+  
+  export default CreateUserPage;
+  

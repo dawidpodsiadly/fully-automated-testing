@@ -55,9 +55,47 @@ function UpdateUserPage() {
       .catch(err => console.log(err));
   }, [id]);
 
+  const validateInputs = () => {
+    const newErrors = {};
+    const phoneRegex = /^\d{14}$/;
+    const salaryRegex = /^\d+$/;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (!name) newErrors.name = "Name is required";
+    if (!surname) newErrors.surname = "Surname is required";
+    if (!email) newErrors.email = "Email is required";
+    if (changePassword) {
+      if (!password) newErrors.password = "Password is required";
+      if (password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
+    }
+    if (phoneNumber && !phoneRegex.test(phoneNumber)) {
+      newErrors.phoneNumber = "Your phone number does not exist";
+    }
+    if (salary && !salaryRegex.test(salary)) {
+      newErrors.salary = "Salary must be a number";
+    }
+    if (startTime && !dateRegex.test(startTime)) {
+      newErrors.startTime = "Start date must be a valid date (DD-MM-YYYY)";
+    }
+    if (endTime && !dateRegex.test(endTime)) {
+      newErrors.endTime = "End date must be a valid date (DD-MM-YYYY)";
+    }
+    if (birthDate && !dateRegex.test(birthDate)) {
+        newErrors.birthDate = "Birth date must be a valid date (DD-MM-YYYY)";
+      }
+
+    return newErrors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
   
+    const newErrors = validateInputs();
+    if (Object.keys(newErrors).length > 0) {
+      setError(newErrors);
+      return;
+    }
+
     const userData = {
       name,
       surname,
@@ -87,19 +125,18 @@ function UpdateUserPage() {
       })
       .catch(err => console.log(err));
   };
-  
 
   return (
     <div className="d-flex vh-100 bg-white justify-content-center align-items-center border rounded">
       {userData && (
         <div id="update-user-form" className="w-50 bg-white rounded p-3">
           <form onSubmit={handleSubmit}>
-            <h2>Update User</h2>
+            <h1 className="mb-4">Update User</h1>
             <div className="mb-3 row">
               <div className="col">
                 <label htmlFor="name" className="form-label">Name</label>
                 <input
-                  id={`name`}
+                  id="name"
                   type="text"
                   placeholder="Enter Name"
                   className="form-control"
@@ -111,7 +148,7 @@ function UpdateUserPage() {
               <div className="col">
                 <label htmlFor="surname" className="form-label">Surname</label>
                 <input
-                  id={`surname`}
+                  id="surname"
                   type="text"
                   placeholder="Enter Surname"
                   className="form-control"
@@ -124,7 +161,7 @@ function UpdateUserPage() {
             <div className="mb-3">
               <label htmlFor="email" className="form-label">Email</label>
               <input
-                id={`email`}
+                id="email"
                 type="email"
                 placeholder="Enter Email"
                 className="form-control"
@@ -134,22 +171,22 @@ function UpdateUserPage() {
               {error.email && <p className="text-danger">{error.email}</p>}
             </div>
             <div className="mb-3 row">
-            <div className="col-auto align-self-end">
+              <div className="col-auto align-self-end">
                 <div className="form-check">
                   <input
-                    id={`changePassword`}
+                    id="changePassword"
                     type="checkbox"
                     className="form-check-input"
                     checked={changePassword}
                     onChange={(e) => setChangePassword(e.target.checked)}
                   />
-                  <label htmlFor={`changePassword`} className="form-check-label">Change Password</label>
+                  <label htmlFor="changePassword" className="form-check-label">Change Password</label>
                 </div>
               </div>
               <div className="col">
                 <label htmlFor="password" className="form-label">Password</label>
                 <input
-                  id={`password`}
+                  id="password"
                   type="password"
                   placeholder="Enter Password"
                   className={`form-control ${changePassword ? '' : 'disabled'}`} 
@@ -162,7 +199,7 @@ function UpdateUserPage() {
               <div className="col">
                 <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                 <input
-                  id={`confirmPassword`}
+                  id="confirmPassword"
                   type="password"
                   placeholder="Confirm Password"
                   className={`form-control ${changePassword ? '' : 'disabled'}`} 
@@ -177,30 +214,32 @@ function UpdateUserPage() {
               <div className="col">
                 <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
                 <input
-                  id={`phoneNumber`}
+                  id="phoneNumber"
                   type="text"
                   placeholder="Enter Phone Number"
                   className="form-control"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
+                {error.phoneNumber && <p className="text-danger">{error.phoneNumber}</p>}
               </div>
               <div className="col">
                 <label htmlFor="birthDate" className="form-label">Birth Date</label>
                 <input
-                  id={`birthDate`}
+                  id="birthDate"
                   type="date"
                   className="form-control"
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
                 />
+                {error.birthDate && <p className="text-danger">{error.birthDate}</p>}
               </div>
             </div>
             <div className="mb-3 row">
               <div className="col">
                 <label htmlFor="contractType" className="form-label">Contract Type</label>
                 <select
-                  id={`contractType`}
+                  id="contractType"
                   className="form-select"
                   value={contractType}
                   onChange={(e) => setContractType(e.target.value)}
@@ -214,18 +253,19 @@ function UpdateUserPage() {
               <div className="col">
                 <label htmlFor="salary" className="form-label">Salary</label>
                 <input
-                  id={`salary`}
+                  id="salary"
                   type="text"
                   placeholder="Enter Salary"
                   className="form-control"
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
                 />
+                {error.salary && <p className="text-danger">{error.salary}</p>}
               </div>
               <div className="col">
                 <label htmlFor="position" className="form-label">Position</label>
                 <select
-                  id={`position`}
+                  id="position"
                   className="form-select"
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
@@ -241,28 +281,30 @@ function UpdateUserPage() {
               <div className="col">
                 <label htmlFor="startTime" className="form-label">Start Time</label>
                 <input
-                  id={`startTime`}
+                  id="startTime"
                   type="date"
                   className="form-control"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
                 />
+                {error.startTime && <p className="text-danger">{error.startTime}</p>}
               </div>
               <div className="col">
                 <label htmlFor="endTime" className="form-label">End Time</label>
                 <input
-                  id={`endTime`}
+                  id="endTime"
                   type="date"
                   className="form-control"
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
                 />
+                {error.endTime && <p className="text-danger">{error.endTime}</p>}
               </div>
             </div>
             <div className="mb-3">
               <label htmlFor="notes" className="form-label">Notes</label>
               <textarea
-                id={`notes`}
+                id="notes"
                 placeholder="Enter Notes"
                 className="form-control"
                 value={notes}
@@ -272,24 +314,24 @@ function UpdateUserPage() {
             <div className="mb-3">
               <div className="form-check form-check-inline">
                 <input
-                  id={`isActivated`}
+                  id="isActivated"
                   type="checkbox"
                   className="form-check-input"
                   checked={isActivated}
                   onChange={(e) => setIsActivated(e.target.checked)}
                 />
-                <label htmlFor={`isActivated`} className="form-check-label">Is Activated</label>
+                <label htmlFor="isActivated" className="form-check-label">Is Activated</label>
               </div>
               <div style={{ width: "10px", display: "inline-block" }}></div>
               <div className="form-check form-check-inline">
                 <input
-                  id={`isAdmin`}
+                  id="isAdmin"
                   type="checkbox"
                   className="form-check-input"
                   checked={isAdmin}
                   onChange={(e) => setIsAdmin(e.target.checked)}
                 />
-                <label htmlFor={`isAdmin`} className="form-check-label">Is Admin</label>
+                <label htmlFor="isAdmin" className="form-check-label">Is Admin</label>
               </div>
             </div>
 
