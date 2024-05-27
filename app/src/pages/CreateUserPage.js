@@ -37,7 +37,7 @@ function CreateUserPage() {
     if (!email) newErrors.email = "Email is required";
     if (!password) newErrors.password = "Password is required";
     if (password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
-    const phoneRegex = /^\d{14}$/;
+    const phoneRegex = /^\d{9,14}$/;
     const salaryRegex = /^\d+$/;
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
