@@ -17,6 +17,10 @@ userController.getAllUsers = async (req, res) => {
 
 userController.getUserById = async (req, res) => {
     try {
+        if (!req.user.isAdmin) {
+            return res.status(403).json({ message: "Unauthorized: Only administrators can perform this action" });
+        }
+
         const user = await UserModel.findById(req.params.id);
         res.json(user);
     } catch (error) {
@@ -30,10 +34,14 @@ userController.createUser = async (req, res) => {
             return res.status(403).json({ message: "Unauthorized: Only administrators can perform this action" });
         }
 
-        const { email } = req.body;
+        const { email, phoneNumber } = req.body;
         const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: "User with this email already exists" });
+        }
+
+        if (phoneNumber && phoneNumber.length > 14) {
+            return res.status(400).json({ message: "Phone number must not exceed 14 digits" });
         }
 
         const userData = { ...req.body };
@@ -52,6 +60,12 @@ userController.updateUser = async (req, res) => {
             return res.status(403).json({ message: "Unauthorized: Only administrators can perform this action" });
         }
 
+        const { phoneNumber } = req.body;
+
+        if (phoneNumber && phoneNumber.length > 14) {
+            return res.status(400).json({ message: "Phone number must not exceed 14 digits" });
+        }
+
         const userData = { ...req.body };
         userData.lastUpdated = Date.now();
 
@@ -67,6 +81,7 @@ userController.updateUser = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 
 userController.deleteUser = async (req, res) => {

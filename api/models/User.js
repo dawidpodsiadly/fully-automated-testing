@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
             type: String,
         },
         salary: {
-            type: String
+            type: Number
         },
         position: {
             type: String
