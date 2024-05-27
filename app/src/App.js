@@ -4,7 +4,8 @@ import CreateUser from './pages/CreateUserPage';
 import UpdateUser from './pages/UpdateUserPage';
 import UsersPage from './pages/UsersPage';
 import LoginPage from './pages/LoginPage';
-import ProtectedRoute from './utils/auth.util'; // Importujemy ProtectedRoute
+import UserDetails from './pages/UserDetailsPage';
+import ProtectedRoute from './utils/auth.util';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<ProtectedRoute element={<UsersPage />} />} />
         <Route path="/create" element={<ProtectedRoute element={<CreateUser />} />} />
         <Route path="/edit/:id" element={<ProtectedRoute element={<UpdateUser />} />} />
+        <Route path="/userDetails/:id" element={<ProtectedRoute element={<UserDetails />} />} />
       </Routes>
     </Router>
   );
