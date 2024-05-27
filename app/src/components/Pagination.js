@@ -17,6 +17,7 @@ const Pagination = ({ id, currentPage, totalPages, onNextPage, onPrevPage, setIt
     const handleItemsPerPageChange = (e) => {
         const value = parseInt(e.target.value);
         setItemsPerPage(value);
+        sessionStorage.setItem('itemsPerPage', value);
     };
 
     const startIndex = (currentPage - 1) * itemsPerPage;

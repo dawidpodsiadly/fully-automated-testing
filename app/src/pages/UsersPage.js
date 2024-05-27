@@ -17,7 +17,10 @@ function UsersPage() {
         const cachedPage = sessionStorage.getItem('currentPage');
         return cachedPage ? parseInt(cachedPage) : 1;
     });
-    const [itemsPerPage, setItemsPerPage] = useState(5);
+    const [itemsPerPage, setItemsPerPage] = useState(() => {
+        const cachedItemsPerPage = sessionStorage.getItem('itemsPerPage');
+        return cachedItemsPerPage ? parseInt(cachedItemsPerPage) : 5;
+    });
     const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(true);
     const [confirmMassDelete, setConfirmMassDelete] = useState(false);
 
@@ -116,7 +119,7 @@ function UsersPage() {
     };
 
     const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        `${user.name} ${user.surname}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
