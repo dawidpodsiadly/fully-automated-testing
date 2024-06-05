@@ -1,5 +1,5 @@
-const UserModel = require('../models/User');
 const jwt = require('jsonwebtoken');
+const UserModel = require('../models/User');
 
 const authController = {};
 
@@ -7,6 +7,7 @@ authController.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await UserModel.findOne({ email });
+
         if (!user) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
@@ -20,7 +21,12 @@ authController.login = async (req, res) => {
             return res.status(403).json({ message: "Account is not activated" });
         }
 
-        const token = jwt.sign({ id: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+        const token = jwt.sign(
+            { id: user._id, isAdmin: user.isAdmin },
+            'your_jwt_secret',
+            { expiresIn: '1h' }
+        );
+
         res.json({ token });
     } catch (error) {
         res.status(500).json({ message: error.message });

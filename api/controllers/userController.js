@@ -17,10 +17,6 @@ userController.getAllUsers = async (req, res) => {
 
 userController.getUserById = async (req, res) => {
     try {
-        if (!req.user.isAdmin) {
-            return res.status(403).json({ message: "Unauthorized: Only administrators can perform this action" });
-        }
-
         const user = await UserModel.findById(req.params.id);
         res.json(user);
     } catch (error) {

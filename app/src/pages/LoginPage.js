@@ -25,12 +25,18 @@ function LoginPage() {
         return;
       }
 
-      const expirationDate = new Date();
-      expirationDate.setTime(expirationDate.getTime() + 45 * 60 * 1000); // 45 mins
+      const token = response.data.token;
+      Cookies.set('token', token, { secure: true, sameSite: 'strict' });
 
-      Cookies.set('token', response.data.token, { secure: true, sameSite: 'strict', expires: expirationDate });
-      
-      navigate('/');
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const isAdmin = decodedToken.isAdmin;
+
+      if (isAdmin) {
+        navigate('/');
+      } else {
+        const userId = decodedToken.id;
+        navigate(`/userDetails/${userId}`);
+      }
     } catch (error) {
       console.error('Error:', error);
       if (error.response) {
