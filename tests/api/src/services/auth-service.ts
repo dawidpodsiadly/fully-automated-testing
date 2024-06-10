@@ -3,16 +3,17 @@ import { PathService } from './path-service';
 import { authBody } from '../utils/bodies.util';
 
 export enum TestUsers {
-  apiTesterAdmin = 'admin@interia.pl',
-  apiTesterNotAdmin = 'notAdmin@gmail.com',
-  apiTesterNotActivated = 'notActivated@gmail.com'
+  apiTesterAdmin = 'apitesteradmin@gmail.com',
+  apiTesterNotAdmin = 'apitesternotadmin@gmail.com',
+  apiTesterDeactivated = 'apitesterdeactivated@gmail.com',
+  apiTesterNotExisting = 'apitesternotexisting@gmail.com'
 }
 
-export const testPassword = 'admin@interia.pl';
-export const notExistingToken = 'notExistingToken';
+export const testPassword = 'polskagurom';
+export const invalidAuthToken = { Authorization: 'Bearer invalidToken' };
 
 class AuthService {
-  async getToken(email: string, password: string) {
+  async authorizeToken(email: string = TestUsers.apiTesterAdmin, password: string = testPassword) {
     const response = await request(PathService.paths.auth).post('/').send(authBody(email, password));
 
     return {

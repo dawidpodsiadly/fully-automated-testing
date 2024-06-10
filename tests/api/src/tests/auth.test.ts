@@ -1,26 +1,58 @@
 import request from 'supertest';
 import { PathService } from '../services/path-service';
 import { authBody } from '../utils/bodies.util';
-import { TestUsers } from '../services/auth-service';
-import { testPassword } from '../services/auth-service';
+import { TestUsers, authService, testPassword, invalidAuthToken } from '../services/auth-service';
 
-const baseUrl = PathService.paths.user
+const baseUrl = PathService.paths.auth;
+let adminAuthToken: { Authorization: string };
 
 describe('Auth Endpoints', () => {
+    beforeAll(async () => {
+        adminAuthToken = await authService.authorizeToken();
+    });
+    describe('GET /auth', () => {
+        it('Should return 401 when Invalid Token - GET /auth', async () => {
+            const response = await request(baseUrl).get('/').set(invalidAuthToken)
+            expect(response.body.message).toContain('Invalid token');
+            expect(response.statusCode).toEqual(401);
+        });  
+
+        it('Should return 200 and Token when Valid Token - GET /auth', async () => {
+            const response = await request(baseUrl).get('/').set(adminAuthToken);
+            expect(response.body.message).toContain('Valid token');
+            expect(response.statusCode).toEqual(200);
+        }); 
+
+        it('Should return 401 when Token Not Provided - GET /auth', async () => {
+            const response = await request(baseUrl).get('/')
+            expect(response.body.message).toContain('Token not provided or is wrong');
+            expect(response.statusCode).toEqual(401);
+        }); 
+    })
+    
     describe('POST /auth', () => {
         it('Should return 401 when Invalid Credentials - POST /auth', async () => {
-            const response = await request(baseUrl).post('/').send(authBody('wrongEmail', testPassword));
+            const response = await request(baseUrl).post('/').send(authBody(TestUsers.apiTesterNotExisting, testPassword));
             expect(response.body.message).toContain('Invalid email or password');
             expect(response.statusCode).toEqual(401);
           });
       
-          it('Should return 200 Token when Valid Credentials - POST /auth', async () => {
-              const response = await request(baseUrl).post('/').send(authBody(TestUsers.apiTesterAdmin, testPassword));
-              expect(response.status).toBe(200);
-              expect(response.body).toHaveProperty('token');
-        });     
+        it('Should return 200 and Token when Valid Credentials - POST /auth', async () => {
+            const response = await request(baseUrl).post('/').send(authBody(TestUsers.apiTesterAdmin, testPassword));
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveProperty('token');
+        });    
         
-        // when no auth
-        // when not activated
+        it('Should return 401 when no Auth  - POST /auth', async () => {
+            const response = await request(baseUrl).post('/');
+            expect(response.body.message).toContain('Invalid email or password');
+            expect(response.status).toBe(401);
+        });    
+        
+        it('Should return 403 when User is Deactivated - POST /auth', async () => {
+            const response = await request(baseUrl).post('/').send(authBody(TestUsers.apiTesterDeactivated, testPassword));
+            expect(response.body.message).toBe('Account is not activated');
+            expect(response.status).toBe(403);
+        });     
     })
 });
