@@ -24,7 +24,7 @@ describe('Auth Endpoints', () => {
         }); 
 
         it('Should return 401 when Token Not Provided - GET /auth', async () => {
-            const response = await request(baseUrl).get('/')
+            const response = await request(baseUrl).get('/').set('Authorization', '');
             expect(response.body.message).toContain('Token not provided or is wrong');
             expect(response.statusCode).toEqual(401);
         }); 
