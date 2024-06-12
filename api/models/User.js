@@ -28,12 +28,14 @@ const userSchema = new mongoose.Schema({
     contract: {
         type: {
             type: String,
+            enum: ['Mandate', 'Employment', 'B2B', '']
         },
         salary: {
             type: Number
         },
         position: {
-            type: String
+            type: String,
+            enum: ['Storekeeper', 'Accountant', 'IT', '']
         },
         startTime: {
             type: Date
