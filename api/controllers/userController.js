@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const UserModel = require('../models/User');
 const userController = {};
 const bcrypt = require('bcrypt');
@@ -17,7 +18,18 @@ userController.getAllUsers = async (req, res) => {
 
 userController.getUserById = async (req, res) => {
     try {
-        const user = await UserModel.findById(req.params.id);
+        const userId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid user ID format" });
+        }
+
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: `User with id = ${userId} not found` });
+        }
+
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -30,7 +42,7 @@ userController.createUser = async (req, res) => {
             return res.status(403).json({ message: "Unauthorized: Only administrators can perform this action" });
         }
 
-        const { birthDate, email, phoneNumber, password, contract } = req.body;
+        const { name, surname, email, phoneNumber, password, birthDate, contract, notes, isAdmin, isActivated } = req.body;
         const existingUser = await UserModel.findOne({ email });
 
         if (existingUser) {
@@ -54,20 +66,25 @@ userController.createUser = async (req, res) => {
                 return res.status(400).json({ message: "Invalid date format" });
             }
 
-            if (contract && contract.endTime && contract.startTime && contract.endTime < contract.startTime) {
+            if (contract.endTime && contract.startTime && contract.endTime < contract.startTime) {
                 return res.status(400).json({ message: "End time cannot be earlier than start time" });
             }
         }
 
-        const userData = { ...req.body };
+        const userData = { name, surname, email, phoneNumber, password, birthDate, contract, notes, isAdmin, isActivated };
         userData.lastUpdated = Date.now();
 
         const user = await UserModel.create(userData);
-        res.json(user);
+
+        res.json({ 
+            message: `User has been created with id = ${user._id}`, 
+            id: user._id,
+        });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 userController.updateUser = async (req, res) => {
     try {
@@ -75,7 +92,12 @@ userController.updateUser = async (req, res) => {
             return res.status(403).json({ message: "Unauthorized: Only administrators can perform this action" });
         }
 
-        const { birthDate, phoneNumber, password, contract } = req.body;
+        const { name, surname, email, phoneNumber, password, birthDate, contract, notes, isAdmin, isActivated } = req.body;
+        const userId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid user ID format" });
+        }
 
         if (phoneNumber && phoneNumber.length > 14) {
             return res.status(400).json({ message: "Phone number must not exceed 14 digits" });
@@ -94,12 +116,12 @@ userController.updateUser = async (req, res) => {
                 return res.status(400).json({ message: "Invalid date format" });
             }
 
-            if (contract && contract.endTime && contract.startTime && contract.endTime < contract.startTime) {
+            if (contract.endTime && contract.startTime && contract.endTime < contract.startTime) {
                 return res.status(400).json({ message: "End time cannot be earlier than start time" });
             }
         }
 
-        const userData = { ...req.body };
+        const userData = { name, surname, email, phoneNumber, password, birthDate, contract, notes, isAdmin, isActivated };
         userData.lastUpdated = Date.now();
 
         if (password) {
@@ -108,8 +130,13 @@ userController.updateUser = async (req, res) => {
             userData.password = hash;
         }
 
-        const user = await UserModel.findByIdAndUpdate(req.params.id, userData, { new: true });
-        res.json(user);
+        const user = await UserModel.findByIdAndUpdate(userId, userData, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ message: `User with id = ${userId} not found` });
+        }
+
+        res.json({ message: `User with id = ${userId} has been updated` });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -121,11 +148,23 @@ userController.deleteUser = async (req, res) => {
             return res.status(403).json({ message: "Unauthorized: Only administrators can perform this action" });
         }
 
-        const deletedUser = await UserModel.findByIdAndDelete(req.params.id);
-        res.json(deletedUser);
+        const userId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid user ID format" });
+        }
+
+        const deletedUser = await UserModel.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: `User with id = ${userId} not found` });
+        }
+
+        res.json({ message: `User with id = ${userId} has been deleted` });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 module.exports = userController;
