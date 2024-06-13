@@ -15,7 +15,6 @@ export class UsersApi {
     async createUser(userData: UserData) {
         try {
             const response = await axios.post(this.baseUrl, userData);
-            console.log(response.data);
             return response.data._id;
         } catch (error) {
             throw new Error(`Failed to Create User ${userData.name}`);
@@ -25,7 +24,6 @@ export class UsersApi {
     async deleteUser(userId: string) {
         try {
             const response = await axios.delete(`${this.baseUrl}/${userId}`);
-            console.log(response.data);
             return response.data;
         } catch (error) {
             throw new Error(`Failed to Delete User ${userId}`);

@@ -40,7 +40,6 @@ export class RandomUtil {
         const validDay = day <= maxDayInMonth ? day : maxDayInMonth;
         const randomDate = new Date(year, month - 1, validDay);
     
-        console.log(randomDate.toISOString());
         return randomDate.toISOString();
     }
     
