@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const UserModel = require('../models/User');
-const userController = {};
 const bcrypt = require('bcrypt');
+
+const userController = {};
+const allowedContractTypes = ["Employment", "Mandate", "B2B"];
+const allowedContractPositions = ["Storekeeper", "Accountant", "IT"];
 
 userController.getAllUsers = async (req, res) => {
     try {
@@ -62,6 +65,14 @@ userController.createUser = async (req, res) => {
         }
         
         if (contract) {
+            if (contract.type && !allowedContractTypes.includes(contract.type)) {
+                return res.status(400).json({ message: "Invalid contract type. Allowed values: Employment, Mandate, B2B" });
+            }
+
+            if (contract.position && !allowedContractPositions.includes(contract.position)) {
+                return res.status(400).json({ message: "Invalid contract position. Allowed values: Storekeeper, Accountant, IT" });
+            }
+
             if ((contract.startTime && isNaN(Date.parse(contract.startTime))) || (contract.endTime && isNaN(Date.parse(contract.endTime)))) {
                 return res.status(400).json({ message: "Invalid date format" });
             }
@@ -86,6 +97,7 @@ userController.createUser = async (req, res) => {
 };
 
 
+
 userController.updateUser = async (req, res) => {
     try {
         if (!req.user.isAdmin) {
@@ -95,16 +107,17 @@ userController.updateUser = async (req, res) => {
         const { name, surname, email, phoneNumber, password, birthDate, contract, notes, isAdmin, isActivated } = req.body;
         const userId = req.params.id;
 
+        const existingUser = await UserModel.findOne({ email });
+        if (existingUser && existingUser._id.toString() !== userId) {
+            return res.status(400).json({ message: "User with this email already exists" });
+        }
+
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: "Invalid user ID format" });
         }
 
-        if (phoneNumber && phoneNumber.length > 14) {
-            return res.status(400).json({ message: "Phone number must not exceed 14 digits" });
-        }
-
-        if (password && password.length < 9) {
-            return res.status(400).json({ message: "Password must be at least 9 characters long" });
+        if (phoneNumber && (phoneNumber.length > 14 || phoneNumber.length < 9)) {
+            return res.status(400).json({ message: "Phone number cannot be shorter than 9 digits or longer than 14" });
         }
 
         if (birthDate && isNaN(Date.parse(birthDate))) {
@@ -112,6 +125,14 @@ userController.updateUser = async (req, res) => {
         }
 
         if (contract) {
+            if (contract.type && !allowedContractTypes.includes(contract.type)) {
+                return res.status(400).json({ message: "Invalid contract type. Allowed values: Employment, Mandate, B2B" });
+            }
+
+            if (contract.position && !allowedContractPositions.includes(contract.position)) {
+                return res.status(400).json({ message: "Invalid contract position. Allowed values: Storekeeper, Accountant, IT" });
+            }
+
             if ((contract.startTime && isNaN(Date.parse(contract.startTime))) || (contract.endTime && isNaN(Date.parse(contract.endTime)))) {
                 return res.status(400).json({ message: "Invalid date format" });
             }
@@ -121,10 +142,13 @@ userController.updateUser = async (req, res) => {
             }
         }
 
-        const userData = { name, surname, email, phoneNumber, password, birthDate, contract, notes, isAdmin, isActivated };
+        const userData = { name, surname, email, phoneNumber, birthDate, contract, notes, isAdmin, isActivated };
         userData.lastUpdated = Date.now();
 
         if (password) {
+            if (password.length < 9) {
+                return res.status(400).json({ message: "Password must be at least 9 characters long" });
+            }
             const salt = await bcrypt.genSalt(10);
             const hash = await bcrypt.hash(password, salt);
             userData.password = hash;
@@ -141,6 +165,8 @@ userController.updateUser = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+
 
 userController.deleteUser = async (req, res) => {
     try {
