@@ -10,26 +10,26 @@ const baseUrl = PathService.paths.user;
 let adminToken: { Authorization: string };
 let notAdminToken: { Authorization: string };
 
-describe('User Endpoints', () => {
+describe('Users Endpoints', () => {
     beforeAll(async () => {
         adminToken = await authService.authorizeToken();
         notAdminToken = await authService.authorizeToken(TestUsers.apiTesterNotAdmin, testPassword);
     });
 
-    describe('GET /user', () => {
-        it('Should return 401 when no Token - GET /user', async () => {
+    describe('GET /users', () => {
+        it('Should return 401 when no Token - GET /users', async () => {
             const response = await request(baseUrl).get('/')
             expect(response.status).toBe(401);
             expect(response.text).toEqual('Unauthorized');
         });
 
-        it('Should return 403 when as Not Admin User - GET /user', async () => {
+        it('Should return 403 when as Not Admin User - GET /users', async () => {
             const response = await request(baseUrl).get('/').set(notAdminToken);
             expect(response.status).toBe(403);
             expect(response.body.message).toEqual('Unauthorized: Only administrators can perform this action');
         });
 
-        it('Should return 200 and Contain User IDs as Admin User - GET /user', async () => {
+        it('Should return 200 and Contain User IDs as Admin User - GET /users', async () => {
             const firstUserBody = userBody();
             const secondUserBody = userBody();
     
@@ -46,8 +46,8 @@ describe('User Endpoints', () => {
         });
     });
 
-    describe('GET /user/id', () => {
-        it('Should return 401 when no Token - POST /user/id', async () => {
+    describe('GET /users/id', () => {
+        it('Should return 401 when no Token - POST /users/id', async () => {
             const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
             const userId = createUserResponse.body.id;
 
@@ -56,20 +56,20 @@ describe('User Endpoints', () => {
             expect(response.text).toEqual('Unauthorized');
         });
 
-        it('Should return 404 when Id Not Found - POST /user/id', async () => {
+        it('Should return 404 when Id Not Found - POST /users/id', async () => {
             const wrongUserId = '666b5bfd8e3c464090cb69b8'
             const response = await request(baseUrl).get(`/${wrongUserId}`).set(adminToken);
             expect(response.status).toBe(404);
             expect(response.text).toContain(`User with id = ${wrongUserId} not found`);
         });
 
-        it('Should return 400 when Invalid User Id Format - POST /user/id', async () => {
+        it('Should return 400 when Invalid User Id Format - POST /users/id', async () => {
             const response = await request(baseUrl).get(`/${randomUtil.randomNameWithPrefix}`).set(adminToken);
             expect(response.status).toBe(400);
             expect(response.body.message).toEqual('Invalid user ID format');
         });
 
-        it('Should return 200 and Contain User Data as Not Admin User - POST /user/id', async () => {
+        it('Should return 200 and Contain User Data as Not Admin User - POST /users/id', async () => {
             const userBodyData = userBody();
             const createUserResponse = await request(baseUrl).post('/').send(userBodyData).set(adminToken);
             const userId = createUserResponse.body.id;
@@ -96,7 +96,7 @@ describe('User Endpoints', () => {
             expect(getUserResponse.body).toHaveProperty('lastUpdated');
         });
 
-        it('Should return 200 and Contain User Data as Admin User - POST /user/id', async () => {
+        it('Should return 200 and Contain User Data as Admin User - POST /users/id', async () => {
             const userBodyData = userBody();
             const createUserResponse = await request(baseUrl).post('/').send(userBodyData).set(adminToken);
             const userId = createUserResponse.body.id;
@@ -124,20 +124,20 @@ describe('User Endpoints', () => {
         });
     });
     
-    describe('POST /user', () => {
-        it('Should return 401 when no Token - POST /user', async () => {
+    describe('POST /users', () => {
+        it('Should return 401 when no Token - POST /users', async () => {
             const response = await request(baseUrl).post('/').send(userBody());
             expect(response.status).toBe(401);
             expect(response.text).toEqual('Unauthorized');
         })
 
-        it('Should return 403 as Not Admin User - POST /user', async () => {
+        it('Should return 403 as Not Admin User - POST /users', async () => {
             const response = await request(baseUrl).post('/').send(userBody()).set(notAdminToken);
             expect(response.status).toBe(403);
             expect(response.body.message).toEqual('Unauthorized: Only administrators can perform this action');
         })
 
-        it('Should return 400 when Email already Exists - POST /user', async () => {
+        it('Should return 400 when Email already Exists - POST /users', async () => {
             const existingEmail = randomUtil.randomEmail();
             await request(baseUrl).post('/').send(userBody({ email: existingEmail })).set(adminToken);
 
@@ -146,7 +146,7 @@ describe('User Endpoints', () => {
             expect(response.body.message).toEqual('User with this email already exists');
         })
 
-        it('Should return 400 when Contract End Time is earlier than Start Time - POST /user', async () => {
+        it('Should return 400 when Contract End Time is earlier than Start Time - POST /users', async () => {
             const contractStartTime = '1939-09-10';
             const contractEndTime = '1410-07-15';
 
@@ -165,7 +165,7 @@ describe('User Endpoints', () => {
             expect(response.body.message).toEqual('End time cannot be earlier than start time');
         })
 
-        it('Should return 200 and Create new User as Admin User - POST /user', async () => {
+        it('Should return 200 and Create new User as Admin User - POST /users', async () => {
             const userBodyData = userBody();
         
             const response = await request(baseUrl).post('/').send(userBodyData).set(adminToken);
@@ -174,7 +174,7 @@ describe('User Endpoints', () => {
             expect(response.body.message).toEqual(`User has been created with id = ${response.body.id}`);
         });
 
-        it('Should return 400 when Required Filed is Missing (Name, Surname, Email, Password) - POST /user', async () => {
+        it('Should return 400 when Required Field is Missing (Name, Surname, Email, Password) - POST /users', async () => {
             let userBody = {
                 name: '',
                 surname: '',
@@ -211,7 +211,7 @@ describe('User Endpoints', () => {
             expect(response.status).toBe(200);
         })
 
-        it('Should return 200 and isAdmin and isActivated Should be `false` when Not Passed - POST /user', async () => {
+        it('Should return 200 and isAdmin and isActivated Should be `false` when Not Passed - POST /users', async () => {
             let userBody = {
                 name:  randomUtil.randomNameWithPrefix(),
                 surname:  randomUtil.randomNameWithPrefix(),
@@ -236,7 +236,7 @@ describe('User Endpoints', () => {
             expect(getUserResponse.body).toHaveProperty('lastUpdated');
         })
 
-        it('Should return 400 when Phone Number `< 9` or `> 14` - POST /user', async () => {
+        it('Should return 400 when Phone Number `< 9` or `> 14` - POST /users', async () => {
             const phoneNumberTooShort = '12345678';
             const phoneNumberTooLong = '123456789012345';
 
@@ -261,7 +261,7 @@ describe('User Endpoints', () => {
             expect(response.body.message).toEqual('Phone number cannot be shorter than 9 digits or longer than 14');
         })
 
-        it('Should return 400 when Password is `< 9` Chars - POST /user', async () => {
+        it('Should return 400 when Password is `< 9` Chars - POST /users', async () => {
             const passwordTooShort = randomUtil.randomName(8);
 
             let response = await request(baseUrl).post('/')
@@ -275,7 +275,7 @@ describe('User Endpoints', () => {
             expect(response.body.message).toEqual('Password must be at least 9 characters long');
         })
 
-        it('Should return 400 when Trying to Send lastUpdated Field - POST /user', async () => {
+        it('lastUpdated Field Should Be Set to Date.now even if Field passed in request - POST /users', async () => {
             let userBody = {
                 name:  randomUtil.randomNameWithPrefix(),
                 surname:  randomUtil.randomNameWithPrefix(),
@@ -284,11 +284,15 @@ describe('User Endpoints', () => {
                 lastUpdated: '1920-08-12'
             }
 
-            const response = await request(baseUrl).post('/').send(userBody).set(adminToken);
-            expect(response.status).toBe(200);
+            const createUserResponse = await request(baseUrl).post('/').send(userBody).set(adminToken);
+            const userId = createUserResponse.body.id
+            expect(createUserResponse.status).toBe(200);
+
+            const getUserResponse = await request(baseUrl).get(`/${userId}`).set(adminToken);
+            expect(getUserResponse.body.lastUpdated).not.toEqual(userBody.lastUpdated);
         })
 
-        it('Should return 400 when Trying to add Position Filed other than Storekeeper, Accountant, IT - POST /user', async () => {
+        it('Should return 400 when Trying to add Position Filled other than Storekeeper, Accountant, IT - POST /users', async () => {
             const notExistingContractPosition = randomUtil.randomName();
 
             const response = await request(baseUrl).post('/')
@@ -302,10 +306,10 @@ describe('User Endpoints', () => {
                 .set(adminToken);
 
             expect(response.status).toBe(400);
-            expect(response.body.message).toEqual(`User validation failed: contract.position: \`${notExistingContractPosition}\` is not a valid enum value for path \`contract.position\`.`);
+            expect(response.body.message).toEqual(`Invalid contract position. Allowed values: Storekeeper, Accountant, IT`);
         })
 
-        it('Should return 400 when Trying to add Contract Type Filed other than Employment, Mandate, IT - POST /user', async () => {
+        it('Should return 400 when Trying to add Contract Type Filled other than Employment, Mandate, B2B - POST /users', async () => {
             const notExistingContractType = randomUtil.randomName();
 
             const response = await request(baseUrl).post('/')
@@ -318,10 +322,10 @@ describe('User Endpoints', () => {
                 })
                 .set(adminToken);
             expect(response.status).toBe(400);
-            expect(response.body.message).toEqual(`User validation failed: contract.type: \`${notExistingContractType}\` is not a valid enum value for path \`contract.type\`.`);
+            expect(response.body.message).toEqual(`Invalid contract type. Allowed values: Employment, Mandate, B2B`);
         })
 
-        it('Should return 400 when Trying to Add something Other than Date to the Fields - POST /user', async () => {
+        it('Should return 400 when Trying to Add something Other than Date to the Fields - POST /users', async () => {
             const notDateBirthDate = randomUtil.randomName();
             const notDateContractStartTime = randomUtil.randomName();
             const notDateContractEndTime = randomUtil.randomName();
@@ -361,8 +365,224 @@ describe('User Endpoints', () => {
             expect(response.body.message).toEqual('Invalid date format')
         })
     });
-    describe('DELETE /User/id', () => {
-        it('Should return 401 when no Token - DELETE /user/id', async () => {
+
+    describe('PUT /users/id', () => {
+        it('Should return 401 when no Token - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const response = await request(baseUrl).put(`/${userId}`).send(userBody());
+            expect(response.status).toBe(401);
+            expect(response.text).toEqual('Unauthorized');
+        })
+
+        it('Should return 403 as Not Admin User - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const response = await request(baseUrl).put(`/${userId}`).send(userBody()).set(notAdminToken);
+            expect(response.status).toBe(403);
+            expect(response.body.message).toEqual('Unauthorized: Only administrators can perform this action');
+        })
+
+        it('Should return 404 when Id Not Found - PUT /users/id', async () => {
+            const wrongUserId = '666b5bfd8e3c464090cb69b8'
+            const response = await request(baseUrl).put(`/${wrongUserId}`).set(adminToken);
+            expect(response.status).toBe(404);
+            expect(response.text).toContain(`User with id = ${wrongUserId} not found`);
+        });
+
+        it('Should return 400 when Invalid User Id Format - PUT /users/id', async () => {
+            const response = await request(baseUrl).put(`/${randomUtil.randomNameWithPrefix}`).set(adminToken);
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('Invalid user ID format');
+        });
+
+        it('Should return 400 when Email already Exists - PUT /users', async () => {
+            const existingEmail = randomUtil.randomEmail();
+            await request(baseUrl).post('/').send(userBody({ email: existingEmail })).set(adminToken);
+
+            const userToUpdate = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = userToUpdate.body.id;
+
+            const response = await request(baseUrl).put(`/${userId}`).send({ email: existingEmail }).set(adminToken);
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('User with this email already exists');
+        })
+
+        it('Should return 400 when Contract End Time is earlier than Start Time - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const contractStartTime = '1939-09-10';
+            const contractEndTime = '1410-07-15';
+
+            const response = await request(baseUrl).put(`/${userId}`)
+            .send({
+                contract: {
+                    startTime: contractStartTime,
+                    endTime: contractEndTime
+                }
+            })
+            .set(adminToken);
+
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('End time cannot be earlier than start time');
+        })
+
+        it('Should return 200 and Update User as Admin User - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const updatedUserBody = userBody();
+        
+            const updateUserResponse = await request(baseUrl).put(`/${userId}`).send(updatedUserBody).set(adminToken);
+            expect(updateUserResponse.status).toBe(200);
+            expect(updateUserResponse.body.message).toEqual(`User with id = ${userId} has been updated`);
+
+            const getUserResponse = await request(baseUrl).get(`/${userId}`).set(adminToken);
+            expect(getUserResponse.status).toBe(200);
+
+            expect(getUserResponse.body.name).toEqual(updatedUserBody.name);
+            expect(getUserResponse.body.surname).toEqual(updatedUserBody.surname);
+            expect(getUserResponse.body.email).toEqual(updatedUserBody.email);
+            expect(getUserResponse.body.phoneNumber).toEqual(updatedUserBody.phoneNumber);
+            expect(getUserResponse.body.birthDate).toEqual(updatedUserBody.birthDate);
+
+            expect(getUserResponse.body.contract.type).toEqual(updatedUserBody.contract.type);
+            expect(getUserResponse.body.contract.salary).toEqual(updatedUserBody.contract.salary);
+            expect(getUserResponse.body.contract.position).toEqual(updatedUserBody.contract.position);
+            expect(getUserResponse.body.contract.startTime).toEqual(updatedUserBody.contract.startTime);
+            expect(getUserResponse.body.contract.endTime).toEqual(updatedUserBody.contract.endTime);
+            
+            expect(getUserResponse.body.notes).toEqual(updatedUserBody.notes);
+            expect(getUserResponse.body.isAdmin).toEqual(updatedUserBody.isAdmin);
+            expect(getUserResponse.body.isActivated).toEqual(updatedUserBody.isActivated);
+            expect(getUserResponse.body._id).toEqual(userId);
+            expect(getUserResponse.body).toHaveProperty('lastUpdated');
+        });
+
+        it('Should return 400 when Phone Number `< 9` or `> 14` - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const phoneNumberTooShort = '12345678';
+            const phoneNumberTooLong = '123456789012345';
+
+            let response = await request(baseUrl).put(`/${userId}`)
+            .send({
+                phoneNumber: phoneNumberTooShort,
+            })
+            .set(adminToken);
+
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('Phone number cannot be shorter than 9 digits or longer than 14');
+
+            response = await request(baseUrl).put(`/${userId}`)
+            .send({
+                phoneNumber: phoneNumberTooLong,
+            })
+            .set(adminToken);
+
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('Phone number cannot be shorter than 9 digits or longer than 14');
+        })
+
+        it('Should return 400 when Password is `< 9` Chars - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+            const passwordTooShort = randomUtil.randomName(8);
+
+            let response = await request(baseUrl).put(`/${userId}`)
+            .send({
+                password: passwordTooShort,
+            })
+            .set(adminToken);
+
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('Password must be at least 9 characters long');
+        })
+
+        it('lastUpdated Field Should Be Set to Date.now even if Field passed in request- PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+            const lastUpdatedValue = '1920-08-12'
+
+            const response = await request(baseUrl).put(`/${userId}`).send({lastUpdated: lastUpdatedValue}).set(adminToken);
+            expect(response.status).toBe(200);
+
+            const getUserResponse = await request(baseUrl).get(`/${userId}`).set(adminToken);
+            expect(getUserResponse.body.lastUpdated).not.toEqual(lastUpdatedValue);
+        })
+
+        it('Should return 400 when Trying to add Position Filled other than Storekeeper, Accountant, IT - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const notExistingContractPosition = randomUtil.randomName();
+            const response = await request(baseUrl).put(`/${userId}`)
+            .send({
+                    contract: {
+                        type: randomUtil.randomUserContractType(),
+                        position: notExistingContractPosition,
+                    }
+                })
+                .set(adminToken);
+
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual(`Invalid contract position. Allowed values: Storekeeper, Accountant, IT`);
+        })
+
+        it('Should return 400 when Trying to add Contract Type Filled other than Employment, Mandate, B2B - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const notExistingContractType = randomUtil.randomName();
+            const response = await request(baseUrl).put(`/${userId}`)
+            .send({
+                    contract: {
+                        type: notExistingContractType,
+                    }
+                })
+                .set(adminToken);
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual(`Invalid contract type. Allowed values: Employment, Mandate, B2B`);
+        })
+
+        it('Should return 400 when Trying to Add something Other than Date to the Fields - PUT /users', async () => {
+            const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+            const userId = createUserResponse.body.id;
+
+            const notDateBirthDate = randomUtil.randomName();
+            const notDateContractStartTime = randomUtil.randomName();
+            const notDateContractEndTime = randomUtil.randomName();
+
+            let response = await request(baseUrl).put(`/${userId}`).send({birthDate: notDateBirthDate}).set(adminToken);
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('Invalid date format');
+
+            response = await request(baseUrl).put(`/${userId}`).send({
+                    contract: {
+                        startTime: notDateContractStartTime,
+                    }
+                })
+                .set(adminToken);
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('Invalid date format')
+
+            response = await request(baseUrl).put(`/${userId}`).send({
+                    contract: {
+                        startTime: notDateContractEndTime,
+                    }
+                })
+                .set(adminToken);
+            expect(response.status).toBe(400);
+            expect(response.body.message).toEqual('Invalid date format')
+        })
+    });
+
+    describe('DELETE /users/id', () => {
+        it('Should return 401 when no Token - DELETE /users/id', async () => {
             const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
             const userId = createUserResponse.body.id;
 
@@ -371,7 +591,7 @@ describe('User Endpoints', () => {
             expect(deleteUserResponse.text).toEqual('Unauthorized');
         })
 
-        it('Should return 403 as Not Admin User - DELETE /user/id', async () => {
+        it('Should return 403 as Not Admin User - DELETE /users/id', async () => {
             const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
             const userId = createUserResponse.body.id;
 
@@ -380,7 +600,7 @@ describe('User Endpoints', () => {
             expect(deleteUserResponse.body.message).toEqual('Unauthorized: Only administrators can perform this action');
         })
 
-        it('Should return 200 and Delete User as Admin User - DELETE /user/id', async () => {
+        it('Should return 200 and Delete User as Admin User - DELETE /users/id', async () => {
             const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
             const userId = createUserResponse.body.id;
 
@@ -393,14 +613,14 @@ describe('User Endpoints', () => {
             expect(getUserResponse.text).toContain(`User with id = ${userId} not found`);
         })
 
-        it('Should return 404 when Id Not Found - DELETE /user/id', async () => {
+        it('Should return 404 when Id Not Found - DELETE /users/id', async () => {
             const wrongUserId = '666b5bfd8e3c464090cb69b8'
             const response = await request(baseUrl).delete(`/${wrongUserId}`).set(adminToken);
             expect(response.status).toBe(404);
             expect(response.text).toContain(`User with id = ${wrongUserId} not found`);
         });
 
-        it('Should return 400 when Invalid User Id Format - DELETE /user/id', async () => {
+        it('Should return 400 when Invalid User Id Format - DELETE /users/id', async () => {
             const response = await request(baseUrl).delete(`/${randomUtil.randomNameWithPrefix}`).set(adminToken);
             expect(response.status).toBe(400);
             expect(response.body.message).toEqual('Invalid user ID format');

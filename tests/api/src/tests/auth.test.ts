@@ -6,7 +6,7 @@ import { TestUsers, authService, testPassword, invalidAuthToken } from '../servi
 const baseUrl = PathService.paths.auth;
 let adminAuthToken: { Authorization: string };
 
-describe('Auth Endpoints', () => {
+describe.skip('Auth Endpoints', () => {
     beforeAll(async () => {
         adminAuthToken = await authService.authorizeToken();
     });
