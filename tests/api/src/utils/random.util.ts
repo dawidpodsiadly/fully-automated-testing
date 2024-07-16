@@ -58,7 +58,7 @@ export class RandomUtil {
     }
       
     randomEmail() {
-      return `${this.randomName(10, smallLetters)}@api.pl`;
+      return `api_${this.randomName(10, smallLetters)}@api.pl`;
     }
 
     randomUserContractType(): ContractTypes {

@@ -15,7 +15,7 @@ export enum Positions {
 export const userBody = ({
   isAdmin = true,
   isActivated = true,
-  email = randomUtil.randomNameWithPrefix(),
+  email = randomUtil.randomEmail(),
 } = {}) => ({
   name: randomUtil.randomNameWithPrefix(),
   surname: randomUtil.randomNameWithPrefix(),
