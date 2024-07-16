@@ -7,7 +7,7 @@ import { cleanupService } from '../services/cleanup-service';
 const baseUrl = PathService.paths.auth;
 let adminAuthToken: { Authorization: string };
 
-describe.skip('Auth Endpoints', () => {
+describe('Auth Endpoints', () => {
     beforeAll(async () => {
         adminAuthToken = await authService.authorizeToken();
     });

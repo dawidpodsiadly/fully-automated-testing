@@ -12,7 +12,7 @@ class CleanupService {
     async cleanupUsers() {
         try {
             const usersGetResponse = await request(usersUrl).get('/').set(await authService.authorizeToken());
-            const usersToDelete = usersGetResponse.body.filter((user: any) => user.name.startsWith('api_'));
+            const usersToDelete = usersGetResponse.body.filter((user: any) => user.email.startsWith('api_'));
 
             if (usersToDelete.length > 0) {
                 for (const user of usersToDelete) {
