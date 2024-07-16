@@ -5,8 +5,9 @@ import { userBody } from '../utils/bodies.util';
 import { TestUsers } from '../services/auth-service';
 import { testPassword } from '../services/auth-service';
 import { randomUtil } from '../utils/random.util';
+import { cleanupService } from '../services/cleanup-service';
 
-const baseUrl = PathService.paths.user;
+const baseUrl = PathService.paths.users;
 let adminToken: { Authorization: string };
 let notAdminToken: { Authorization: string };
 
@@ -43,6 +44,9 @@ describe('Users Endpoints', () => {
             expect(response.status).toBe(200);
             expect(response.body).toBeInstanceOf(Array);
             expect(response.body.map((user: { _id: string; }) => user._id)).toEqual(expect.arrayContaining([firstUserId, secondUserId]));
+        });
+        afterAll(async () => {
+            await cleanupService.performFullCleanup();
         });
     });
 
@@ -121,6 +125,9 @@ describe('Users Endpoints', () => {
             expect(response.body.isActivated).toEqual(userBodyData.isActivated);
             expect(response.body._id).toEqual(userId);
             expect(response.body).toHaveProperty('lastUpdated');
+        });
+        afterAll(async () => {
+            await cleanupService.performFullCleanup();
         });
     });
     
@@ -364,6 +371,9 @@ describe('Users Endpoints', () => {
             expect(response.status).toBe(400);
             expect(response.body.message).toEqual('Invalid date format')
         })
+        afterAll(async () => {
+            await cleanupService.performFullCleanup();
+        });
     });
 
     describe('PUT /users/id', () => {
@@ -579,6 +589,9 @@ describe('Users Endpoints', () => {
             expect(response.status).toBe(400);
             expect(response.body.message).toEqual('Invalid date format')
         })
+        afterAll(async () => {
+            await cleanupService.performFullCleanup();
+        });
     });
 
     describe('DELETE /users/id', () => {
@@ -626,4 +639,7 @@ describe('Users Endpoints', () => {
             expect(response.body.message).toEqual('Invalid user ID format');
         });
     })
+    afterAll(async () => {
+        await cleanupService.performFullCleanup();
+    });
 });

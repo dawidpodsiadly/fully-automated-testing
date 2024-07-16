@@ -2,6 +2,7 @@ import request from 'supertest';
 import { PathService } from '../services/path-service';
 import { authBody } from '../utils/bodies.util';
 import { TestUsers, authService, testPassword, invalidAuthToken } from '../services/auth-service';
+import { cleanupService } from '../services/cleanup-service';
 
 const baseUrl = PathService.paths.auth;
 let adminAuthToken: { Authorization: string };
@@ -28,6 +29,9 @@ describe.skip('Auth Endpoints', () => {
             expect(response.body.message).toContain('Token not provided or is wrong');
             expect(response.statusCode).toEqual(401);
         }); 
+        afterAll(async () => {
+            await cleanupService.performFullCleanup();
+        });
     })
     
     describe('POST /auth', () => {
@@ -55,4 +59,7 @@ describe.skip('Auth Endpoints', () => {
             expect(response.status).toBe(403);
         });     
     })
+    afterAll(async () => {
+        await cleanupService.performFullCleanup();
+    });
 });
