@@ -1,8 +1,14 @@
-import { test } from '@playwright/test';
+import { test, beforeAll } from '@playwright/test';
 import { NavigationPaths, navigationService } from '../services/navigation.service';
+import { usersApi } from '../api/users-api';
+import { apiTokenService } from '../services/api-token.service';
+import { cleanupService } from '../services/cleanup.service';
 
 test.describe('User Management Table', () => {
   test('test', async ({ page }) => {
-    await navigationService.navigateTo(page, NavigationPaths.USER_TABLE);
+    console.log(await usersApi.getUsers())
+  });
+  beforeAll(async () => {
+    await cleanupService.performFullCleanup();
   });
 });
