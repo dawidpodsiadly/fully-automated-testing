@@ -289,8 +289,8 @@ function CreateUserPage() {
               </div>
             </div>
             <div className="mb-3">
-              <button type="submit" className="btn btn-primary">Submit</button>
-              <Link to="/" className="btn btn-secondary ms-2">Cancel</Link>
+              <button id="submit-button" type="submit" className="btn btn-primary">Submit</button>
+              <Link id="cancel-button" to="/" className="btn btn-secondary ms-2">Cancel</Link>
             </div>
           </form>
         </div>
