@@ -4,8 +4,8 @@ import { cleanupService } from '../../services/cleanup.service';
 import { LoginPage } from '../../models/login-page/login-page.model';
 import { setText } from '../../utils/input.utils';
 import { defaultConfig } from '../../config';
-import { usersApi } from '../../api/users-api';
 import { randomUtil } from '../../utils/random.utils';
+import { createUserByApi } from '../../utils/users.utils';
 
 test.describe('Login Page', () => {
   test.beforeEach(async ({page}) => {
@@ -35,7 +35,7 @@ test.describe('Login Page', () => {
 
   test('Going to any URL Without Logging in Should Redirect to the Login Page', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    const userData = await usersApi.createUser();
+    const userData = await createUserByApi();
 
     await navigationService.navigateTo(page, NavigationPaths.USER_TABLE);
     await loginPage.expectToBeLoggedIn(false);

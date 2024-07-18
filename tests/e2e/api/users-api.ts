@@ -51,8 +51,7 @@ class UsersApi {
         }
     }
 
-    async createUser(isAdmin = true, isActivated = true) {
-        const userData = this.generateRandomUserData(isAdmin, isActivated)
+    async createUser(userData: UserData) {
         try {
             const response = await axios.post(this.baseUrl, userData, {
                 headers: {
@@ -81,31 +80,6 @@ class UsersApi {
             throw new Error(`Failed to Delete User ${userId}, ${error}`);
         }
     }
-
-    private generateRandomUserData(isAdmin = true, isActivated = true): UserData {
-        const startTime = randomUtil.randomDate();
-        const endTime = randomUtil.randomOlderDate(startTime)
-
-        return {
-            name: randomUtil.randomName(),
-            surname: randomUtil.randomName(),
-            email: randomUtil.randomEmail(),
-            password: randomUtil.randomName(9),
-            phoneNumber: randomUtil.randomPhoneNumber(),
-            birthDate: randomUtil.randomDate(),
-            contract: {
-                type: randomUtil.randomUserContractType(),
-                salary: randomUtil.randomInt(),         
-                position: randomUtil.randomUserPosition(),
-                startTime,
-                endTime,
-            },
-            age: randomUtil.randomInt(),
-            notes: randomUtil.randomName(50),
-            isAdmin,
-            isActivated,
-    }
-}
 }
 
 export const usersApi = new UsersApi();
