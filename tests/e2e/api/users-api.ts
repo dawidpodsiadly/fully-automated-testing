@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { defaultConfig } from '../config';
-import { randomUtil } from '../utils/random.utils';
 import { apiTokenService } from '../services/api-token.service';
 
-enum ApiUserPositions {
+export enum UserContractPositions {
     Storekeeper = 'Storekeeper',
     Accountant = 'Accountant',
     IT = 'IT'
 }
 
-enum ApiUserContractTypes {
+export enum UserContractTypes {
     Employment = 'Employment',
     Mandate = 'Mandate',
     B2B = 'B2B'
@@ -23,9 +22,9 @@ export interface ApiUserData {
     phoneNumber?: string;
     birthDate?: string;
     contract?: {
-        type?: ApiUserContractTypes;
+        type?: UserContractTypes;
         salary?: number;
-        position?: ApiUserPositions;
+        position?: UserContractPositions;
         startTime?: string;
         endTime?: string;
     };

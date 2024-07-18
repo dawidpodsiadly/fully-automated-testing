@@ -1,13 +1,13 @@
-import { usersApi, UserData } from '../api/users-api';
+import { usersApi, ApiUserData } from '../api/users-api';
 import { randomUtil } from './random.utils';
 
 
 export async function createUserByApi(isAdmin = true, isActivated = true) {
-    const userData = await generateRandomUserData(isAdmin, isActivated)
+    const userData = await generateRandomApiUserData(isAdmin, isActivated)
     return await usersApi.createUser(userData);
 }
 
-export async function generateRandomUserData(isAdmin = true, isActivated = true): Promise<UserData> {
+export async function generateRandomApiUserData(isAdmin = true, isActivated = true): Promise<ApiUserData> {
     const startTime = randomUtil.randomDate();
     const endTime = randomUtil.randomOlderDate(startTime)
 
