@@ -9,10 +9,10 @@ export class UsersHeader {
   };
 
   readonly locators: {
-    previousButton: Locator
-    nextButton: Locator
-    itemsSelect: Locator
-    addUser: Locator
+    previousPageButton: Locator
+    nextPageButton: Locator
+    pageItemsSelect: Locator
+    addUserButton: Locator
   };
 
   constructor(page: Page) {
@@ -23,10 +23,10 @@ export class UsersHeader {
       };
 
     this.locators = {
-        previousButton: this.page.locator('#pagination-prev-button'),
-        nextButton: this.page.locator('#pagination-next-button'),
-        itemsSelect: this.page.locator('#pagination-page-items'),
-        addUser: this.page.locator('#add-user-button'),
+        previousPageButton: this.page.locator('#pagination-prev-button'),
+        nextPageButton: this.page.locator('#pagination-next-button'),
+        pageItemsSelect: this.page.locator('#pagination-page-items'),
+        addUserButton: this.page.locator('#add-user-button'),
     }
   };
 };

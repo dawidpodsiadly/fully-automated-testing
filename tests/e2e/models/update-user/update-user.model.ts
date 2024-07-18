@@ -33,6 +33,5 @@ export class UpdateUserForm {
         submit: this.formLocator.locator('#update-user-form-submit-button'),
         cancel: this.formLocator.locator('#update-user-form-cancel-cutton'),
     }
-    }
-  
   }
+}

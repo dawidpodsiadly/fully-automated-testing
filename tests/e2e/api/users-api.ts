@@ -3,19 +3,19 @@ import { defaultConfig } from '../config';
 import { randomUtil } from '../utils/random.utils';
 import { apiTokenService } from '../services/api-token.service';
 
-enum Positions {
+enum ApiUserPositions {
     Storekeeper = 'Storekeeper',
     Accountant = 'Accountant',
     IT = 'IT'
 }
 
-enum ContractTypes {
+enum ApiUserContractTypes {
     Employment = 'Employment',
     Mandate = 'Mandate',
     B2B = 'B2B'
 }
 
-export interface UserData {
+export interface ApiUserData {
     name: string;
     surname: string;
     email: string;
@@ -23,9 +23,9 @@ export interface UserData {
     phoneNumber?: string;
     birthDate?: string;
     contract?: {
-        type?: ContractTypes;
+        type?: ApiUserContractTypes;
         salary?: number;
-        position?: Positions;
+        position?: ApiUserPositions;
         startTime?: string;
         endTime?: string;
     };
@@ -51,7 +51,7 @@ class UsersApi {
         }
     }
 
-    async createUser(userData: UserData) {
+    async createUser(userData: ApiUserData) {
         try {
             const response = await axios.post(this.baseUrl, userData, {
                 headers: {

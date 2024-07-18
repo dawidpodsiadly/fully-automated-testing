@@ -1,22 +1,11 @@
 import { faker } from '@faker-js/faker';
+import { UserContractPositions, UserContractTypes } from '../api/users-api';
 
 export const bigLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 export const smallLetters = 'abcdefghijklmnopqrstuvwxyz';
 export const letters = bigLetters + smallLetters;
 export const digits = '0123456789';
 export const alphanumeric = letters + digits;
-
-enum Positions {
-    Storekeeper = 'Storekeeper',
-    Accountant = 'Accountant',
-    IT = 'IT'
-}
-
-enum ContractTypes {
-    Employment = 'Employment',
-    Mandate = 'Mandate',
-    B2B = 'B2B'
-}
 
 export class RandomUtil {
     randomInt = (max: number = 10000000) => Math.floor(Math.random() * max);
@@ -54,7 +43,7 @@ export class RandomUtil {
     randomOlderDate(startDate: string): string {
         const startDateObj = new Date(startDate);
         const endDate = new Date(startDateObj);
-        endDate.setFullYear(startDateObj.getFullYear() + 1);
+        endDate.setFullYear(startDateObj.getFullYear() + this.randomInt(25));
         return endDate.toISOString().split('T')[0];
     }
     
@@ -75,14 +64,14 @@ export class RandomUtil {
       return `e2e_${this.randomName(10, smallLetters)}@e2e.pl`;
     }
     
-    randomUserContractType(): ContractTypes {
-        const contractTypes = Object.values(ContractTypes);
+    randomUserContractType(): UserContractTypes {
+        const contractTypes = Object.values(UserContractTypes);
         const randomIndex = this.randomInt(contractTypes.length);
         return contractTypes[randomIndex];
     }
 
-    randomUserPosition(): Positions {
-        const positions = Object.values(Positions);
+    randomUserPosition(): UserContractPositions {
+        const positions = Object.values(UserContractPositions);
         const randomIndex = this.randomInt(positions.length);
         return positions[randomIndex];
     }
