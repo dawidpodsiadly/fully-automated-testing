@@ -1,4 +1,4 @@
-import { baseUrl } from '../config';
+import { defaultConfig } from '../config';
 import axios from 'axios';
 
 export enum TestUsers {
@@ -11,7 +11,7 @@ export enum TestUsers {
 export const testPassword = 'polskagurom';
 
 class AuthApi {
-    private baseUrl = baseUrl + '/auth'
+    private baseUrl = defaultConfig.baseUrl + '/auth'
 
     async createToken() {
         try {

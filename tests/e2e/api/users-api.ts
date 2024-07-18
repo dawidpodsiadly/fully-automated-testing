@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { baseUrl } from '../config';
+import { defaultConfig } from '../config';
 import { randomUtil } from '../utils/random.utils';
 import { apiTokenService } from '../services/api-token.service';
 
@@ -36,7 +36,7 @@ export interface UserData {
 }
 
 class UsersApi {
-    private baseUrl = baseUrl + '/users'
+    private baseUrl = defaultConfig.baseUrl + '/users'
 
     async getUsers() {
         try {
@@ -51,14 +51,19 @@ class UsersApi {
         }
     }
 
-    async createUser(userData: UserData = this.generateRandomUserData()) {
+    async createUser(isAdmin = true, isActivated = true) {
+        const userData = this.generateRandomUserData(isAdmin, isActivated)
         try {
             const response = await axios.post(this.baseUrl, userData, {
                 headers: {
                     Authorization: await apiTokenService.getAuthToken()
                 }
         });
-            return response.data._id;
+            return {
+                id: response.data.id,
+                email: userData.email,
+                password: userData.password,
+            }
         } catch (error) {
             throw new Error(`Failed to Create User ${userData.name}, ${error}`);
         }

@@ -1,1 +1,5 @@
-export const baseUrl = 'http://localhost:3004'
+export const defaultConfig = {
+    baseUrl: 'http://localhost:3000',
+    userEmail: 'playwright@tests.com',
+    userPassword: 'playwright',
+}
