@@ -3,7 +3,7 @@ import { randomUtil } from './random.utils';
 
 
 export async function createUserByApi(isAdmin = true, isActivated = true) {
-    const userData = this.generateRandomUserData(isAdmin, isActivated)
+    const userData = await generateRandomUserData(isAdmin, isActivated)
     return await usersApi.createUser(userData);
 }
 
