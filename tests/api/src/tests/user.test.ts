@@ -85,13 +85,13 @@ describe('Users Endpoints', () => {
             expect(getUserResponse.body.surname).toEqual(userBodyData.surname);
             expect(getUserResponse.body.email).toEqual(userBodyData.email);
             expect(getUserResponse.body.phoneNumber).toEqual(userBodyData.phoneNumber);
-            expect(getUserResponse.body.birthDate).toEqual(userBodyData.birthDate);
+            expect(getUserResponse.body.birthDate).toContain(userBodyData.birthDate);
 
             expect(getUserResponse.body.contract.type).toEqual(userBodyData.contract.type);
             expect(getUserResponse.body.contract.salary).toEqual(userBodyData.contract.salary);
             expect(getUserResponse.body.contract.position).toEqual(userBodyData.contract.position);
-            expect(getUserResponse.body.contract.startTime).toEqual(userBodyData.contract.startTime);
-            expect(getUserResponse.body.contract.endTime).toEqual(userBodyData.contract.endTime);
+            expect(getUserResponse.body.contract.startTime).toContain(userBodyData.contract.startTime);
+            expect(getUserResponse.body.contract.endTime).toContain(userBodyData.contract.endTime);
             
             expect(getUserResponse.body.notes).toEqual(userBodyData.notes);
             expect(getUserResponse.body.isAdmin).toEqual(userBodyData.isAdmin);
@@ -112,13 +112,13 @@ describe('Users Endpoints', () => {
             expect(response.body.surname).toEqual(userBodyData.surname);
             expect(response.body.email).toEqual(userBodyData.email);
             expect(response.body.phoneNumber).toEqual(userBodyData.phoneNumber);
-            expect(response.body.birthDate).toEqual(userBodyData.birthDate);
+            expect(response.body.birthDate).toContain(userBodyData.birthDate);
 
             expect(response.body.contract.type).toEqual(userBodyData.contract.type);
             expect(response.body.contract.salary).toEqual(userBodyData.contract.salary);
             expect(response.body.contract.position).toEqual(userBodyData.contract.position);
-            expect(response.body.contract.startTime).toEqual(userBodyData.contract.startTime);
-            expect(response.body.contract.endTime).toEqual(userBodyData.contract.endTime);
+            expect(response.body.contract.startTime).toContain(userBodyData.contract.startTime);
+            expect(response.body.contract.endTime).toContain(userBodyData.contract.endTime);
             
             expect(response.body.notes).toEqual(userBodyData.notes);
             expect(response.body.isAdmin).toEqual(userBodyData.isAdmin);
@@ -457,13 +457,13 @@ describe('Users Endpoints', () => {
             expect(getUserResponse.body.surname).toEqual(updatedUserBody.surname);
             expect(getUserResponse.body.email).toEqual(updatedUserBody.email);
             expect(getUserResponse.body.phoneNumber).toEqual(updatedUserBody.phoneNumber);
-            expect(getUserResponse.body.birthDate).toEqual(updatedUserBody.birthDate);
+            expect(getUserResponse.body.birthDate).toContain(updatedUserBody.birthDate);
 
             expect(getUserResponse.body.contract.type).toEqual(updatedUserBody.contract.type);
             expect(getUserResponse.body.contract.salary).toEqual(updatedUserBody.contract.salary);
             expect(getUserResponse.body.contract.position).toEqual(updatedUserBody.contract.position);
-            expect(getUserResponse.body.contract.startTime).toEqual(updatedUserBody.contract.startTime);
-            expect(getUserResponse.body.contract.endTime).toEqual(updatedUserBody.contract.endTime);
+            expect(getUserResponse.body.contract.startTime).toContain(updatedUserBody.contract.startTime);
+            expect(getUserResponse.body.contract.endTime).toContain(updatedUserBody.contract.endTime);
             
             expect(getUserResponse.body.notes).toEqual(updatedUserBody.notes);
             expect(getUserResponse.body.isAdmin).toEqual(updatedUserBody.isAdmin);

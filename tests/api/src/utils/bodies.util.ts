@@ -13,30 +13,33 @@ export enum Positions {
 }
 
 export const userBody = ({
-  isAdmin = true,
-  isActivated = true,
-  email = randomUtil.randomEmail(),
-} = {}) => ({
-  name: randomUtil.randomNameWithPrefix(),
-  surname: randomUtil.randomNameWithPrefix(),
-  email,
-  password: randomUtil.randomName(),
-  phoneNumber: randomUtil.randomPhoneNumber(),
-  birthDate: randomUtil.randomDate(),
-  contract: {
-      type: randomUtil.randomUserContractType(),
-      salary: randomUtil.randomInt(),
-      position: randomUtil.randomUserPosition(),
-      startTime: new Date('1673-11-11').toISOString(),
-      endTime: new Date('1918-11-11').toISOString(),
-  },
-  notes: randomUtil.randomName(50),
-  isAdmin,
-  isActivated,
-});
-
-
-
+    isAdmin = true,
+    isActivated = true,
+    email = randomUtil.randomEmail(),
+  } = {}) => {
+    const startTime = randomUtil.randomDate();
+    const endTime = randomUtil.randomOlderDate(startTime);
+  
+    return {
+      name: randomUtil.randomNameWithPrefix(),
+      surname: randomUtil.randomNameWithPrefix(),
+      email,
+      password: randomUtil.randomName(),
+      phoneNumber: randomUtil.randomPhoneNumber(),
+      birthDate: randomUtil.randomDate(),
+      contract: {
+        type: randomUtil.randomUserContractType(),
+        salary: randomUtil.randomInt(),
+        position: randomUtil.randomUserPosition(),
+        startTime,
+        endTime,
+      },
+      notes: randomUtil.randomName(50),
+      isAdmin,
+      isActivated,
+    };
+  };
+  
 export const authBody = (email: string, password: string) => {
     return {
         email,

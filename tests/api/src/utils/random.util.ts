@@ -1,4 +1,5 @@
 import { ContractTypes,Positions } from "./bodies.util";
+import { faker } from '@faker-js/faker';
 
 export const bigLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 export const smallLetters = 'abcdefghijklmnopqrstuvwxyz';
@@ -32,17 +33,15 @@ export class RandomUtil {
     }
 
     randomDate(): string {
-        const year = this.randomInt(2100);
-        const month = this.randomInt(12);
-        const day = this.randomInt(31);
-        
-        const maxDayInMonth = new Date(year, month, 0).getDate();
-        const validDay = day <= maxDayInMonth ? day : maxDayInMonth;
-        const randomDate = new Date(year, month - 1, validDay);
-    
-        return randomDate.toISOString();
+        return faker.date.between('1900-01-01', '2100-12-31').toISOString().split('T')[0];
     }
-    
+
+    randomOlderDate(startDate: string): string {
+        const startDateObj = new Date(startDate);
+        const endDate = new Date(startDateObj);
+        endDate.setFullYear(startDateObj.getFullYear() + this.randomInt(25));
+        return endDate.toISOString().split('T')[0];
+    }
     
     randomPhoneNumber() {
         const minLength = 9;
