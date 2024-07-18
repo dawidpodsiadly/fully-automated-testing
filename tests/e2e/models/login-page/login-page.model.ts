@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { NavigationPaths, navigationService } from "../../services/navigation.service";
+import { setText } from "../../utils/input.utils";
 
 export class LoginPage {
     readonly page: Page
@@ -39,5 +40,15 @@ export class LoginPage {
     async expectToBeLoggedIn(isLogged: boolean = true) {
         isLogged ? await this.page.waitForURL(await navigationService.resolvePath(NavigationPaths.USER_TABLE)) : await this.page.waitForURL(await navigationService.resolvePath(NavigationPaths.LOGIN))
         isLogged ? await expect(this.loginLocator).not.toBeVisible() : await expect(this.loginLocator).toBeVisible()
+    }
+
+    async openLoginPageAndLogin(email: string, password: string) {
+        await navigationService.navigateTo(this.page, NavigationPaths.LOGIN);
+
+        await setText(this.inputs.email, email);
+        await setText(this.inputs.password, password);
+
+        await this.locators.loginButton.click();
+        await this.expectToBeLoggedIn();
     }
 }
