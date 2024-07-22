@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import apis from "../api/api";
 
@@ -29,13 +29,27 @@ function CreateUserPage() {
   const [endTime, setEndTime] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState({});
+  const [users, setUsers] = useState([]);
 
-  const validateInputs = () => {
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await apis.getAllUsers();
+        setUsers(response.data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  const validateInputs = async () => {
     const newErrors = {};
-    if (!name) newErrors.name = "Name is required";
+    if (!name) newErrors.name = "User Name is required";
     if (!surname) newErrors.surname = "Surname is required";
     if (!email) newErrors.email = "Email is required";
     if (!password) newErrors.password = "Password is required";
+    if (password && password.length < 9) newErrors.password = "Password must be at least 9 characters long";
     if (password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
     const phoneRegex = /^\d{9,14}$/;
     const salaryRegex = /^\d+$/;
@@ -48,22 +62,30 @@ function CreateUserPage() {
       newErrors.salary = "Salary must be a number";
     }
     if (startTime && !dateRegex.test(startTime)) {
-      newErrors.startTime = "Start date must be a valid date (DD-MM-YYYY)";
+      newErrors.startTime = "Start date must be a valid date (YYYY-MM-DD)";
     }
     if (endTime && !dateRegex.test(endTime)) {
-      newErrors.endTime = "End date must be a valid date (DD-MM-YYYY)";
+      newErrors.endTime = "End date must be a valid date (YYYY-MM-DD)";
     }
     if (birthDate && !dateRegex.test(birthDate)) {
-      newErrors.birthDate = "Birth date must be a valid date (DD-MM-YYYY)";
+      newErrors.birthDate = "Birth date must be a valid date (YYYY-MM-DD)";
+    }
+    if (startTime && endTime && new Date(endTime) < new Date(startTime)) {
+      newErrors.endTime = "End date must be after start date";
+    }
+
+    const emailExists = users.some(user => user.email === email);
+    if (emailExists) {
+      newErrors.email = "Email already exists";
     }
 
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newErrors = validateInputs();
+    const newErrors = await validateInputs();
     if (Object.keys(newErrors).length > 0) {
       setError(newErrors);
       return;
@@ -215,6 +237,7 @@ function CreateUserPage() {
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
                 />
+                {error.salary && <p className="text-danger">{error.salary}</p>}
               </div>
               <div className="col">
               <label htmlFor="contractType" className="form-label">Contract Type</label>
@@ -299,4 +322,3 @@ function CreateUserPage() {
   }
   
   export default CreateUserPage;
-  

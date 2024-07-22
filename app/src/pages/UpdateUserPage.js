@@ -32,11 +32,18 @@ function UpdateUserPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState({});
   const [changePassword, setChangePassword] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
 
+  // Fetch user data and all users when component mounts
   useEffect(() => {
-    apis.getUserById(id)
-      .then(res => {
-        const userData = res.data;
+    const fetchData = async () => {
+      try {
+        const [userResponse, usersResponse] = await Promise.all([
+          apis.getUserById(id),
+          apis.getAllUsers()
+        ]);
+
+        const userData = userResponse.data;
         setUserData(userData);
         setName(userData.name);
         setSurname(userData.surname);
@@ -51,8 +58,12 @@ function UpdateUserPage() {
         setStartTime(formatDate(userData.contract.startTime));
         setEndTime(formatDate(userData.contract.endTime));
         setIsAdmin(userData.isAdmin);
-      })
-      .catch(err => console.log(err));
+        setAllUsers(usersResponse.data); // Save all users
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
   }, [id]);
 
   const validateInputs = () => {
@@ -67,6 +78,7 @@ function UpdateUserPage() {
     if (changePassword) {
       if (!password) newErrors.password = "Password is required";
       if (password !== confirmPassword) newErrors.confirmPassword = "Passwords must match";
+      if (password && password.length < 9) newErrors.password = "Password must be at least 9 characters long";
     }
     if (phoneNumber && !phoneRegex.test(phoneNumber)) {
       newErrors.phoneNumber = "Your phone number does not exist";
@@ -75,14 +87,23 @@ function UpdateUserPage() {
       newErrors.salary = "Salary must be a number";
     }
     if (startTime && !dateRegex.test(startTime)) {
-      newErrors.startTime = "Start date must be a valid date (DD-MM-YYYY)";
+      newErrors.startTime = "Start date must be a valid date (YYYY-MM-DD)";
     }
     if (endTime && !dateRegex.test(endTime)) {
-      newErrors.endTime = "End date must be a valid date (DD-MM-YYYY)";
+      newErrors.endTime = "End date must be a valid date (YYYY-MM-DD)";
     }
     if (birthDate && !dateRegex.test(birthDate)) {
-        newErrors.birthDate = "Birth date must be a valid date (DD-MM-YYYY)";
-      }
+      newErrors.birthDate = "Birth date must be a valid date (YYYY-MM-DD)";
+    }
+    if (startTime && endTime && new Date(endTime) <= new Date(startTime)) {
+      newErrors.endTime = "End date must be after start date";
+    }
+    
+    // Check if email already exists (excluding the current user's email)
+    const emailExists = allUsers.some(user => user.email === email && user.id !== id);
+    if (emailExists) {
+      newErrors.email = "Email already exists";
+    }
 
     return newErrors;
   };

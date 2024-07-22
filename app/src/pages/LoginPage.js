@@ -16,7 +16,7 @@ function LoginPage() {
       const response = await api.loginUser({ email, password });
 
       if (response.status === 403) {
-        setError('Your account has been disabled. Please contact your administrator.');
+        setError('Your account has been deactivated. Please contact your administrator.');
         return;
       }
 
@@ -41,7 +41,7 @@ function LoginPage() {
       console.error('Error:', error);
       if (error.response) {
         if (error.response.status === 403) {
-          setError('Your account has been disabled. Please contact your administrator.');
+          setError('Your account has been deactivated. Please contact your administrator.');
         } else if (error.response.status === 401) {
           setError('Invalid email or password.');
         }
