@@ -30,7 +30,7 @@ function UsersPage() {
             const response = await api.getAllUsers(startIndex, itemsPerPage);
             const formattedUsers = response.data.map(user => ({
                 ...user,
-                lastUpdated: dateTimeFormat(user.lastUpdated)
+                lastUpdated: dateTimeFormat(user.lastUpdated, true)
             }));
             setUsers(formattedUsers);
         } catch (error) {
@@ -129,7 +129,7 @@ function UsersPage() {
 
     return (
         <div className="vh-100" style={{ backgroundColor: "#fff" }}>
-            <div className="d-flex justify-content-between align-items-center" style={{ padding: '1rem 0.5rem 0.1rem' }}>
+            <div id="users-table-header" className="d-flex justify-content-between align-items-center" style={{ padding: '1rem 0.5rem 0.1rem' }}>
                 <div style={{ paddingRight: '10px' }}>
                     <h2>User Management</h2>
                     <SearchBar 
@@ -150,6 +150,7 @@ function UsersPage() {
             </div>
             <div className="d-flex justify-content-end" style={{ padding: '0rem 0rem 2rem 0rem' }}>
                 <button
+                    id="user-table-delete-selected-users-button"
                     onClick={handleMassDelete}
                     className={`btn btn-danger me-2 ${isDeleteButtonDisabled ? 'disabled' : ''}`}
                     disabled={isDeleteButtonDisabled}

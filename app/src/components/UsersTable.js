@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { dateTimeFormat } from '../utils/date.util';
 
 
 function UserTableRow({ user, handleDelete, onCheckboxChange, isChecked, id, handleToggleActivation, index }) {
@@ -19,28 +20,44 @@ function UserTableRow({ user, handleDelete, onCheckboxChange, isChecked, id, han
 
     return (
         <tr id={id} style={rowStyle}>
-            <td className="text-center">
+            <td id="user-row-checkbox" className="text-center">
                 <input type="checkbox" onChange={handleCheckboxClick} checked={isChecked} />
             </td>
-            <td className="text-center">
+            <td id="user-row-status" className="text-center">
                 <span className={statusColor}>{statusDot}</span>
             </td>
-            <td className="text-center" style={{ maxWidth: '150px' }}>
-                <Link 
-                    to={`/userDetails/${user._id}`} 
-                    className={`text-decoration-underline ${user.isActivated ? 'text-success' : 'text-danger'}`}
+            <td id="user-name-and-surname" className="text-center" style={{ maxWidth: '150px' }}>
+                <div
+                    style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        width: '100%', 
+                        height: '100%' 
+                    }}
                 >
-                    {user.name} {user.surname}
-                </Link>
+                    <Link 
+                        to={`/userDetails/${user._id}`} 
+                        className={`text-decoration-underline ${user.isActivated ? 'text-success' : 'text-danger'}`}
+                        style={{ 
+                            display: 'block', 
+                            width: '100%', 
+                            height: '100%', 
+                            textAlign: 'center' 
+                        }}
+                    >
+                        {user.name} {user.surname}
+                    </Link>
+                </div>
             </td>
-            <td className="text-center">{user.email}</td>
-            <td className="text-center">{user.phoneNumber}</td>
-            <td className="text-center">{user.contract?.type}</td>
-            <td className="text-center">{user.contract?.startTime ? new Date(user.contract.startTime).toLocaleDateString() : ''}</td>
-            <td className="text-center">{user.contract?.endTime ? new Date(user.contract.endTime).toLocaleDateString() : ''}</td>
-            <td className="text-center">{user.contract?.position}</td>
-            <td className="text-center">{user.lastUpdated}</td>
-            <td className="text-left">
+            <td id="user-row-email" className="text-center">{user.email}</td>
+            <td id="user-row-phone-number" className="text-center">{user.phoneNumber}</td>
+            <td id="user-row-contract-type" className="text-center">{user.contract?.type}</td>
+            <td id="user-row-start-time" className="text-center">{user.contract?.startTime ? dateTimeFormat(user.contract.startTime) : ''}</td>
+            <td id="user-row-end-time" className="text-center">{user.contract?.endTime ? dateTimeFormat(user.contract.endTime) : ''}</td>
+            <td id="user-row-position" className="text-center">{user.contract?.position}</td>
+            <td id="user-row-last-updated" className="text-center">{user.lastUpdated}</td>
+            <td id="user-row-actions" className="text-left">
                 <Link to={`/edit/${user._id}`} id={`${id}-update-button`} className="btn btn-sm btn-success me-2">Update</Link>
                 <button
                     id={`${id}-delete-button`}
@@ -62,7 +79,7 @@ function UserTableRow({ user, handleDelete, onCheckboxChange, isChecked, id, han
                 </button>
             </td>
         </tr>
-    );
+    );    
 }
 
 function UserTable({ users, handleDelete, onCheckboxChange, handleToggleActivation, selectedUsers }) {
@@ -88,7 +105,7 @@ function UserTable({ users, handleDelete, onCheckboxChange, handleToggleActivati
                 {users.map((user, index) => (
                     <UserTableRow
                         key={user._id}
-                        id={`table-user-row-${user._id}`}
+                        id={`table-user-row`}
                         user={user}
                         handleDelete={handleDelete}
                         onCheckboxChange={onCheckboxChange}

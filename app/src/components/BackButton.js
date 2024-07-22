@@ -7,6 +7,7 @@ const BackButton = () => {
 
     return (
         <button
+            id="back-button"
             className="btn btn-secondary"
             onClick={() => navigate(-1)}
             style={{ backgroundColor: '#007bff', color: '#fff', display: 'flex', alignItems: 'center' }}

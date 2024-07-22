@@ -8,7 +8,7 @@ function LogoutButton() {
     };
 
     return (
-        <Link to="/login" className="btn btn-danger btn-lg" onClick={handleLogout}>Logout</Link>
+        <Link id="user-table-header-logout-button" to="/login" className="btn btn-danger btn-lg" onClick={handleLogout}>Logout</Link>
     );
 }
 

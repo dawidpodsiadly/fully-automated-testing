@@ -26,7 +26,7 @@ function UserDetailsPage() {
     }, [id]);
 
     return (
-        <div className="container mt-5">
+        <div id="user-details-form" className="container mt-5">
             <div className="d-flex align-items-center mb-4">
                 <BackButton />
                 <h2 className="mb-0 ms-2">User Details</h2>
@@ -34,20 +34,20 @@ function UserDetailsPage() {
             {userData && (
                 <div className="card">
                     <div className="card-body">
-                        <p><strong>Name:</strong> {userData.name}</p>
-                        <p><strong>Surname:</strong> {userData.surname}</p>
-                        <p><strong>Email:</strong> {userData.email}</p>
-                        <p><strong>Phone Number:</strong> {userData.phoneNumber || 'N/A'}</p>
-                        <p><strong>Birth Date:</strong> {userData.birthDate ? dateTimeFormat(userData.birthDate) : 'N/A'}</p>
-                        <p><strong>Contract Type:</strong> {userData.contract.type || 'N/A'}</p>
-                        <p><strong>Salary:</strong> {userData.contract.salary || 'N/A'}</p>
-                        <p><strong>Position:</strong> {userData.contract.position || 'N/A'}</p>
-                        <p><strong>Start Time:</strong> {userData.contract.startTime ? dateTimeFormat(userData.contract.startTime) : 'N/A'}</p>
-                        <p><strong>End Time:</strong> {userData.contract.endTime ? dateTimeFormat(userData.contract.endTime) : 'N/A'}</p>
-                        <p><strong>Notes:</strong> {userData.notes || 'N/A'}</p>
-                        <p><strong>Admin:</strong> {userData.isAdmin ? 'Yes' : 'No'}</p>
-                        <p><strong>Activated:</strong> {userData.isActivated ? 'Yes' : 'No'}</p>
-                        <p><strong>Last Updated:</strong> {userData.lastUpdated ? dateTimeFormat(userData.lastUpdated) : 'N/A'}</p>
+                        <p id="user-details-name"><strong>Name:</strong> {userData.name}</p>
+                        <p id="user-details-surname"><strong>Surname:</strong> {userData.surname}</p>
+                        <p id="user-details-email"><strong>Email:</strong> {userData.email}</p>
+                        <p id="user-details-phone-number"><strong>Phone Number:</strong> {userData.phoneNumber || '-'}</p>
+                        <p id="user-details-birth-date"><strong>Birth Date:</strong> {userData.birthDate ? dateTimeFormat(userData.birthDate) : '-'}</p>
+                        <p id="user-details-contract-type"><strong>Contract Type:</strong> {userData.contract.type || '-'}</p>
+                        <p id="user-details-salary"><strong>Salary:</strong> {userData.contract.salary || '-'}</p>
+                        <p id="user-details-position"><strong>Position:</strong> {userData.contract.position || '-'}</p>
+                        <p id="user-details-start-time"><strong>Start Time:</strong> {userData.contract.startTime ? dateTimeFormat(userData.contract.startTime) : '-'}</p>
+                        <p id="user-details-end-time"><strong>End Time:</strong> {userData.contract.endTime ? dateTimeFormat(userData.contract.endTime) : '-'}</p>
+                        <p id="user-details-notes"><strong>Notes:</strong> {userData.notes || '-'}</p>
+                        <p id="user-details-admin"><strong>Admin:</strong> {userData.isAdmin ? 'Yes' : 'No'}</p>
+                        <p id="user-details-activated"><strong>Activated:</strong> {userData.isActivated ? 'Yes' : 'No'}</p>
+                        <p id="user-details-last-updated"><strong>Last Updated:</strong> {userData.lastUpdated ? dateTimeFormat(userData.lastUpdated, true) : '-'}</p>
                     </div>
                 </div>
             )}
