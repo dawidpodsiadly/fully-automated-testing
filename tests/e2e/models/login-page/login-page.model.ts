@@ -17,6 +17,8 @@ export class LoginPage {
 
     readonly errors: {
         invalidCredentials: Locator
+        disabledAccount: Locator
+
     }
 
     constructor(page: Page) {
@@ -33,7 +35,8 @@ export class LoginPage {
         }
 
         this.errors = {
-            invalidCredentials: this.loginLocator.locator('p.text-danger', { hasText: 'Invalid email or password.'})
+            invalidCredentials: this.loginLocator.locator('p.text-danger', { hasText: 'Invalid email or password.'}),
+            disabledAccount: this.loginLocator.locator('p.text-danger', { hasText: 'Your account has been deactivated. Please contact your administrator.'}),
         }
     }
 
@@ -50,5 +53,12 @@ export class LoginPage {
 
         await this.locators.loginButton.click();
         await this.expectToBeLoggedIn();
+    }
+
+    async login(email: string, password: string) {
+        await setText(this.inputs.email, email);
+        await setText(this.inputs.password, password);
+
+        await this.locators.loginButton.click();
     }
 }
