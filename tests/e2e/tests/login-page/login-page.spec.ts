@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { NavigationPaths, navigationService } from '../../services/navigation.service';
-import { cleanupService } from '../../services/cleanup.service';
 import { LoginPage } from '../../models/login-page/login-page.model';
-import { setText } from '../../utils/input.utils';
 import { defaultConfig } from '../../config';
 import { randomUtil } from '../../utils/random.utils';
 import { createUserByApi } from '../../utils/users.utils';
@@ -15,20 +13,14 @@ test.describe('Login Page', () => {
   test('Login with Correct Credentials', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
-    await setText(loginPage.inputs.email, defaultConfig.userEmail);
-    await setText(loginPage.inputs.password, defaultConfig.userPassword);
-    await loginPage.locators.loginButton.click();
-
+    await loginPage.login(defaultConfig.userEmail, defaultConfig.userPassword);
     await loginPage.expectToBeLoggedIn();
   });
 
   test('Login with Incorrect Credentials', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
-    await setText(loginPage.inputs.email, defaultConfig.userEmail);
-    await setText(loginPage.inputs.password, randomUtil.randomName());
-    await loginPage.locators.loginButton.click();
-
+    await loginPage.login(defaultConfig.userEmail, randomUtil.randomName());
     await expect(loginPage.errors.invalidCredentials).toBeVisible();
     await loginPage.expectToBeLoggedIn(false);
   });
@@ -48,9 +40,5 @@ test.describe('Login Page', () => {
 
     await navigationService.navigateTo(page, NavigationPaths.USER_DETAILS, userData.id);
     await loginPage.expectToBeLoggedIn(false);
-  });
-
-  test.afterAll(async () => {
-    await cleanupService.performFullCleanup();
   });
 });
