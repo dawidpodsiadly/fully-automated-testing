@@ -1,17 +1,26 @@
-export function dateTimeFormat(dateString) {
-    const parsedDate = new Date(dateString);
-    if (isNaN(parsedDate)) {
-        return 'No data';
-    }
-    const formattedDateString = parsedDate.toLocaleDateString('en-GB', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    }).replace(',', '');
-    return formattedDateString;
+export function dateTimeFormat(dateString, includeTime = false) {
+  const parsedDate = new Date(dateString);
+
+  if (isNaN(parsedDate)) {
+    return 'No data';
+  }
+
+  // YYYY-MM-DD
+  const year = parsedDate.getFullYear();
+  const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+  const day = String(parsedDate.getDate()).padStart(2, '0');
+
+  let formattedDateString = `${year}-${month}-${day}`;
+
+  // HH:MM:SS
+  if (includeTime) {
+    const hours = String(parsedDate.getHours()).padStart(2, '0');
+    const minutes = String(parsedDate.getMinutes()).padStart(2, '0');
+    const seconds = String(parsedDate.getSeconds()).padStart(2, '0');
+    formattedDateString += ` ${hours}:${minutes}:${seconds}`;
+  }
+
+  return formattedDateString;
 }
 
 export const formatDate = (dateString) => {
@@ -28,4 +37,4 @@ export const formatDate = (dateString) => {
     }
   
     return `${year}-${month}-${day}`;
-  };
+};
