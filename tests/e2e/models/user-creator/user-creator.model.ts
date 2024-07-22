@@ -1,7 +1,8 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { clearText, setText } from '../../utils/input.utils'
 import { randomUtil } from '../../utils/random.utils';
 import { UserContractPositions, UserContractTypes } from '../../api/users-api';
+import { NavigationPaths, navigationService } from '../../services/navigation.service';
 
 export interface UserData {
   name: string;
@@ -49,6 +50,19 @@ export class UserCreator {
         submit: Locator
         cancel: Locator
       };
+
+      readonly errors: {
+        requiredName: Locator
+        requiredSurname: Locator
+        requiredEmail: Locator
+        emailExists: Locator
+        requiredPassword: Locator
+        matchPasswords: Locator
+        shortPassword: Locator
+        phoneNumberNotExist: Locator
+        salaryMustBeNumber: Locator
+        endDateAfterStartDate: Locator
+      }
   
     constructor(page: Page) {
       this.page = page;
@@ -76,15 +90,26 @@ export class UserCreator {
         submit: this.formLocator.locator('#submit-button'),
         cancel: this.formLocator.locator('#cancel-button'),
       };
+
+    this.errors = {
+        requiredName: this.formLocator.locator('p.text-danger', { hasText: 'User Name is required' }),
+        requiredSurname: this.formLocator.locator('p.text-danger', { hasText: 'Surname is required' }),
+        requiredEmail: this.formLocator.locator('p.text-danger', { hasText: 'Email  is required' }),
+        emailExists: this.formLocator.locator('p.text-danger', { hasText: 'Email already exists' }),
+        requiredPassword: this.formLocator.locator('p.text-danger', { hasText: 'Password is required' }),
+        matchPasswords: this.formLocator.locator('p.text-danger', { hasText: 'Passwords must match' }),
+        shortPassword: this.formLocator.locator('p.text-danger', { hasText: 'Password must be at least 9 characters long' }),
+        phoneNumberNotExist: this.formLocator.locator('p.text-danger', { hasText: 'Your phone number does not exist' }),
+        salaryMustBeNumber: this.formLocator.locator('p.text-danger', { hasText: 'Salary must be a number' }),
+        endDateAfterStartDate: this.formLocator.locator('p.text-danger', { hasText: 'End date must be after start date' }),
+      }
     }
 
     async submitForm() {
         await this.locators.submit.click();
     }
 
-    async fillUserForm(isAdmin: boolean = true, isActivated: boolean = true) {
-        const userData = await this.generateRandomUserData(isAdmin, isActivated);
-
+    async fillUserForm(userData: UserData) {
         await setText(this.inputs.name, userData.name);
         await setText(this.inputs.surname, userData.surname);
         await setText(this.inputs.email, userData.email);
@@ -93,9 +118,9 @@ export class UserCreator {
 
         userData.phoneNumber ? await setText(this.inputs.phoneNumber, userData.phoneNumber) : await clearText(this.inputs.phoneNumber)
         userData.birthDate ? await setText(this.inputs.birthDate, userData.birthDate) : await clearText(this.inputs.birthDate)
-        userData.contract?.position ? await this.inputs.position.selectOption(randomUtil.randomUserPosition()) : this.inputs.position.selectOption('Select Position')
+        userData.contract?.position ? await this.inputs.position.selectOption(userData.contract.position) : this.inputs.position.selectOption('Select Position')
         userData.contract?.salary ? await setText(this.inputs.salary, userData.contract.salary) : await clearText(this.inputs.salary)
-        userData.contract?.type ? await this.inputs.contractType.selectOption(randomUtil.randomUserContractType()) : this.inputs.contractType.selectOption('Select Contract Type')
+        userData.contract?.type ? await this.inputs.contractType.selectOption(userData.contract.type) : this.inputs.contractType.selectOption('Select Contract Type')
         userData.contract?.startTime ? await setText(this.inputs.startTime, userData.contract.startTime) : await clearText(this.inputs.startTime)
         userData.contract?.endTime ? await setText(this.inputs.endTime, userData.contract.endTime) : await clearText(this.inputs.endTime)
         userData.notes ? await setText(this.inputs.notes, userData.notes) : await clearText(this.inputs.notes)
@@ -106,7 +131,8 @@ export class UserCreator {
         const isAdminChecked = await this.inputs.isAdmin.isChecked();
         userData.isAdmin !== undefined && isAdminChecked !== userData.isAdmin && await this.inputs.isAdmin.click();
 
-        await this.locators.submit.click();
+        await this.submitForm();
+        await this.page.waitForURL(await navigationService.resolvePath(NavigationPaths.USER_TABLE));
     }
 
     async generateRandomUserData(isAdmin = true, isActivated = true): Promise<UserData> {

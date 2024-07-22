@@ -10,7 +10,8 @@ export const navigationPaths = {
     USER_TABLE: '/',
     USER_CREATE: '/create',
     USER_EDIT: `/edit/${pathParams.id}`,
-    USER_DETAILS: `/userDetails/${pathParams.id}`
+    USER_DETAILS: `/userDetails/${pathParams.id}`,
+    UNAUTHORIZED: '/unauthorized'
 };
 export type NavigationPath = keyof typeof navigationPaths;
 
