@@ -17,7 +17,7 @@ export class LoginPage {
 
     readonly errors: {
         invalidCredentials: Locator
-        disabledAccount: Locator
+        deactivatedAccount: Locator
 
     }
 
@@ -36,7 +36,7 @@ export class LoginPage {
 
         this.errors = {
             invalidCredentials: this.loginLocator.locator('p.text-danger', { hasText: 'Invalid email or password.'}),
-            disabledAccount: this.loginLocator.locator('p.text-danger', { hasText: 'Your account has been deactivated. Please contact your administrator.'}),
+            deactivatedAccount: this.loginLocator.locator('p.text-danger', { hasText: 'Your account has been deactivated. Please contact your administrator.'}),
         }
     }
 

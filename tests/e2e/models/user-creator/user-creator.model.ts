@@ -1,10 +1,9 @@
 import { Page, Locator } from '@playwright/test';
-import { clearText, setText } from '../../utils/input.utils'
-import { randomUtil } from '../../utils/random.utils';
-import { UserContractPositions, UserContractTypes } from '../../api/users-api';
+import { setText } from '../../utils/input.utils'
+import { ApiUserContractPositions, ApiUserContractTypes } from '../../api/users-api';
 import { NavigationPaths, navigationService } from '../../services/navigation.service';
 
-export interface UserData {
+export interface CreateUserData {
   name: string;
   surname: string;
   email: string;
@@ -12,9 +11,9 @@ export interface UserData {
   phoneNumber?: string;
   birthDate?: string;
   contract?: {
-      type?: UserContractTypes;
+      type?: ApiUserContractTypes;
       salary?: string;
-      position?: UserContractPositions;
+      position?: ApiUserContractPositions;
       startTime?: string;
       endTime?: string;
   };
@@ -109,21 +108,21 @@ export class UserCreator {
         await this.locators.submit.click();
     }
 
-    async fillUserForm(userData: UserData) {
+    async fillUserForm(userData: CreateUserData) {
         await setText(this.inputs.name, userData.name);
         await setText(this.inputs.surname, userData.surname);
         await setText(this.inputs.email, userData.email);
         await setText(this.inputs.password, userData.password);
         await setText(this.inputs.confirmPassword, userData.password);
 
-        userData.phoneNumber ? await setText(this.inputs.phoneNumber, userData.phoneNumber) : await clearText(this.inputs.phoneNumber)
-        userData.birthDate ? await setText(this.inputs.birthDate, userData.birthDate) : await clearText(this.inputs.birthDate)
-        userData.contract?.position ? await this.inputs.position.selectOption(userData.contract.position) : this.inputs.position.selectOption('Select Position')
-        userData.contract?.salary ? await setText(this.inputs.salary, userData.contract.salary) : await clearText(this.inputs.salary)
-        userData.contract?.type ? await this.inputs.contractType.selectOption(userData.contract.type) : this.inputs.contractType.selectOption('Select Contract Type')
-        userData.contract?.startTime ? await setText(this.inputs.startTime, userData.contract.startTime) : await clearText(this.inputs.startTime)
-        userData.contract?.endTime ? await setText(this.inputs.endTime, userData.contract.endTime) : await clearText(this.inputs.endTime)
-        userData.notes ? await setText(this.inputs.notes, userData.notes) : await clearText(this.inputs.notes)
+        userData.phoneNumber ? await setText(this.inputs.phoneNumber, userData.phoneNumber) : null
+        userData.birthDate ? await setText(this.inputs.birthDate, userData.birthDate) : null
+        userData.contract?.position ? await this.inputs.position.selectOption(userData.contract.position) : null
+        userData.contract?.salary ? await setText(this.inputs.salary, userData.contract.salary) : null
+        userData.contract?.type ? await this.inputs.contractType.selectOption(userData.contract.type) : null
+        userData.contract?.startTime ? await setText(this.inputs.startTime, userData.contract.startTime) : null
+        userData.contract?.endTime ? await setText(this.inputs.endTime, userData.contract.endTime) : null
+        userData.notes ? await setText(this.inputs.notes, userData.notes) : null
 
         const isActivatedChecked = await this.inputs.isActivated.isChecked();
         userData.isActivated !== undefined && isActivatedChecked !== userData.isActivated && await this.inputs.isActivated.click();
@@ -134,29 +133,4 @@ export class UserCreator {
         await this.submitForm();
         await this.page.waitForURL(await navigationService.resolvePath(NavigationPaths.USER_TABLE));
     }
-
-    async generateRandomUserData(isAdmin = true, isActivated = true): Promise<UserData> {
-      const startTime = randomUtil.randomDate();
-      const endTime = randomUtil.randomOlderDate(startTime)
-  
-      return {
-          name: randomUtil.randomName(),
-          surname: randomUtil.randomName(),
-          email: randomUtil.randomEmail(),
-          password: randomUtil.randomName(9),
-          phoneNumber: randomUtil.randomPhoneNumber(),
-          birthDate: randomUtil.randomDate(),
-          contract: {
-              type: randomUtil.randomUserContractType(),
-              salary: randomUtil.randomInt().toString(),    
-              position: randomUtil.randomUserPosition(),
-              startTime,
-              endTime,
-          },
-          age: randomUtil.randomInt().toString(),
-          notes: randomUtil.randomName(50),
-          isAdmin,
-          isActivated,
-      }
-  }
 }

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UserContractPositions, UserContractTypes } from '../api/users-api';
+import { ApiUserContractPositions, ApiUserContractTypes } from '../api/users-api';
 
 export const bigLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 export const smallLetters = 'abcdefghijklmnopqrstuvwxyz';
@@ -41,10 +41,10 @@ export class RandomUtil {
     }
     
 
-    randomOlderDate(startDate: string): string {
+    randomYoungerDate(startDate: string): string {
         const startDateObj = new Date(startDate);
         const endDate = new Date(startDateObj);
-        endDate.setFullYear(startDateObj.getFullYear() + this.randomInt(25));
+        endDate.setFullYear(startDateObj.getFullYear() + this.randomInt(25)+1);
         return endDate.toISOString().split('T')[0];
     }
     
@@ -65,14 +65,14 @@ export class RandomUtil {
       return `e2e_${this.randomName(10, smallLetters)}@e2e.pl`;
     }
     
-    randomUserContractType(): UserContractTypes {
-        const contractTypes = Object.values(UserContractTypes);
+    randomUserContractType(): ApiUserContractTypes {
+        const contractTypes = Object.values(ApiUserContractTypes);
         const randomIndex = this.randomInt(contractTypes.length);
         return contractTypes[randomIndex];
     }
 
-    randomUserPosition(): UserContractPositions {
-        const positions = Object.values(UserContractPositions);
+    randomUserPosition(): ApiUserContractPositions {
+        const positions = Object.values(ApiUserContractPositions);
         const randomIndex = this.randomInt(positions.length);
         return positions[randomIndex];
     }

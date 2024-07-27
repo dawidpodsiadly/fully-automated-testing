@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { NavigationPaths, navigationService } from "../../services/navigation.service";
 
 export class UnauthorizedView {
     readonly page: Page
@@ -18,8 +17,7 @@ export class UnauthorizedView {
         }
     }
 
-    async expectUnauthorizedPage() {
-        await this.page.waitForURL(await navigationService.resolvePath(NavigationPaths.UNAUTHORIZED));
-        await expect(this.locators.unauthorizedText).toBeVisible();
+    async isVisible(isVisible = true) {
+        isVisible ? await expect(this.locators.unauthorizedText).toBeVisible() : await expect(this.locators.unauthorizedText).not.toBeVisible();
     }
 }

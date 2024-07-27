@@ -1,21 +1,23 @@
 import { Page } from "@playwright/test";
 import { LoginPage } from "../models/login-page/login-page.model";
 import { createUserByApi } from "./users.utils";
-import { UsersTable } from "../models/users-table/users-table.model";
+import { UserTable } from "../models/user-table/user-table.model";
+import { UserDetails } from "../models/user-details/user-details.model";
 
 export async function performTestInitialization(page: Page) {
     const loginPage = new LoginPage(page);
 
-    const userData = await createUserByApi(true, true);
-    await loginPage.openLoginPageAndLogin(userData.email, userData.password);
+    const testUserData = await createUserByApi(true, true);
+    await loginPage.openLoginPageAndLogin(testUserData.email, testUserData.password);
 
-    return userData;
+    return testUserData;
 }
 
-export async function logoutAndLogin(page: Page, email: string, password: string) {
-    const usersTable = new UsersTable(page);
+export async function logoutAndLogin(page: Page, email: string, password: string, isUserTableView = true) {
+    const userTable = new UserTable(page);
+    const userDetails = new UserDetails(page);
     const loginPage = new LoginPage(page);
 
-    await usersTable.logOut();
+    isUserTableView ? await userTable.logOut() : userDetails.logout();
     await loginPage.login(email, password);
 }
