@@ -182,8 +182,8 @@ function UsersPage() {
                 selectedUsers={selectedUsers} 
                 handleToggleActivation={handleToggleActivation} 
             />
-            {confirmDeleteId && <ConfirmDelete id="delete-modal" onCancel={cancelDelete} onConfirm={() => confirmDeleteUser(confirmDeleteId)} onDelete={handleDelete} />}
-            {confirmMassDelete && <ConfirmDelete id="mass-delete-modal" onCancel={() => setConfirmMassDelete(false)} onConfirm={handleConfirmMassDelete} onDelete={handleDelete} isMassDelete={true} />}
+            {confirmDeleteId && <ConfirmDelete onCancel={cancelDelete} onConfirm={() => confirmDeleteUser(confirmDeleteId)} onDelete={handleDelete} />}
+            {confirmMassDelete && <ConfirmDelete onCancel={() => setConfirmMassDelete(false)} onConfirm={handleConfirmMassDelete} onDelete={handleDelete} isMassDelete={true} />}
         </div>
     );
 }

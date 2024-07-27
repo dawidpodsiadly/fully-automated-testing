@@ -72,7 +72,7 @@ function UpdateUserPage() {
     const salaryRegex = /^\d+$/;
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-    if (!name) newErrors.name = "Name is required";
+    if (!name) newErrors.name = "User Name is required";
     if (!surname) newErrors.surname = "Surname is required";
     if (!email) newErrors.email = "Email is required";
     if (changePassword) {
@@ -100,7 +100,7 @@ function UpdateUserPage() {
     }
     
     // Check if email already exists (excluding the current user's email)
-    const emailExists = allUsers.some(user => user.email === email && user.id !== id);
+    const emailExists = allUsers.some(user => user.email === email && user._id !== id);
     if (emailExists) {
       newErrors.email = "Email already exists";
     }

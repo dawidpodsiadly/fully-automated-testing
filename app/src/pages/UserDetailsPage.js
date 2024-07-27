@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import apis from '../api/api';
 import { dateTimeFormat } from '../utils/date.util';
 import BackButton from '../components/BackButton'; 
+import LogoutButton from '../components/LogoutButton';  // Zaimportuj komponent LogoutButton
 
 function UserDetailsPage() {
     const { id } = useParams();
@@ -27,9 +28,14 @@ function UserDetailsPage() {
 
     return (
         <div id="user-details-form" className="container mt-5">
-            <div className="d-flex align-items-center mb-4">
-                <BackButton />
-                <h2 className="mb-0 ms-2">User Details</h2>
+            <div className="d-flex align-items-center justify-content-between mb-4">
+                <div className="d-flex align-items-center">
+                    <BackButton />
+                    <h2 className="mb-0 ms-2">User Details</h2>
+                </div>
+                {!userData?.isAdmin && (
+                    <LogoutButton />
+                )}
             </div>
             {userData && (
                 <div className="card">
