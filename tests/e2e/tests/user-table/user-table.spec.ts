@@ -39,7 +39,7 @@ test.describe('User Table', () => {
     await userTable.isVisible();
   });
 
-  test.only('Update Action - Update User to Activated/Deactivated', async ({page}) => {
+  test('Update Action - Update User to Activated/Deactivated', async ({page}) => {
     const userTable = new UserTable(page);
     const userUpdate = new UserUpdate(page);
     const loginPage = new LoginPage(page);
