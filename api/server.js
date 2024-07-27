@@ -10,16 +10,17 @@ app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
-mongoose.connect('localhost:2137', {
+mongoose
+  .connect('Your connection to database', {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(db => console.log('DB is connected'))
-.catch(err => console.log(err));
+    useUnifiedTopology: true,
+  })
+  .then(db => console.log('DB is connected'))
+  .catch(err => console.log(err));
 
 app.use(userRoutes);
 
-const PORT = process.env.PORT || 3012;
+const PORT = process.env.PORT || 3050;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
