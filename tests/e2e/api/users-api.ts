@@ -2,13 +2,13 @@ import axios from 'axios';
 import { defaultConfig } from '../config';
 import { apiTokenService } from '../services/api-token.service';
 
-export enum UserContractPositions {
+export enum ApiUserContractPositions {
     Storekeeper = 'Storekeeper',
     Accountant = 'Accountant',
     IT = 'IT'
 }
 
-export enum UserContractTypes {
+export enum ApiUserContractTypes {
     Employment = 'Employment',
     Mandate = 'Mandate',
     B2B = 'B2B'
@@ -22,9 +22,9 @@ export interface ApiUserData {
     phoneNumber?: string;
     birthDate?: string;
     contract?: {
-        type?: UserContractTypes;
+        type?: ApiUserContractTypes;
         salary?: number;
-        position?: UserContractPositions;
+        position?: ApiUserContractPositions;
         startTime?: string;
         endTime?: string;
     };
