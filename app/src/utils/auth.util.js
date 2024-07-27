@@ -1,9 +1,9 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {jwtDecode} from 'jwt-decode';
 
-const ProtectedRoute = ({ element, adminOnly }) => {
+const ProtectedRoute = ({element, adminOnly}) => {
   const token = Cookies.get('token');
   if (!token) {
     return <Navigate to="/login" />;
