@@ -1,7 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { UserData } from "../user-creator/user-creator.model";
+import { CreateUserData } from "../user-creator/user-creator.model";
 import { todaysDate } from "../../utils/date.utils";
-import { navigationService } from "../../services/navigation.service";
 
 export enum OtherOptions {
     Yes = 'Yes',
@@ -32,6 +31,7 @@ export class UserDetails {
 
     readonly locators: {
         backButton: Locator
+        logout: Locator
     }
 
     constructor(page: Page) {
@@ -57,30 +57,34 @@ export class UserDetails {
 
         this.locators = {
             backButton: this.userDetailsLocator.locator('#back-button'),
+            logout: this.userDetailsLocator.locator('#logout-button'),
         }
     }
 
-    async isUserDetailsVisible(isVisible: boolean = true) {
+    async isVisible(isVisible = true) {
         isVisible ? await expect(this.userDetailsLocator).toBeVisible() : await expect(this.userDetailsLocator).not.toBeVisible();
-      }
+    }
     
-    async checkUserData(userData: UserData) {
-        await expect(this.userDataLocators.name).toContainText(userData.name);
-        await expect(this.userDataLocators.surname).toContainText(userData.surname);
-        await expect(this.userDataLocators.email).toContainText(userData.email);
+    async checkUserData(userData: Partial<CreateUserData>) {
+        if (userData.name) await expect(this.userDataLocators.name).toContainText(userData.name);
+        if (userData.surname) await expect(this.userDataLocators.surname).toContainText(userData.surname);
+        if (userData.email) await expect(this.userDataLocators.email).toContainText(userData.email);
 
-        userData.phoneNumber ? await expect(this.userDataLocators.phoneNumber).toContainText(userData.phoneNumber) : await expect(this.userDataLocators.phoneNumber).toContainText(OtherOptions.NoData);
-        userData.birthDate ? await expect(this.userDataLocators.birthDate).toContainText(userData.birthDate) : await expect(this.userDataLocators.birthDate).toContainText(OtherOptions.NoData);
-        userData.contract?.type ? await expect(this.userDataLocators.contractType).toContainText(userData.contract.type) : await expect(this.userDataLocators.contractType).toContainText(OtherOptions.NoData);
-        userData.contract?.salary ? await expect(this.userDataLocators.salary).toContainText(userData.contract.salary) : await expect(this.userDataLocators.salary).toContainText(OtherOptions.NoData);
-        userData.contract?.position ? await expect(this.userDataLocators.position).toContainText(userData.contract.position) : await expect(this.userDataLocators.position).toContainText(OtherOptions.NoData);
-        userData.contract?.startTime ? await expect(this.userDataLocators.startTime).toContainText(userData.contract.startTime) : await expect(this.userDataLocators.startTime).toContainText(OtherOptions.NoData);
-        userData.contract?.endTime ? await expect(this.userDataLocators.endTime).toContainText(userData.contract.endTime) : await expect(this.userDataLocators.endTime).toContainText(OtherOptions.NoData);
-        userData.notes ? await expect(this.userDataLocators.notes).toContainText(userData.notes) : await expect(this.userDataLocators.notes).toContainText(OtherOptions.NoData);
+        await expect(this.userDataLocators.phoneNumber).toContainText(userData.phoneNumber || OtherOptions.NoData);
+        await expect(this.userDataLocators.birthDate).toContainText(userData.birthDate || OtherOptions.NoData);
+        await expect(this.userDataLocators.contractType).toContainText(userData.contract?.type || OtherOptions.NoData);
+        await expect(this.userDataLocators.salary).toContainText(userData.contract?.salary || OtherOptions.NoData);
+        await expect(this.userDataLocators.position).toContainText(userData.contract?.position || OtherOptions.NoData);
+        await expect(this.userDataLocators.startTime).toContainText(userData.contract?.startTime || OtherOptions.NoData);
+        await expect(this.userDataLocators.endTime).toContainText(userData.contract?.endTime || OtherOptions.NoData);
+        await expect(this.userDataLocators.notes).toContainText(userData.notes || OtherOptions.NoData);
 
-        userData.isAdmin ? await expect(this.userDataLocators.admin).toContainText(OtherOptions.Yes) : await expect(this.userDataLocators.admin).toContainText(OtherOptions.No);
-        userData.isActivated ? await expect(this.userDataLocators.activated).toContainText(OtherOptions.Yes) : await expect(this.userDataLocators.activated).toContainText(OtherOptions.No);
-
+        await expect(this.userDataLocators.admin).toContainText(userData.isAdmin ? OtherOptions.Yes : OtherOptions.No);
+        await expect(this.userDataLocators.activated).toContainText(userData.isActivated ? OtherOptions.Yes : OtherOptions.No);
         await expect(this.userDataLocators.lastUpdated).toContainText(todaysDate());
-    }    
+    }
+    
+    async logout() {
+        await this.locators.logout.click();
+    }
 }
