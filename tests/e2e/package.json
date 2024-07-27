@@ -6,7 +6,8 @@
   "scripts": {
     "test:login-page": "playwright test /tests/login-page",
     "test:user-creator": "playwright test /tests/user-creator",
-    "test:all": "npx playwright test"
+    "test:all": "npx playwright test",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
