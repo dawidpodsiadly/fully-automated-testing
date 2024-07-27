@@ -1,23 +1,25 @@
-import { expect, Locator, Page } from "@playwright/test";
+import {expect, Locator, Page} from '@playwright/test';
 
 export class UnauthorizedView {
-    readonly page: Page
-    readonly unauthorizedLocator: Locator
+  readonly page: Page;
+  readonly unauthorizedLocator: Locator;
 
-    readonly locators: {
-        unauthorizedText: Locator
-    }
+  readonly locators: {
+    unauthorizedText: Locator;
+  };
 
-    constructor(page: Page) {
-        this.page = page;
-        this.unauthorizedLocator = this.page.locator('#unauthrozied-view');
+  constructor(page: Page) {
+    this.page = page;
+    this.unauthorizedLocator = this.page.locator('#unauthrozied-view');
 
-        this.locators = {
-            unauthorizedText: this.unauthorizedLocator.locator('#unauthrozied-view-text'),
-        }
-    }
+    this.locators = {
+      unauthorizedText: this.unauthorizedLocator.locator('#unauthrozied-view-text'),
+    };
+  }
 
-    async isVisible(isVisible = true) {
-        isVisible ? await expect(this.locators.unauthorizedText).toBeVisible() : await expect(this.locators.unauthorizedText).not.toBeVisible();
-    }
+  async isVisible(isVisible = true) {
+    isVisible
+      ? await expect(this.locators.unauthorizedText).toBeVisible()
+      : await expect(this.locators.unauthorizedText).not.toBeVisible();
+  }
 }

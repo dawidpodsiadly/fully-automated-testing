@@ -1,21 +1,21 @@
-import { expect, test } from '@playwright/test';
-import { LoginPage } from '../../models/login-page/login-page.model';
-import { randomUtil } from '../../utils/random.utils';
-import { createUserByApi, generateRandomUserData } from '../../utils/users.utils';
-import { UserTable } from '../../models/user-table/user-table.model';
-import { logoutAndLogin, performTestInitialization } from '../../utils/tests.utils';
-import { UserDetails } from '../../models/user-details/user-details.model';
-import { setText } from '../../utils/input.utils';
-import { UserUpdate } from '../../models/user-update/user-update.model';
+import {expect, test} from '@playwright/test';
+import {LoginPage} from '../../models/login-page/login-page.model';
+import {randomUtil} from '../../utils/random.utils';
+import {createUserByApi, generateRandomUserData} from '../../utils/users.utils';
+import {UserTable} from '../../models/user-table/user-table.model';
+import {logoutAndLogin, performTestInitialization} from '../../utils/tests.utils';
+import {UserDetails} from '../../models/user-details/user-details.model';
+import {setText} from '../../utils/input.utils';
+import {UserUpdate} from '../../models/user-update/user-update.model';
 
-let testUser
+let testUser;
 
 test.describe('User Table', () => {
   test.beforeEach(async ({page}) => {
     testUser = await performTestInitialization(page);
   });
 
-  test('Update Action - Update User to Admin/Not Admin', async ({ page }) => {
+  test('Update Action - Update User to Admin/Not Admin', async ({page}) => {
     const userTable = new UserTable(page);
     const userUpdate = new UserUpdate(page);
     const userDetails = new UserDetails(page);
@@ -39,7 +39,7 @@ test.describe('User Table', () => {
     await userTable.isVisible();
   });
 
-  test.only('Update Action - Update User to Activated/Deactivated', async ({ page }) => {
+  test.only('Update Action - Update User to Activated/Deactivated', async ({page}) => {
     const userTable = new UserTable(page);
     const userUpdate = new UserUpdate(page);
     const loginPage = new LoginPage(page);
@@ -65,7 +65,9 @@ test.describe('User Table', () => {
     await userTable.isVisible();
   });
 
-  test('Update Action - Update User by Only the Required Fields Without changing the Password and Check if the User Can Log in with the Old Password', async ({ page }) => {
+  test('Update Action - Update User by Only the Required Fields Without changing the Password and Check if the User Can Log in with the Old Password', async ({
+    page,
+  }) => {
     const userUpdate = new UserUpdate(page);
     const userTable = new UserTable(page);
     const userDetials = new UserDetails(page);
@@ -77,7 +79,7 @@ test.describe('User Table', () => {
       email: randomUtil.randomEmail(),
       isActivated: true,
       isAdmin: true,
-    }
+    };
 
     const userRow = await userTable.getRowByEmail(user.email);
     await userRow.actions.update.click();
@@ -94,7 +96,7 @@ test.describe('User Table', () => {
     await userTable.isVisible();
   });
 
-  test('Update Action - Update User and Log in with Updated Password + Validate inputs', async ({ page }) => {
+  test('Update Action - Update User and Log in with Updated Password + Validate inputs', async ({page}) => {
     const userUpdate = new UserUpdate(page);
     const userTable = new UserTable(page);
     const userDetials = new UserDetails(page);
@@ -113,46 +115,77 @@ test.describe('User Table', () => {
     await expect(userUpdate.errors.requiredSurname, `Error 'Surname is required' Should be Visible`).toBeVisible();
     await expect(userUpdate.errors.requiredEmail, `Error 'Email is required' Should be Visible`).toBeVisible();
     await expect(userUpdate.errors.requiredPassword, `Error 'Password is required' Should be Visible`).toBeVisible();
-    
+
     /** Password must be at least 9 characters long && Passwords must match **/
-    await userUpdate.updateUserForm({ name: updatedUserData.name, surname: updatedUserData.surname, email: updatedUserData.email });
+    await userUpdate.updateUserForm({
+      name: updatedUserData.name,
+      surname: updatedUserData.surname,
+      email: updatedUserData.email,
+    });
     await setText(userUpdate.inputs.password, randomUtil.randomName(8));
     await userUpdate.submitForm();
-    await expect(userUpdate.errors.shortPassword, `Error 'Password must be at least 9 characters long' Should be Visible`).toBeVisible();
+    await expect(
+      userUpdate.errors.shortPassword,
+      `Error 'Password must be at least 9 characters long' Should be Visible`,
+    ).toBeVisible();
     await expect(userUpdate.errors.matchPasswords, `Error 'Passwords must match' Should be Visible`).toBeVisible();
 
     // Your phone number does not exist
-    await userUpdate.updateUserForm({ phoneNumber: randomUtil.randomName(), password: updatedUserData.password });
-    await expect(userUpdate.errors.phoneNumberNotExist, `Error 'Your phone number does not exist' Should be Visible`).toBeVisible();
+    await userUpdate.updateUserForm({phoneNumber: randomUtil.randomName(), password: updatedUserData.password});
+    await expect(
+      userUpdate.errors.phoneNumberNotExist,
+      `Error 'Your phone number does not exist' Should be Visible`,
+    ).toBeVisible();
 
     // Salary must be a number
-    await userUpdate.updateUserForm({ contract: {salary: randomUtil.randomName()}, phoneNumber: updatedUserData.phoneNumber })
-    await expect(userUpdate.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
+    await userUpdate.updateUserForm({
+      contract: {salary: randomUtil.randomName()},
+      phoneNumber: updatedUserData.phoneNumber,
+    });
+    await expect(
+      userUpdate.errors.salaryMustBeNumber,
+      `Error 'Salary must be a number' Should be Visible`,
+    ).toBeVisible();
 
     // Salary Has to be without minus
-    await userUpdate.updateUserForm({ contract: {salary: `-${randomUtil.randomStringNumber(4)}`} })
-    await expect(userUpdate.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
+    await userUpdate.updateUserForm({contract: {salary: `-${randomUtil.randomStringNumber(4)}`}});
+    await expect(
+      userUpdate.errors.salaryMustBeNumber,
+      `Error 'Salary must be a number' Should be Visible`,
+    ).toBeVisible();
 
     // End date must be after start date
-    await userUpdate.updateUserForm({ contract: {startTime: updatedUserData.contract.endTime, endTime: updatedUserData.contract.startTime, salary: updatedUserData.contract.salary} });
-    await expect(userUpdate.errors.endDateAfterStartDate, `Error 'End date must be after start date' Should be Visible`).toBeVisible();
+    await userUpdate.updateUserForm({
+      contract: {
+        startTime: updatedUserData.contract.endTime,
+        endTime: updatedUserData.contract.startTime,
+        salary: updatedUserData.contract.salary,
+      },
+    });
+    await expect(
+      userUpdate.errors.endDateAfterStartDate,
+      `Error 'End date must be after start date' Should be Visible`,
+    ).toBeVisible();
 
     /** Email already exists **/
-    await userUpdate.updateUserForm({ email: testUser.email, contract: {startTime: updatedUserData.contract.startTime, endTime: updatedUserData.contract.endTime} });
+    await userUpdate.updateUserForm({
+      email: testUser.email,
+      contract: {startTime: updatedUserData.contract.startTime, endTime: updatedUserData.contract.endTime},
+    });
     await expect(userUpdate.errors.emailExists, `Error 'Email already exists' Should be Visible`).toBeVisible();
 
     /** Update rest fields and submit **/
-    await userUpdate.updateUserForm({ 
+    await userUpdate.updateUserForm({
       email: updatedUserData.email,
-      birthDate: updatedUserData.birthDate, 
+      birthDate: updatedUserData.birthDate,
       contract: {
-        type: updatedUserData.contract.type, 
-        position: updatedUserData.contract.position
+        type: updatedUserData.contract.type,
+        position: updatedUserData.contract.position,
       },
       notes: updatedUserData.notes,
       isActivated: true,
       isAdmin: true,
-      });
+    });
 
     // User should be updated correctly
     const updatedUserRow = await userTable.getRowByEmail(updatedUserData.email);
@@ -165,7 +198,7 @@ test.describe('User Table', () => {
     await userTable.isVisible();
   });
 
-  test('Table - Mass Removal of Users', async ({ page }) => {
+  test('Table - Mass Removal of Users', async ({page}) => {
     const userTable = new UserTable(page);
 
     const user1 = await createUserByApi();
@@ -178,14 +211,14 @@ test.describe('User Table', () => {
 
     await userTable.locators.deleteSelectedUsers.click();
     await userTable.deleteUserModal.delete.click();
-    
+
     await userTable.searchByEmail(user1.email);
     await userRow1.isVisible(false);
     await userTable.searchByEmail(user2.email);
     await userRow2.isVisible(false);
   });
 
-  test('Activate/Deactivate Action - Activate/Deactivate User', async ({ page }) => {
+  test('Activate/Deactivate Action - Activate/Deactivate User', async ({page}) => {
     const userTable = new UserTable(page);
     const loginPage = new LoginPage(page);
 
@@ -198,17 +231,17 @@ test.describe('User Table', () => {
     await expect(loginPage.errors.deactivatedAccount).toBeVisible();
 
     /** Activate User **/
-    await loginPage.login(testUser.email, testUser.password); 
+    await loginPage.login(testUser.email, testUser.password);
     await userTable.searchByEmail(user.email);
     await expect(userRow1.userData.status).toHaveClass('text-danger');
     await userRow1.actions.activation.click();
 
     await logoutAndLogin(page, user.email, user.password);
-    await userTable.searchByEmail(user.email); 
+    await userTable.searchByEmail(user.email);
     await expect(userRow1.userData.status).toHaveClass('text-success');
   });
 
-  test('Delete Action - Delete User', async ({ page }) => {
+  test('Delete Action - Delete User', async ({page}) => {
     const userTable = new UserTable(page);
     const loginPage = new LoginPage(page);
 

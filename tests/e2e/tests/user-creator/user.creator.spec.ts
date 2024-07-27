@@ -1,21 +1,21 @@
-import { expect, test } from '@playwright/test';
-import { logoutAndLogin, performTestInitialization } from '../../utils/tests.utils';
-import { UsersHeader, UserTable } from '../../models/user-table/user-table.model';
-import { UserCreator, CreateUserData } from '../../models/user-creator/user-creator.model';
-import { UserDetails } from '../../models/user-details/user-details.model';
-import { LoginPage } from '../../models/login-page/login-page.model';
-import { NavigationPaths, navigationService } from '../../services/navigation.service';
-import { UnauthorizedView } from '../../models/unauthorized/unauthorized.model';
-import { createUserByApi, generateRandomUserData } from '../../utils/users.utils';
-import { randomUtil } from '../../utils/random.utils';
-import { setText } from '../../utils/input.utils';
+import {expect, test} from '@playwright/test';
+import {logoutAndLogin, performTestInitialization} from '../../utils/tests.utils';
+import {UsersHeader, UserTable} from '../../models/user-table/user-table.model';
+import {UserCreator, CreateUserData} from '../../models/user-creator/user-creator.model';
+import {UserDetails} from '../../models/user-details/user-details.model';
+import {LoginPage} from '../../models/login-page/login-page.model';
+import {NavigationPaths, navigationService} from '../../services/navigation.service';
+import {UnauthorizedView} from '../../models/unauthorized/unauthorized.model';
+import {createUserByApi, generateRandomUserData} from '../../utils/users.utils';
+import {randomUtil} from '../../utils/random.utils';
+import {setText} from '../../utils/input.utils';
 
 test.describe('User Creator', () => {
   test.beforeEach(async ({page}) => {
     await performTestInitialization(page);
   });
 
-  test('Create Activated Admin User', async ({ page }) => {
+  test('Create Activated Admin User', async ({page}) => {
     const usersHeader = new UsersHeader(page);
     const userCreator = new UserCreator(page);
     const userTable = new UserTable(page);
@@ -30,12 +30,12 @@ test.describe('User Creator', () => {
 
     await userRow.userData.name.click();
     await userDetails.checkUserData(userData);
-  
+
     await logoutAndLogin(page, userData.email, userData.password);
     await userTable.isVisible();
   });
 
-  test('Create Not Activated Admin User', async ({ page }) => {
+  test('Create Not Activated Admin User', async ({page}) => {
     const usersHeader = new UsersHeader(page);
     const userCreator = new UserCreator(page);
     const userTable = new UserTable(page);
@@ -51,12 +51,12 @@ test.describe('User Creator', () => {
 
     await userRow.userData.name.click();
     await userDetails.checkUserData(userData);
-  
+
     await logoutAndLogin(page, userData.email, userData.password);
     await expect(loginPage.errors.deactivatedAccount).toBeVisible();
   });
 
-  test('Create Activated Not Admin User', async ({ page }) => {
+  test('Create Activated Not Admin User', async ({page}) => {
     const usersHeader = new UsersHeader(page);
     const userCreator = new UserCreator(page);
     const userTable = new UserTable(page);
@@ -72,7 +72,7 @@ test.describe('User Creator', () => {
 
     await userRow.userData.name.click();
     await userDetails.checkUserData(userData);
-  
+
     await logoutAndLogin(page, userData.email, userData.password);
     await userDetails.isVisible();
 
@@ -87,7 +87,7 @@ test.describe('User Creator', () => {
     await unauthorizedView.isVisible();
   });
 
-  test('Create Deactivated Not Admin User', async ({ page }) => {
+  test('Create Deactivated Not Admin User', async ({page}) => {
     const usersHeader = new UsersHeader(page);
     const userCreator = new UserCreator(page);
     const userTable = new UserTable(page);
@@ -103,12 +103,12 @@ test.describe('User Creator', () => {
 
     await userRow.userData.name.click();
     await userDetails.checkUserData(userData);
-  
+
     await logoutAndLogin(page, userData.email, userData.password);
     await expect(loginPage.errors.deactivatedAccount).toBeVisible();
   });
 
-  test('Create User with Only Required Fields (Name, Surname, Email, Password)', async ({ page }) => {
+  test('Create User with Only Required Fields (Name, Surname, Email, Password)', async ({page}) => {
     const usersHeader = new UsersHeader(page);
     const userCreator = new UserCreator(page);
     const userTable = new UserTable(page);
@@ -120,7 +120,7 @@ test.describe('User Creator', () => {
       surname: randomUtil.randomName(),
       email: randomUtil.randomEmail(),
       password: randomUtil.randomName(),
-    }
+    };
 
     await usersHeader.buttons.addUserButton.click();
     await userCreator.fillUserForm(userData);
@@ -130,12 +130,12 @@ test.describe('User Creator', () => {
 
     await userRow.userData.name.click();
     await userDetails.checkUserData(userData);
-  
+
     await logoutAndLogin(page, userData.email, userData.password);
     await expect(loginPage.errors.deactivatedAccount).toBeVisible();
   });
 
-  test('Validate User Form Inputs', async ({ page }) => {
+  test('Validate User Form Inputs', async ({page}) => {
     const usersHeader = new UsersHeader(page);
     const userCreator = new UserCreator(page);
     const userTable = new UserTable(page);
@@ -158,7 +158,10 @@ test.describe('User Creator', () => {
     /** Password must be at least 9 characters long && Passwords must match **/
     await setText(userCreator.inputs.password, randomUtil.randomName(8));
     await userCreator.submitForm();
-    await expect(userCreator.errors.shortPassword, `Error 'Password must be at least 9 characters long' Should be Visible`).toBeVisible();
+    await expect(
+      userCreator.errors.shortPassword,
+      `Error 'Password must be at least 9 characters long' Should be Visible`,
+    ).toBeVisible();
     await expect(userCreator.errors.matchPasswords, `Error 'Passwords must match' Should be Visible`).toBeVisible();
 
     const password = randomUtil.randomName();
@@ -168,18 +171,27 @@ test.describe('User Creator', () => {
     // Your phone number does not exist
     await setText(userCreator.inputs.phoneNumber, randomUtil.randomName());
     await userCreator.submitForm();
-    await expect(userCreator.errors.phoneNumberNotExist, `Error 'Your phone number does not exist' Should be Visible`).toBeVisible();
+    await expect(
+      userCreator.errors.phoneNumberNotExist,
+      `Error 'Your phone number does not exist' Should be Visible`,
+    ).toBeVisible();
     await setText(userCreator.inputs.phoneNumber, randomUtil.randomPhoneNumber());
 
     // Salary must be a number
     await setText(userCreator.inputs.salary, randomUtil.randomName());
     await userCreator.submitForm();
-    await expect(userCreator.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
+    await expect(
+      userCreator.errors.salaryMustBeNumber,
+      `Error 'Salary must be a number' Should be Visible`,
+    ).toBeVisible();
 
     // Salary Has to be Without Minus
     await setText(userCreator.inputs.salary, `-${randomUtil.randomStringNumber(4)}`);
     await userCreator.submitForm();
-    await expect(userCreator.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
+    await expect(
+      userCreator.errors.salaryMustBeNumber,
+      `Error 'Salary must be a number' Should be Visible`,
+    ).toBeVisible();
     await setText(userCreator.inputs.salary, randomUtil.randomStringNumber(4));
 
     // End date must be after start date
@@ -189,7 +201,10 @@ test.describe('User Creator', () => {
     await setText(userCreator.inputs.endTime, startTime);
     await setText(userCreator.inputs.startTime, endTime);
     await userCreator.submitForm();
-    await expect(userCreator.errors.endDateAfterStartDate, `Error 'End date must be after start date' Should be Visible`).toBeVisible();
+    await expect(
+      userCreator.errors.endDateAfterStartDate,
+      `Error 'End date must be after start date' Should be Visible`,
+    ).toBeVisible();
     await setText(userCreator.inputs.startTime, startTime);
     await setText(userCreator.inputs.endTime, endTime);
 

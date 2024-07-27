@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import {defineConfig, devices} from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -37,7 +37,7 @@ export default defineConfig({
     viewport: {
       width: 1920,
       height: 1080,
-    }
+    },
   },
   globalTeardown: './tests/global/global.teardown.ts',
 
@@ -45,7 +45,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {...devices['Desktop Chrome']},
     },
 
     // {

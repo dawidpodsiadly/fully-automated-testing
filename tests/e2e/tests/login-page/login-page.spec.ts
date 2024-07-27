@@ -1,23 +1,23 @@
-import { expect, test } from '@playwright/test';
-import { NavigationPaths, navigationService } from '../../services/navigation.service';
-import { LoginPage } from '../../models/login-page/login-page.model';
-import { defaultConfig } from '../../config';
-import { randomUtil } from '../../utils/random.utils';
-import { createUserByApi } from '../../utils/users.utils';
+import {expect, test} from '@playwright/test';
+import {NavigationPaths, navigationService} from '../../services/navigation.service';
+import {LoginPage} from '../../models/login-page/login-page.model';
+import {defaultConfig} from '../../config';
+import {randomUtil} from '../../utils/random.utils';
+import {createUserByApi} from '../../utils/users.utils';
 
 test.describe('Login Page', () => {
   test.beforeEach(async ({page}) => {
     await navigationService.navigateTo(page, NavigationPaths.LOGIN);
   });
 
-  test('Login with Correct Credentials', async ({ page }) => {
+  test('Login with Correct Credentials', async ({page}) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.login(defaultConfig.userEmail, defaultConfig.userPassword);
     await loginPage.expectToBeLoggedIn();
   });
 
-  test('Login with Incorrect Credentials', async ({ page }) => {
+  test('Login with Incorrect Credentials', async ({page}) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.login(defaultConfig.userEmail, randomUtil.randomName());
@@ -25,7 +25,7 @@ test.describe('Login Page', () => {
     await loginPage.expectToBeLoggedIn(false);
   });
 
-  test('Going to any URL Without Logging in Should Redirect to the Login Page', async ({ page }) => {
+  test('Going to any URL Without Logging in Should Redirect to the Login Page', async ({page}) => {
     const loginPage = new LoginPage(page);
     const userData = await createUserByApi();
 
