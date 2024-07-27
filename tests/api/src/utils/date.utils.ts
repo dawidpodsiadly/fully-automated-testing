@@ -1,12 +1,12 @@
 class DateUtil {
-    static getCurrentYear() {
-        const currentDate = new Date();
-        return currentDate.getFullYear();
-    }
+  static getCurrentYear() {
+    const currentDate = new Date();
+    return currentDate.getFullYear();
+  }
 
-    static getCurrentDate() {
-        return new Date();
-    }
+  static getCurrentDate() {
+    return new Date();
+  }
 }
 
-export const dateUtil = new DateUtil;
+export const dateUtil = new DateUtil();
