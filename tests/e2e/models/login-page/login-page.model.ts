@@ -62,6 +62,6 @@ export class LoginPage {
     await setText(this.inputs.email, email);
     await setText(this.inputs.password, password);
 
-    await this.locators.loginButton.click();
+    await this.locators.loginButton.click({delay: 3000});
   }
 }

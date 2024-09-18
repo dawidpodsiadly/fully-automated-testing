@@ -138,17 +138,16 @@ export class UserUpdate {
     if (userData.isActivated !== undefined) {
       const isActivatedChecked = await this.inputs.isActivated.isChecked();
       if (userData.isActivated !== isActivatedChecked) {
-        await this.inputs.isActivated.click({delay: 2000});
+        await this.inputs.isActivated.click({delay: 1000});
       }
     }
 
     if (userData.isAdmin !== undefined) {
       const isAdminChecked = await this.inputs.isAdmin.isChecked();
       if (userData.isAdmin !== isAdminChecked) {
-        await this.inputs.isAdmin.click({delay: 2000});
+        await this.inputs.isAdmin.click({delay: 1000});
       }
     }
-
     await this.submitForm();
   }
 }
