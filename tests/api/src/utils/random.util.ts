@@ -33,7 +33,7 @@ export class RandomUtil {
   }
 
   randomDate(): string {
-    return faker.date.between('1900-01-01', '2100-12-31').toISOString().split('T')[0];
+    return faker.date.between({from: '1900-01-01', to: '2100-12-31'}).toISOString().split('T')[0];
   }
 
   randomOlderDate(startDate: string): string {
