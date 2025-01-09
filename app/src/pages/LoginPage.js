@@ -26,7 +26,7 @@ function LoginPage() {
       }
 
       const token = response.data.token;
-      Cookies.set('token', token, {secure: true, sameSite: 'strict'});
+      Cookies.set('token', token, {secure: false, sameSite: 'Lax'});
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const isAdmin = decodedToken.isAdmin;
