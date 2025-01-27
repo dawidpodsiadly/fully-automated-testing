@@ -1,7 +1,11 @@
 api-tests:
   stage: tests
+  image: node:latest
   script:
     - echo "Running API tests"
+    - cd tests/api
+    - npm ci
+    - npm run test:all
   rules:
     - if: >-
         $RUN_API_TESTS == "true"

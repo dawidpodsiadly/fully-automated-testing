@@ -1,7 +1,11 @@
 e2e-tests:
   stage: tests
+  image: mcr.microsoft.com/playwright:v1.44.0
   script:
     - echo "Running E2E tests"
+    - cd tests/e2e
+    - npm ci
+    - npm run test:all
   rules:
     - if: >-
         $RUN_E2E_TESTS == "true"

@@ -3,11 +3,9 @@ services:
   - docker:dind
 
 include:
-  # tests
   - local: .gitlab-ci/tests/api-tests.yaml
   - local: .gitlab-ci/tests/e2e-tests.yaml
 
-  # deploy
   - local: .gitlab-ci/deploy/deploy-test-installation.yaml
   - local: .gitlab-ci/deploy/publish-images.yaml
 
@@ -31,12 +29,9 @@ variables:
       - "true"
       - "false"
 
-  # Nazwa projektu w GCR
   GCP_PROJECT_ID: "mythic-fire-446020-d5"
   GCR_REGISTRY: "gcr.io"
   IMAGE_TAG: "latest"
-  API_IMAGE_NAME: "api"
-  APP_IMAGE_NAME: "app"
 
 stages:
   - build

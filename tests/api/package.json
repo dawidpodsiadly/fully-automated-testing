@@ -4,21 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test:all": "jest",
+    "test:by-name": "jest --testNamePattern=\"name of test\"",
+    "test:format-and-lint": "npx prettier --write . && tslint -p tsconfig.json --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "scriptsComments": {
+    "test": "Run all Jest tests for the API",
+    "test:by-name": "Run Jest tests filtered by test name",
+    "test:format-and-lint": "Format the code using Prettier and perform linting"
+  },
   "dependencies": {
     "@faker-js/faker": "8.4.1",
-    "@types/supertest": "6.0.2",
-    "faker": "6.6.6",
-    "jest": "29.7.0",
-    "prettier": "3.3.3",
     "supertest": "7.0.0",
+    "jest": "29.7.0",
+    "typescript": "5.4.5",
     "ts-jest": "29.1.4",
-    "typescript": "5.4.5"
+    "@types/jest": "29.5.12",
+    "@types/supertest": "6.0.2"
   },
   "devDependencies": {
-    "@types/jest": "29.5.12"
+    "prettier": "3.3.3"
   }
 }

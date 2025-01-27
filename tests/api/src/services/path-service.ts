@@ -1,4 +1,4 @@
-const baseUrl = 'localhost:3050';
+const baseUrl = 'http://35.241.214.139/api';
 
 export class PathService {
   static readonly paths = {
