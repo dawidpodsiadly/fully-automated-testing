@@ -1,0 +1,28 @@
+deploy-test-installation:
+  image: google/cloud-sdk:alpine
+  stage: build
+  before_script:
+    - source .gitlab-ci/deploy/google-cloud-setup.sh
+    - echo "System architecture $(uname -m)"
+    - curl -LO "https://dl.k8s.io/release/v1.26.0/bin/linux/amd64/kubectl"
+    - chmod +x ./kubectl
+    - mv ./kubectl /usr/local/bin/kubectl
+    - curl -LO "https://github.com/google-gke/gke-gcloud-auth-plugin/releases/download/v0.1.0/gke-gcloud-auth-plugin-linux-amd64"
+    - chmod +x ./gke-gcloud-auth-plugin-linux-amd64
+    - mv ./gke-gcloud-auth-plugin-linux-amd64 /usr/local/bin/gke-gcloud-auth-plugin
+  script:
+    - gcloud container clusters get-credentials app-testing --region europe-west1 --project mythic-fire-446020-d5
+    - kubectl config use-context gke_mythic-fire-446020-d5_europe-west1_app-testing
+
+    - kubectl delete namespace test-installation --ignore-not-found=true
+    - kubectl create namespace test-installation
+
+    - kubectl apply -f deployment/api/deployment.yaml -n test-installation
+    - kubectl apply -f deployment/api/service.yaml -n test-installation
+    - kubectl apply -f deployment/app/deployment.yaml -n test-installation
+    - kubectl apply -f deployment/app/service.yaml -n test-installation
+  rules:
+    - if: >-
+        $DEPLOY_TEST_INSTALLATION == "true"
+  needs:
+    - job: publish-images

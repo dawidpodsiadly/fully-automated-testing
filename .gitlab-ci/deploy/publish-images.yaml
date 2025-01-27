@@ -1,0 +1,11 @@
+publish-images:
+  stage: build
+  script:
+    - source .gitlab-ci/deploy/google-cloud-setup.sh
+    - docker build -t gcr.io/mythic-fire-446020-d5/api:$IMAGE_TAG -f api/Dockerfile api/
+    - docker push gcr.io/mythic-fire-446020-d5/api:$IMAGE_TAG
+    - docker build -t gcr.io/mythic-fire-446020-d5/app:$IMAGE_TAG -f app/Dockerfile app/
+    - docker push gcr.io/mythic-fire-446020-d5/app:$IMAGE_TAG
+  rules:
+    - if: >-
+        $DEPLOY_TEST_INSTALLATION == "true"

@@ -1,0 +1,7 @@
+e2e-tests:
+  stage: tests
+  script:
+    - echo "Running E2E tests"
+  rules:
+    - if: >-
+        $RUN_E2E_TESTS == "true"

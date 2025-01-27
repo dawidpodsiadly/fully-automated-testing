@@ -1,0 +1,7 @@
+api-tests:
+  stage: tests
+  script:
+    - echo "Running API tests"
+  rules:
+    - if: >-
+        $RUN_API_TESTS == "true"
