@@ -1,5 +1,5 @@
 ## About The Project:
-This project implements an automated process for testing a self-made, simple application using GitLab CI/CD 🚀, including its deployment on Google Kubernetes Engine (GKE) 🛠️ and running E2E and API tests 🧪.
+This project implements an automated process for testing a self-made, simple application using GitLab CI/CD 🚀, including its deployment on Google Kubernetes Engine 🛠️ and running E2E and API tests 🧪.
 
 ## Technologies:
 ### App:
@@ -35,7 +35,7 @@ This project implements an automated process for testing a self-made, simple app
     gcloud config set project PROJECT_ID
     ```
 
-4. Create your cluster on GKE:
+4. Create your cluster on Google Kubernetes Engine:
     ```
     gcloud container clusters create CLUSTER_NAME --region REGION_NAME
     ```
@@ -47,7 +47,7 @@ This project implements an automated process for testing a self-made, simple app
 
 6. Generate a static external IP on Google Cloud:
     ```
-    gcloud compute addresses create your-ip-name --region your-region
+    gcloud compute addresses create YOUR_IP_NAME --region REGION_NAME
     ```
 
 7. Obtain a key for a service account with permissions to push images to GCR. The easiest way is via the GUI:
@@ -73,11 +73,9 @@ This project implements an automated process for testing a self-made, simple app
     /app/_deployment/gui/deployment.yaml
     ```
 
-11. Change the `baseUrl` in the API tests:
-    - `tests/api/src/services/path-service.ts` set `baseUrl` to `APP_STATIC_IP/api`
+11. Change the `baseUrl` in the API tests `tests/api/src/services/path-service.ts` to `YOUR_APP_STATIC_IP/api`
 
-12. Change the `baseUrl` in the E2E tests:
-    - `tests/e2e/config.ts` set `baseUrl` to `APP_STATIC_IP`
+12. Change the `baseUrl` in the E2E tests `tests/e2e/config.ts` to `YOUR_APP_STATIC_IP`
 
 13. Set up the connection to the MongoDB database in `app/api/server.js`.
 
