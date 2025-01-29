@@ -75,7 +75,7 @@ Before running the project, you need to configure it for your environment. This 
 12. Update the `baseUrl` for E2E tests:
     - In `tests/e2e/config.ts` to `YOUR_APP_STATIC_IP`.
 
-13. Configure the MongoDB connection in `app/api/server.js`.
+13. Configure the [MongoDB](https://www.mongodb.com/) connection in `app/api/server.js`.
 
 ## How to Run:
 
