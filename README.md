@@ -75,7 +75,7 @@ Before running the project, you need to configure it for your environment. This 
 12. Update the `baseUrl` for E2E tests:
     - In `tests/e2e/config.ts` to `YOUR_APP_STATIC_IP`.
 
-13. Configure the MongoDB connection in `app/api/server.js` to your database.
+13. Configure the MongoDB connection in `app/api/server.js`.
 
 ## How to Run:
 
@@ -87,4 +87,4 @@ Once the setup is completed, all you have to do is open Gitlab and run:
 
 3. To run E2E tests, trigger the pipeline with the variable `RUN_E2E_TESTS=true`.
 
-![Successful Process](images/example.png)
+![Successful Process](images/success.png)
