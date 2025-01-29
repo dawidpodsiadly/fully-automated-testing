@@ -5,7 +5,7 @@ The application is tested on multiple levels:
 - **End-to-End (E2E) tests** are executed using **Playwright** 🎬 to validate the user interface and overall application flow.  
 - **API tests** are performed with **Supertest + Jest** 🧪 to ensure backend endpoints function correctly.  
 
-The CI/CD pipeline automates the entire process—from building the application, deploying it on Kubernetes, and running tests.
+The CI/CD pipeline automates the entire process from building the application, deploying it on Kubernetes, and running tests.
 
 ## Technologies:
 ### App:
