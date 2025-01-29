@@ -30,6 +30,8 @@ variables:
       - "false"
 
   GCP_PROJECT_ID: "mythic-fire-446020-d5"
+  GCP_REGION: "europe-west1"
+  GCP_CLUSTER_NAME: 'app-testing'
 
 stages:
   - build
