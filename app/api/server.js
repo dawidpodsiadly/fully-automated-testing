@@ -6,10 +6,7 @@ const userRoutes = require('./routes/userRoutes');
 const auth = require('./auth');
 const morgan = require('morgan');
 
-
-
 const app = express();
-
 
 const corsOptions = {
   origin: '*', 
