@@ -1,4 +1,4 @@
-# Description:
+# About the Project:
 This project implements an automated process for testing a self-made, simple application using GitLab CI/CD, including its deployment on Google Kubernetes Engine (GKE) and running E2E and API tests.
 
 # Technologies:
