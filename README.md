@@ -1,5 +1,5 @@
 ## About The Project:
-This project implements an automated process for testing a self-made, simple application using GitLab CI/CD 🚀, including its deployment on Google Kubernetes Engine 🛠️ and running E2E and API tests 🧪.
+This project implements an automated process for testing a self-made, simple application using GitLab CI/CD 🚀, including its deployment on Google Kubernetes Engine (GKE) 🛠️ and running E2E and API tests 🧪.
 
 ## Technologies:
 ### App:
@@ -35,7 +35,7 @@ This project implements an automated process for testing a self-made, simple app
     gcloud config set project PROJECT_ID
     ```
 
-4. Create your cluster on Google Kubernetes Engine:
+4. Create your cluster on GKE:
     ```
     gcloud container clusters create CLUSTER_NAME --region REGION_NAME
     ```
@@ -47,37 +47,34 @@ This project implements an automated process for testing a self-made, simple app
 
 6. Generate a static external IP on Google Cloud:
     ```
-    gcloud compute addresses create YOUR_IP_NAME --region REGION_NAME
+    gcloud compute addresses create your-ip-name --region your-region
     ```
 
-7. Obtain a key for a service account with permissions to push images to GCR. The easiest way is via the GUI:
-    ```
-    IAM & Admin -> Service Accounts
-    ```
+7. Obtain a key for a service account with permissions to push images to Google Container Registry (GCR). You can do this easily through the Google Cloud Console:
+    - Go to **IAM & Admin → Service Accounts** and create a new service account with appropriate permissions for GCR access.
 
-8. In your GitLab project, create an environment variable `GCLOUD_SERVICE_KEY` to keep it secure:
-    ```
-    Settings > CI/CD -> Variables
-    ```
+8. In your GitLab project, create an environment variable `GCLOUD_SERVICE_KEY` to securely store your service account key:
+    - Navigate to **Settings → CI/CD → Variables** and add a new variable with the key `GCLOUD_SERVICE_KEY` and the value being your service account key.
 
-9. Update the `.gitlab-ci.yml` variables:
-    ```
-    GCP_PROJECT_ID
-    GCP_REGION
-    GCP_CLUSTER_NAME
-    ```
+9. Configure GitLab CI/CD pipeline variables in your `.gitlab-ci.yml` file:
+    - Set the following variables in the file:
+        ```
+        GCP_PROJECT_ID
+        GCP_REGION
+        GCP_CLUSTER_NAME
+        ```
 
-10. Replace the project ID in:
-    ```
-    /app/_deployment/api/deployment.yaml
-    /app/_deployment/gui/deployment.yaml
-    ```
+10. Update the project ID in the deployment YAML files:
+    - In `/app/_deployment/api/deployment.yaml` and `/app/_deployment/gui/deployment.yaml`, replace the placeholder project ID with your actual `PROJECT_ID`.
 
-11. Change the `baseUrl` in the API tests `tests/api/src/services/path-service.ts` to `YOUR_APP_STATIC_IP/api`
+11. Update the `baseUrl` for API tests:
+    - In `tests/api/src/services/path-service.ts`, set `baseUrl` to `APP_STATIC_IP/api`.
 
-12. Change the `baseUrl` in the E2E tests `tests/e2e/config.ts` to `YOUR_APP_STATIC_IP`
+12. Update the `baseUrl` for E2E tests:
+    - In `tests/e2e/config.ts`, set `baseUrl` to `APP_STATIC_IP`.
 
-13. Set up the connection to the MongoDB database in `app/api/server.js`.
+13. Configure the MongoDB connection in `app/api/server.js`:
+    - Update the connection settings to point to your MongoDB instance.
 
 ## How to Run:
 
