@@ -10,7 +10,7 @@ echo $GCLOUD_SERVICE_KEY | base64 -d > ${CI_PROJECT_DIR}/gcloud-key.json
 gcloud auth activate-service-account --key-file=${CI_PROJECT_DIR}/gcloud-key.json
 
 gcloud config set project $GCP_PROJECT_ID
-gcloud auth configure-docker $GCR_REGISTRY
+gcloud auth configure-docker gcr.io
 
 gcloud components install gke-gcloud-auth-plugin
 echo "Checking if gke-gcloud-auth-plugin is installed..."

@@ -30,8 +30,6 @@ variables:
       - "false"
 
   GCP_PROJECT_ID: "mythic-fire-446020-d5"
-  GCR_REGISTRY: "gcr.io"
-  IMAGE_TAG: "latest"
 
 stages:
   - build
