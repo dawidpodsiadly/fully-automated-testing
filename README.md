@@ -18,26 +18,19 @@ This project implements an automated process for testing a self-made, simple app
 - Supertest + Jest (API)
 
 # How to run:
-1. Clone the repository:
-   git clone https://github.com/dawidpodsiadly/app-testing.git
+1. Clone the repository `git clone https://github.com/dawidpodsiadly/app-testing.git`
 
-2. Set up the connection to the MongoDB database (https://www.mongodb.com/) in `app/api/server.js`.
+2. Set up the connection to the [MongoDB](https://www.mongodb.com/) database in `app/api/server.js`.
 
-3. Create your cluster on GKE:
-   - Go to **Kubernetes engine** -> **Clusters**.
+3. Create your cluster on GKE (**Kubernetes engine** -> **Clusters**)
 
-4. Enable the Container Registry API:
-   - Go to **APIs & Services** -> **Enable APIs & Services**.
+4. Enable the Container Registry API (**APIs & Services** -> **Enable APIs & Services**)
 
-5. Generate a static external IP on Google Cloud:
-   - Go to **VPC Network** -> **IP addresses**.
+5. Generate a static external IP on Google Cloud (**VPC Network** -> **IP addresses**)
 
-6. Obtain a key for a service account with permissions to push images to GCR:
-   - Go to **IAM & Admin** -> **Service Accounts**.
+6. Obtain a key for a service account with permissions to push images to GCR (**IAM & Admin** -> **Service Accounts**)
 
-7. In your GitLab project, create an environment variable via the GUI:
-   - **Settings** > **CI/CD** -> **Variables**.
-   - Create the variable `GCLOUD_SERVICE_KEY` to keep it secure.
+7. In your GitLab project, create an environment variable via the GUI to keep it secure (**Settings** > **CI/CD** -> **Variables**)
 
 8. In the `.gitlab-ci.yml` file, update the variables `GCP_PROJECT_ID`, `GCP_REGION`, `GCP_CLUSTER_NAME` to match your configuration.
 
