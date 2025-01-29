@@ -57,12 +57,7 @@ This project implements an automated process for testing a self-made, simple app
     - Navigate to **Settings → CI/CD → Variables** and add a new variable with the key `GCLOUD_SERVICE_KEY` and the value being your service account key.
 
 9. Configure GitLab CI/CD pipeline variables in your `.gitlab-ci.yml` file:
-    - Set the following variables in the file:
-        ```
-        GCP_PROJECT_ID
-        GCP_REGION
-        GCP_CLUSTER_NAME
-        ```
+    - Set the following variables in the file `GCP_PROJECT_ID`, `GCP_REGION`, `GCP_CLUSTER_NAME`.
 
 10. Update the project ID in the deployment YAML files:
     - In `/app/_deployment/api/deployment.yaml` and `/app/_deployment/gui/deployment.yaml`, replace the placeholder project ID with your actual `PROJECT_ID`.
