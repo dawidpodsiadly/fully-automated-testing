@@ -19,62 +19,74 @@ This project implements an automated process for testing a self-made, simple app
 
 ## How to Setup:
 
-1. Clone the repository
+1. Clone the repository:
+    ```
+    git clone https://github.com/dawidpodsiadly/app-testing.git
+    ```
 
-    `git clone https://github.com/dawidpodsiadly/app-testing.git`
+2. Log in to Google Cloud:
+    ```
+    gcloud auth login
+    ```
 
-2. Log in to Google Cloud
-   
-    `gcloud auth login`
+3. Create a project on Google Cloud:
+    ```
+    gcloud projects create PROJECT_ID --name="PROJECT_NAME"
+    gcloud config set project PROJECT_ID
+    ```
 
-3. Create Project on Google Cloud
+4. Create your cluster on GKE:
+    ```
+    gcloud container clusters create CLUSTER_NAME --region REGION_NAME
+    ```
 
-    `gcloud projects create PROJECT_ID --name="PROJECT_NAME"`
-    `gcloud config set project PROJECT_ID`
+5. Enable the Container Registry API:
+    ```
+    gcloud services enable containerregistry.googleapis.com
+    ```
 
-4. Create your cluster on GKE
+6. Generate a static external IP on Google Cloud:
+    ```
+    gcloud compute addresses create your-ip-name --region your-region
+    ```
 
-   `gcloud container clusters create CLUSTER_NAME --region REGION_NAME`
+7. Obtain a key for a service account with permissions to push images to GCR. The easiest way is via the GUI:
+    ```
+    IAM & Admin -> Service Accounts
+    ```
 
-5. Enable the Container Registry API
+8. In your GitLab project, create an environment variable `GCLOUD_SERVICE_KEY` to keep it secure:
+    ```
+    Settings > CI/CD -> Variables
+    ```
 
-   `gcloud services enable containerregistry.googleapis.com`
+9. Update the `.gitlab-ci.yml` variables:
+    ```
+    GCP_PROJECT_ID
+    GCP_REGION
+    GCP_CLUSTER_NAME
+    ```
 
-6. Generate a static external IP on Google Cloud
-   
-   `gcloud compute addresses create your-ip-name --region your-region`
+10. Replace the project ID in:
+    ```
+    /app/_deployment/api/deployment.yaml
+    /app/_deployment/gui/deployment.yaml
+    ```
 
-7. Obtain a key for a service account with permissions to push images to GCR, the easiest way is via GUI
+11. Change the `baseUrl` in the API tests:
+    - `tests/api/src/services/path-service.ts` set `baseUrl` to `APP_STATIC_IP/api`
 
-  `IAM & Admin -> Service Accounts`
+12. Change the `baseUrl` in the E2E tests:
+    - `tests/e2e/config.ts` set `baseUrl` to `APP_STATIC_IP`
 
-8. In your GitLab project, create an environment variable `GCLOUD_SERVICE_KEY` to keep it secure
-  
-  `Settings** > CI/CD -> Variables`
-
-9. Update the `.gitlab-ci.yml` variables
-   `GCP_PROJECT_ID`
-   `GCP_REGION`
-   `GCP_CLUSTER_NAME`
-
-10. Replace the project ID in
-    `/app/_deployment/api/deployment.yaml`
-    `/app/_deployment/gui/deployment.yaml`
-
-12. Change the `baseUrl` in the API tests
-    `tests/api/src/services/path-service.ts` set `baseUrl` to `APP_STATIC_IP/api`
-
-13. Change the `baseUrl` in the E2E tests
-    `tests/e2e/config.ts` set `baseUrl` to `APP_STATIC_IP`
-
-14. Set up the connection to the MongoDB database in `app/api/server.js`
+13. Set up the connection to the MongoDB database in `app/api/server.js`.
 
 ## How to Run:
 
-Once the setup is completed, all you have to do is
+Once the setup is completed, all you have to do is:
 
-1. To build and deploy the app, trigger the pipeline with the variable `DEPLOY_TEST_INSTALLATION = true`
+1. To build and deploy the app, trigger the pipeline with the variable `DEPLOY_TEST_INSTALLATION=true`.
 
-2. To run API tests, trigger the pipeline with the variable `RUN_API_TESTS = true`
+2. To run API tests, trigger the pipeline with the variable `RUN_API_TESTS=true`.
 
-3. To run E2E tests, trigger the pipeline with the variable `RUN_E2E_TESTS = true`
+3. To run E2E tests, trigger the pipeline with the variable `RUN_E2E_TESTS=true`.
