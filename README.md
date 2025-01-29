@@ -68,13 +68,12 @@ This project implements an automated process for testing a self-made, simple app
     - In `/app/_deployment/api/deployment.yaml` and `/app/_deployment/gui/deployment.yaml`, replace the placeholder project ID with your actual `PROJECT_ID`.
 
 11. Update the `baseUrl` for API tests:
-    - In `tests/api/src/services/path-service.ts`, set `baseUrl` to `APP_STATIC_IP/api`.
+    - In `tests/api/src/services/path-service.ts` to `APP_STATIC_IP/api`.
 
 12. Update the `baseUrl` for E2E tests:
-    - In `tests/e2e/config.ts`, set `baseUrl` to `APP_STATIC_IP`.
+    - In `tests/e2e/config.ts` to `APP_STATIC_IP`.
 
-13. Configure the MongoDB connection in `app/api/server.js`:
-    - Update the connection settings to point to your MongoDB instance.
+13. Configure the MongoDB connection in `app/api/server.js` to your database.
 
 ## How to Run:
 
