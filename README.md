@@ -1,5 +1,11 @@
 ## About The Project:
-This project implements an automated process for testing a self-made, simple application using GitLab CI/CD 🚀, including its deployment on Google Kubernetes Engine (GKE) 🛠️ and running E2E and API tests 🧪.
+This project automates the process of testing and deploying a simple, self-built application using GitLab CI/CD 🚀. It includes full integration with Google Kubernetes Engine (GKE) 🛠️ for containerized deployment.  
+
+The application is tested on multiple levels:  
+- **End-to-End (E2E) tests** are executed using **Playwright** 🎬 to validate the user interface and overall application flow.  
+- **API tests** are performed with **Supertest + Jest** 🧪 to ensure backend endpoints function correctly.  
+
+The CI/CD pipeline automates the entire process—from building the application, deploying it on Kubernetes, and running tests.
 
 ## Technologies:
 ### App:
