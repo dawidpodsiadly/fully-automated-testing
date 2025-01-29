@@ -86,3 +86,5 @@ Once the setup is completed, all you have to do is open Gitlab and run:
 2. To run API tests, trigger the pipeline with the variable `RUN_API_TESTS=true`.
 
 3. To run E2E tests, trigger the pipeline with the variable `RUN_E2E_TESTS=true`.
+
+![Successful Process](images/example.png)
