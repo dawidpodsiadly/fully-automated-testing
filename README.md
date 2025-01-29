@@ -72,7 +72,7 @@ This project implements an automated process for testing a self-made, simple app
 
 ## How to Run:
 
-Once the setup is completed, all you have to do is:
+Once the setup is completed, all you have to do is open Gitlab and run pipeline:
 
 1. To build and deploy the app, trigger the pipeline with the variable `DEPLOY_TEST_INSTALLATION=true`.
 
