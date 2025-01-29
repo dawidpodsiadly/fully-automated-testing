@@ -24,6 +24,7 @@ The CI/CD pipeline automates the entire process from building the application, d
 - Supertest + Jest (API) 🧪
 
 ## How to Setup:
+Before running the project, you need to configure it for your environment. This setup ensures that your Google Cloud, Kubernetes, and GitLab CI/CD configurations are correctly adapted to your infrastructure. Follow the steps below to set up the project.
 
 1. Clone the repository:
     ```
