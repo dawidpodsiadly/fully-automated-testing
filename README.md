@@ -81,7 +81,7 @@ Before running the project, you need to configure it for your environment. This 
 
 Once the setup is completed, all you have to do is open Gitlab and run:
 
-1. To build and deploy the app, trigger the pipeline with the variable `DEPLOY_TEST_INSTALLATION=true`.
+1. To build and deploy the app, trigger the pipeline with the variable `DEPLOY_TEST_INSTALLATION=true`. This will automatically create the test users as part of the deployment process.
 
 2. To run API tests, trigger the pipeline with the variable `RUN_API_TESTS=true`.
 
