@@ -1,7 +1,7 @@
 ## About The Project:
 This project automates the process of testing and deploying a simple, self-built application using [GitLab CI/CD](https://gitlab.com/) 🚀. It includes full integration with [Google Kubernetes Engine (GKE)](https://console.cloud.google.com/) 🛠️, which provides a managed [Kubernetes](https://kubernetes.io/) environment for containerized deployment.  
 
-The application is tested on multiple levels:  
+The application is tested by:
 - **End-to-End (E2E) tests** are executed using [Playwright](https://playwright.dev/) 🎬 to validate the user interface and overall application flow.  
 - **API tests** are performed with [Supertest](https://www.npmjs.com/package/supertest) + [Jest](https://jestjs.io/) 🧪 to ensure backend endpoints function correctly.  
 
