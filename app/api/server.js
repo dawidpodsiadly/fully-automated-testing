@@ -4,6 +4,7 @@ const cors = require('cors');
 const passport = require('passport');
 const morgan = require('morgan');
 const userRoutes = require('./routes/userRoutes');
+const auth = require('./auth');
 const { createTestUsers } = require('./utils/testUsersAutoSetup');
 
 const app = express();
