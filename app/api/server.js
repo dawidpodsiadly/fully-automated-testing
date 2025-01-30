@@ -2,14 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
-const userRoutes = require('./routes/userRoutes');
-const auth = require('./auth');
 const morgan = require('morgan');
+const userRoutes = require('./routes/userRoutes');
+const { createTestUsers } = require('./utils/testUsersAutoSetup');
 
 const app = express();
 
 const corsOptions = {
-  origin: '*', 
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -22,7 +22,10 @@ app.use(passport.initialize());
 
 mongoose
   .connect('mongodb+srv://skill1:e46lecibokiem@users.kon9j2k.mongodb.net/userManagement?retryWrites=true&w=majority&appName=Users', {})
-  .then(() => console.log('DB is connected'))
+  .then(async () => {
+    console.log('DB is connected');
+    await createTestUsers();
+  })
   .catch(err => console.log(err));
 
 app.use(userRoutes);

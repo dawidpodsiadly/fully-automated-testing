@@ -3,13 +3,13 @@ import {PathService} from './path-service';
 import {authBody} from '../utils/bodies.util';
 
 export enum TestUsers {
-  apiTesterAdmin = 'apitesteradmin@gmail.com',
-  apiTesterNotAdmin = 'apitesternotadmin@gmail.com',
-  apiTesterDeactivated = 'apitesterdeactivated@gmail.com',
-  apiTesterNotExisting = 'apitesternotexisting@gmail.com',
+  apiTesterAdmin = 'apitesteradmin@tests.com',
+  apiTesterNotAdmin = 'apitesternotadmin@tests.com',
+  apiTesterDeactivated = 'apitesterdeactivated@tests.com',
+  apiTesterNotExisting = 'apitesternotexisting@tests.com',
 }
 
-export const testPassword = 'polskagurom';
+export const testPassword = 'chocolate';
 export const invalidAuthToken = {Authorization: 'Bearer invalidToken'};
 
 class AuthService {
