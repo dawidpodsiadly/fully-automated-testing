@@ -53,10 +53,11 @@ Before running the project, you need to configure it for your environment. This 
     ```
     gcloud compute addresses create your-ip-name --region your-region
     ```
-
-### 3. Configure GitLab:
 - Obtain a key for a service account with permissions to push images to Google Container Registry (GCR) via the Google Cloud Console:
     - Go to **IAM & Admin → Service Accounts** and create a new service account with appropriate permissions for GCR access.
+    - Assign roles like `Storage Object Admin` to the service account, which will allow it to push images to the GCR.
+
+### 3. Configure GitLab:
 - In your GitLab project, create an environment variable `GCLOUD_SERVICE_KEY` to securely store your service account key:
     - Navigate to **Settings → CI/CD → Variables** and add a new variable with the key `GCLOUD_SERVICE_KEY` and the value being your service account key.
 - Configure GitLab CI/CD pipeline variables in your `.gitlab-ci.yml` file:
