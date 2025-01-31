@@ -60,7 +60,7 @@ Before running the project, you need to configure it for your environment. This 
 - Configure GitLab CI/CD pipeline variables in your `.gitlab-ci.yml` file:
     - Set the following variables in the file `GCP_PROJECT_ID`, `GCP_REGION`, `GCP_CLUSTER_NAME`.
 
-### 4. Update Deployment Configs:
+### 4. Update Kubernetes Deployment Configs:
 - Update the project ID in the deployment YAML files:
     - In `/app/_deployment/api/deployment.yaml` and `/app/_deployment/gui/deployment.yaml`, replace the project ID with your actual `PROJECT_ID`.
 
