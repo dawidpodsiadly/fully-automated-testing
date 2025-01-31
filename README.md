@@ -30,7 +30,6 @@ Before running the project, you need to configure it for your environment. This 
     ```
     git clone https://github.com/dawidpodsiadly/app-testing.git
     ```
-
 ### 2. Configure Google Cloud:
 - Log in to Google Cloud:
     ```
