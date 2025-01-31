@@ -27,9 +27,7 @@ The CI/CD pipeline automates the entire process, from building the application, 
 Before running the project, you need to configure it for your environment. This setup ensures that your Google Cloud, Kubernetes, and GitLab CI/CD configurations are correctly adapted to your infrastructure. Follow the steps below to set up the project.
 
 ### 1. Clone the repository:
-    ```
     git clone https://github.com/dawidpodsiadly/app-testing.git
-    ```
 ### 2. Configure Google Cloud:
 - Log in to Google Cloud:
     ```
