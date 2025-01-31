@@ -1,11 +1,11 @@
 ## About The Project:
-This project automates the process of testing and deploying a simple, self-built application using [GitLab CI/CD](https://gitlab.com/) 🚀. It includes full integration with [Google Kubernetes Engine (GKE)](https://console.cloud.google.com/) 🛠️, which provides a managed [Kubernetes](https://kubernetes.io/) environment for containerized deployment.  
+This project demonstrates a fully automated process for deploying an application from a branch on [GitLab](https://gitlab.com/) 🚀 to a [Kubernetes](https://kubernetes.io/) environment on [Google Kubernetes Engine (GKE)](https://console.cloud.google.com/) 🛠️. The application is then automatically tested using End-to-End (E2E) and API tests, executed directly within the GitLab CI/CD pipeline.
 
 The application is tested by:
-- **End-to-End (E2E) tests** are executed using [Playwright](https://playwright.dev/) 🎬 to validate the user interface and overall application flow.  
-- **API tests** are performed with [Supertest](https://www.npmjs.com/package/supertest) + [Jest](https://jestjs.io/) 🧪 to ensure backend endpoints function correctly.  
+- **End-to-End (E2E) tests** using [Playwright](https://playwright.dev/) 🎬 to validate the user interface and overall application flow.
+- **API tests** using [Supertest](https://www.npmjs.com/package/supertest) + [Jest](https://jestjs.io/) 🧪 to ensure backend endpoints function correctly.
 
-The CI/CD pipeline automates the entire process, from building the application, deploying it on Kubernetes, and running tests.
+The CI/CD pipeline automates the entire process, from building and deploying the application on Kubernetes to executing the tests, ensuring seamless integration and delivery.
 
 ## Technologies:
 ### App:
