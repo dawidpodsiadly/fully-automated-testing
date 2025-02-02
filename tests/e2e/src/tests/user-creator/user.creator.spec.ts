@@ -159,24 +159,24 @@ test.describe('User Creator', () => {
     await setText(userCreator.inputs.password, password);
     await setText(userCreator.inputs.confirmPassword, password);
 
-    // Your phone number does not exist
+    /** Your phone number does not exist **/
     await setText(userCreator.inputs.phoneNumber, randomUtil.randomName());
     await userCreator.submitForm();
     await expect(userCreator.errors.phoneNumberNotExist, `Error 'Your phone number does not exist' Should be Visible`).toBeVisible();
     await setText(userCreator.inputs.phoneNumber, randomUtil.randomPhoneNumber());
 
-    // Salary must be a number
+    /** Salary must be a number **/
     await setText(userCreator.inputs.salary, randomUtil.randomName());
     await userCreator.submitForm();
     await expect(userCreator.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
 
-    // Salary Has to be Without Minus
+    /** Salary Has to be Without Minus **/
     await setText(userCreator.inputs.salary, `-${randomUtil.randomStringNumber(4)}`);
     await userCreator.submitForm();
     await expect(userCreator.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
     await setText(userCreator.inputs.salary, randomUtil.randomStringNumber(4));
 
-    // End date must be after start date
+    /** End date must be after start date **/
     const startTime = randomUtil.randomDate();
     const endTime = randomUtil.randomYoungerDate(startTime);
 
@@ -194,7 +194,7 @@ test.describe('User Creator', () => {
     const createdUserEmail = randomUtil.randomEmail();
     await setText(userCreator.inputs.email, createdUserEmail);
 
-    // User should be created correctly
+    /** User should be created correctly **/
     await userCreator.submitForm();
     const userRow = await userTable.getRowByEmail(createdUserEmail);
     await userRow.isVisible();

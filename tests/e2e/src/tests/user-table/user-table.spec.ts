@@ -88,7 +88,7 @@ test.describe('User Table', () => {
     await updatedUserRow.userData.name.click();
     await userDetials.checkUserData(updatedUserData);
 
-    // User should log in with old password
+    /** User should log in with old password **/
     await logoutAndLogin(page, updatedUserData.email, user.password);
     await userTable.isVisible();
   });
@@ -124,19 +124,19 @@ test.describe('User Table', () => {
     await expect(userUpdate.errors.shortPassword, `Error 'Password must be at least 9 characters long' Should be Visible`).toBeVisible();
     await expect(userUpdate.errors.matchPasswords, `Error 'Passwords must match' Should be Visible`).toBeVisible();
 
-    // Your phone number does not exist
+    /** Your phone number does not exist **/
     await userUpdate.updateUserForm({phoneNumber: randomUtil.randomName(), password: updatedUserData.password});
     await expect(userUpdate.errors.phoneNumberNotExist, `Error 'Your phone number does not exist' Should be Visible`).toBeVisible();
 
-    // Salary must be a number
+    /** Salary must be a number **/
     await userUpdate.updateUserForm({contract: {salary: randomUtil.randomName()}, phoneNumber: updatedUserData.phoneNumber});
     await expect(userUpdate.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
 
-    // Salary Has to be without minus
+    /** Salary Has to be without minus **/
     await userUpdate.updateUserForm({contract: {salary: `-${randomUtil.randomStringNumber(4)}`}});
     await expect(userUpdate.errors.salaryMustBeNumber, `Error 'Salary must be a number' Should be Visible`).toBeVisible();
 
-    // End date must be after start date
+    /** End date must be after start date **/
     await userUpdate.updateUserForm({
       contract: {
         startTime: updatedUserData.contract.endTime,
@@ -166,13 +166,13 @@ test.describe('User Table', () => {
       isAdmin: true,
     });
 
-    // User should be updated correctly
+    /** User should be updated correctly **/
     const updatedUserRow = await userTable.getRowByEmail(updatedUserData.email);
     await updatedUserRow.checkUserData(updatedUserData);
     await updatedUserRow.userData.name.click();
     await userDetials.checkUserData(updatedUserData);
 
-    // User should log in with new credentials
+    /** User should log in with new credentials **/
     await logoutAndLogin(page, updatedUserData.email, updatedUserData.password);
     await userTable.isVisible();
   });
