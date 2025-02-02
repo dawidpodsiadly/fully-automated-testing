@@ -5,7 +5,7 @@ The application is tested by:
 - 16 **End-to-End (E2E) tests** using [Playwright](https://playwright.dev/) 🎬 to validate the user interface and overall application flow.
 - 46 **API tests** using [Supertest](https://www.npmjs.com/package/supertest) + [Jest](https://jestjs.io/) 🧪 to ensure backend endpoints function correctly.
 
-The CI/CD pipeline automates the entire process, from building and deploying the application on Kubernetes to executing the tests, ensuring seamless integration and delivery.
+The CI/CD pipeline automates the entire process, from building and deploying the application on Kubernetes to executing the tests.
 
 ## Technologies:
 ### App:
