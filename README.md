@@ -1,5 +1,5 @@
 ## About The Project:
-This project demonstrates a fully automated process for deploying an application from a branch on [GitLab](https://gitlab.com/) 🚀 to a [Kubernetes](https://kubernetes.io/) environment on [Google Kubernetes Engine (GKE)](https://console.cloud.google.com/) 🛠️. The application is then automatically tested using End-to-End (E2E) and API tests, executed directly within the GitLab CI/CD pipeline.
+This project demonstrates a fully automated process for deploying a self-made application from a branch on [GitLab](https://gitlab.com/) 🚀 to a [Kubernetes](https://kubernetes.io/) environment on [Google Kubernetes Engine (GKE)](https://console.cloud.google.com/) 🛠️. The application is then automatically tested using End-to-End (E2E) and API tests, executed directly within the GitLab CI/CD pipeline.
 
 The application is tested by:
 - 16 **End-to-End (E2E) tests** using [Playwright](https://playwright.dev/) 🎬 to validate the user interface and overall application flow.
