@@ -463,11 +463,11 @@ describe('Users Endpoints', () => {
       expect(response.body.message).toEqual('End time cannot be earlier than start time');
     });
 
-    it('Should return 200 and Update User as Admin User - PUT /users', async () => {
-      const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
+    it('Should return 200 and Update User as Activated Admin User - PUT /users', async () => {
+      const createUserResponse = await request(baseUrl).post('/').send(userBody(false, false)).set(adminToken);
       const userId = createUserResponse.body.id;
 
-      const updatedUserBody = userBody();
+      const updatedUserBody = userBody(true, true);
 
       const updateUserResponse = await request(baseUrl).put(`/${userId}`).send(updatedUserBody).set(adminToken);
       expect(updateUserResponse.status).toBe(200);
