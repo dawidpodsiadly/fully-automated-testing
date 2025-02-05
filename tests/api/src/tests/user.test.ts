@@ -53,7 +53,7 @@ describe('Users Endpoints', () => {
   });
 
   describe('GET /users/id', () => {
-    it('Should return 401 when no Token - POST /users/id', async () => {
+    it('Should return 401 when no Token - GET /users/id', async () => {
       const createUserResponse = await request(baseUrl).post('/').send(userBody()).set(adminToken);
       const userId = createUserResponse.body.id;
 
@@ -62,20 +62,20 @@ describe('Users Endpoints', () => {
       expect(response.text).toEqual('Unauthorized');
     });
 
-    it('Should return 404 when Id Not Found - POST /users/id', async () => {
+    it('Should return 404 when Id Not Found - GET /users/id', async () => {
       const wrongUserId = '666b5bfd8e3c464090cb69b8';
       const response = await request(baseUrl).get(`/${wrongUserId}`).set(adminToken);
       expect(response.status).toBe(404);
       expect(response.text).toContain(`User with id = ${wrongUserId} not found`);
     });
 
-    it('Should return 400 when Invalid User Id Format - POST /users/id', async () => {
+    it('Should return 400 when Invalid User Id Format - GET /users/id', async () => {
       const response = await request(baseUrl).get(`/${randomUtil.randomNameWithPrefix}`).set(adminToken);
       expect(response.status).toBe(400);
       expect(response.body.message).toEqual('Invalid user ID format');
     });
 
-    it('Should return 200 and Contain User Data as Not Admin User - POST /users/id', async () => {
+    it('Should return 200 and Contain User Data as Not Admin User - GET /users/id', async () => {
       const userBodyData = userBody();
       const createUserResponse = await request(baseUrl).post('/').send(userBodyData).set(adminToken);
       const userId = createUserResponse.body.id;
@@ -102,7 +102,7 @@ describe('Users Endpoints', () => {
       expect(getUserResponse.body).toHaveProperty('lastUpdated');
     });
 
-    it('Should return 200 and Contain User Data as Admin User - POST /users/id', async () => {
+    it('Should return 200 and Contain User Data as Admin User - GET /users/id', async () => {
       const userBodyData = userBody();
       const createUserResponse = await request(baseUrl).post('/').send(userBodyData).set(adminToken);
       const userId = createUserResponse.body.id;
